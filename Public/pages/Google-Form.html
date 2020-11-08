@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Google Form</title>
+    <script>
+        fetch("https://docs.google.com/forms/u/0/d/e/1FAIpQLSeXr1jWFR99le0Qe0nhm7vFIq2vvsIhy4DjU2PGzbaJC7jOYQ/formResponse", {
+            "headers": {
+                "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                "accept-language": "en-AU,en-GB;q=0.9,en-US;q=0.8,en;q=0.7",
+                "cache-control": "max-age=0",
+                "content-type": "application/x-www-form-urlencoded",
+                "sec-fetch-dest": "document",
+                "sec-fetch-mode": "navigate",
+                "sec-fetch-site": "same-origin",
+                "sec-fetch-user": "?1",
+                "upgrade-insecure-requests": "1",
+                "x-chrome-connected": "source=Chrome,id=108868629254632360133,mode=0,enable_account_consistency=false,consistency_enabled_by_default=false",
+                "x-client-data": "CIm2yQEIo7bJAQjEtskBCKmdygEIlqzKAQjFuMoBCKvHygEI9cfKAQjpyMoBCLTLygEI3NXKAQiYmssBCMGaywEYisHKAQ=="
+            },
+            "referrer": "https://docs.google.com/forms/d/e/1FAIpQLSeXr1jWFR99le0Qe0nhm7vFIq2vvsIhy4DjU2PGzbaJC7jOYQ/viewform?fbzx=3416043640873509764",
+            "referrerPolicy": "strict-origin-when-cross-origin",
+            "body": "entry.1009183037=5254254523&fvv=1&draftResponse=%5Bnull%2Cnull%2C%223416043640873509764%22%5D%0D%0A&pageHistory=0&fbzx=3416043640873509764",
+            "method": "POST",
+            "mode": "cors",
+            "credentials": "include"
+        });
+    </script>
+</head>
+<body>
+    <form action="/form-submit" method="POST">
+        <input type="text" name="entry.1009183037" required>
+        <br>
+        <br>
+        <button type="submit" id="submit">Submit Form</button>
+    </form>
+</body>
+</html>

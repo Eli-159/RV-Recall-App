@@ -6,13 +6,14 @@
     <title>My RV Test</title>
     <link rel="stylesheet" href="/css/main.css">
     <script src="/js/valid.js"></script>
+    <script src="/js/rv-form.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="header-logo">
                 <a href="/pages/RV-Form.html">
-                    <img src="/images/logo.png">
+                    <img src="/images/logo.png" class="header-logo-img">
                 </a>
             </div>
             <nav class="header-nav-menu">
@@ -29,34 +30,73 @@
                 </ul>
             </nav>
         </header>
-        <br><br><br><br><br><br><br>
         <main>
-            <div class="form-section">
-                <h2>Send us an Email</h2>
+            <div class="form-section" id="verificationForm">
+                <h2>Enter Your Motorhome Details</h2>
+                <form>
+                    <label for="vinInput" class="required-label" id="vinInputLabel">VIN</label>
+                    <div class="textInput">
+                        <input type="text" id="vinInput" name="vin" required />
+                    </div>
+                    <span class="errorMessage" id="vinInputError"></span>
+                    <br>
+                    <label for="buildNoInput" class="required-label" id="buildNoInputLabel">Build Number</label>
+                    <div class="textInput">
+                        <input type="text" id="buildNoInput" name="buildNo" required>
+                    </div>
+                    <span class="errorMessage" id="buildNoInputError"></span>
+                    <br>
+                    <input type="button" value="Submit" id="verificationSubmitBtn">
+                </form>
+            </div>
+
+            <div class="form-section" id="detailsForm" style="display: none;">
+                <h2>Your Vehicle:</h2>
+                <h4><span id="vehicleDescription"></span></h4>
+                <br>
+                <br>
+                <h2>Your Details</h2>
                 <form action="/form-submit" method="POST">
-                    <label for="name" class="required-label thing" id="nameInputLabel">Name
-                    <input type="text" id="nameInput" name="name" class="required-label" required /></label>
-                    <label class="valid">&nbsp;&nbsp;<span class="feedbackSymbol" id="nameInputValid"></span></label>
+                    <label for="nameInput" class="required-label" id="nameInputLabel">Name</label>
+                    <div class="textInput">
+                        <input type="text" id="nameInput" name="name" required>
+                    </div>
                     <span class="errorMessage" id="nameInputError"></span>
                     <br>
                     <label for="phoneInput" id="phoneInputLabel">Phone</label>
-                    <input type="text" id="phoneInput" name="phone" pattern="[0-9]{10}">
-                    <label class="valid">&nbsp;&nbsp;<span class="feedbackSymbol" id="phoneInputValid"></span></label>
+                    <div class="textInput">
+                        <input type="text" id="phoneInput" name="phone" pattern="[0-9]{10}" required>
+                    </div>
                     <span class="errorMessage" id="phoneInputError"></span>
                     <br>
                     <label for="emailInput" class="required-label" id="emailInputLabel">Email</label>
-                    <input type="email" id="emailInput" name="email" required>
-                    <label class="valid">&nbsp;&nbsp;<span class="feedbackSymbol" id="emailInputValid"></span></label>
+                    <div class="textInput">
+                        <input type="email" id="emailInput" name="email" required>
+                    </div>
                     <span class="errorMessage" id="emailInputError"></span>
                     <br>
-                    <label for="messageInput" class="required-label" id="messageInputLabel">Message</label>
-                    <textarea name="message" id="messageInput" cols="30" rows="10" required></textarea>
-                    <label class="valid">&nbsp;&nbsp;<span class="feedbackSymbol" id="messageInputValid"></span></label>
-                    <span class="errorMessage" id="messageInputError"></span>
+                    <label for="addressInput" class="required-label" id="addressInputLabel">Postal Address</label>
+                    <div class="textInput">
+                        <input type="text" id="addressInput" name="address" required>
+                    </div>
+                    <span class="errorMessage" id="addressInputError"></span>
                     <br>
-                    <input type="button" value="Submit" id="submitBtn">
+                    <label for="suburbInput" class="required-label" id="suburbInputLabel">Suburb</label>
+                    <div class="textInput">
+                        <input type="text" id="suburbInput" name="suburb" required>
+                    </div>
+                    <span class="errorMessage" id="suburbInputError"></span>
                     <br>
-                    <input type="submit" value="POST" id="postBtn" disabled style="display: none;">
+                    <label for="postCodeInput" class="required-label" id="postCodeInputLabel">Post Code</label>
+                    <div class="textInput">
+                        <input type="text" id="postCodeInput" name="postCode" pattern="[0-9]{4}" required>
+                    </div>
+                    <span class="errorMessage" id="postCodeInputError"></span>
+                    <br>
+                    <input type="button" value="Submit" id="detailsSubmitBtn">
+                    <br>
+                    <input type="text" name="securityNo" id="securityNoInput" disabled style="display: none;">
+                    <input type="submit" value="POST" id="detailsPostBtn" disabled style="display: none;">
                 </form>
             </div>
         </main>

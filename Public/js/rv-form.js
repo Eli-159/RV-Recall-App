@@ -54,10 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             // Posts the data.
                             fetch('/form-submit', {
                                 method: 'POST',
-                                body: getFormBody('detailsForm'),
                                 headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json',
                                     securityNo: window.sessionStorage.getItem('vin') + window.sessionStorage.getItem('securityNo') + window.sessionStorage.getItem('buildNo')
-                                }
+                                },
+                                body: getFormDataAsObject('detailsForm'),
                             })
                             .then(res => res.json())
                             .then(json => {

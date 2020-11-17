@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const successMessage = document.getElementById('successMessage');
     successMessage.remove();
     successMessage.style.display = 'block';
+    // Removes any properties still stored in session storage.
+    window.sessionStorage.clear();
     
     document.getElementById('verificationSubmitBtn').addEventListener('click', () => {
         // This function is the one that deals with the vin and build number secrity check. It is trigged by the submit button press.
@@ -23,11 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 vin: document.getElementById('vinInput').value,
                 buildNo: document.getElementById('buildNoInput').value
             };
-            const formData = new FormData();
-            formData.append('vin', document.getElementById('vinInput').value);
-            formData.append('buildNo', document.getElementById('buildNoInput').value);
-            console.log(formData);
-
             fetch('/verifyDetails', {
                 method: 'POST',
                 body: getFormBody('verificationForm')
@@ -55,11 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         let submitValidation = validateSubmit();
                         if (submitValidation.parsed) {
                             // Posts the data.
-                                    // const postBtn = document.getElementById('detailsPostBtn');
-                                    // postBtn.disabled = false;
-                                    // postBtn.click();
-                                    // postBtn.disabled = true;
-                            fetch('/verifyDetails', {
+                            fetch('/form-submit', {
                                 method: 'POST',
                                 body: getFormBody('detailsForm'),
                                 headers: {
@@ -69,9 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             .then(res => res.json())
                             .then(json => {
                                 json = JSON.parse(json);
-                                console.log(json);
-                                console.log(json.proceed);
-                                if (json.proceed == true) {
+                                if (json.found == true) {
                                     window.sessionStorage.removeItem('vin');
                                     window.sessionStorage.removeItem('securityNo');
                                     window.sessionStorage.removeItem('buildNo');

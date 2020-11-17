@@ -17,20 +17,18 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "Public")));
 
-app.use('/form-submit', (req, res, next) => {
+app.post('/form-submit', (req, res, next) => {
     const body = req.body;
     const headers = req.headers;
     let found = false;
     for (let i = 0; i < okDetails.length; i++) {
-        if (headers['securityNo'] == okDetails[i]['securityNo']) {
+        if (headers.securityno == okDetails[i]['securityNo']) {
             found = true;
             res.json(JSON.stringify({found: true}));
             console.log(body);
         }
     }
     if (!found) {
-        console.log(headers['securityNo']);
-        console.log(okDetails[i]['securityNo']);
         res.json(JSON.stringify({found: false}));
     }
 });

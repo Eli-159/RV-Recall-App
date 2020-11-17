@@ -34,6 +34,5 @@ const getFormDataAsObject = formId => {
         formData[currentInput.name] = currentInput.value;
         
     }
-    console.log(JSON.stringify(formData));
-    return JSON.stringify(formData);
+    return formData;
 };

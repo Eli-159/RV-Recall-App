@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     'Content-Type': 'application/json',
                                     securityNo: window.sessionStorage.getItem('vin') + window.sessionStorage.getItem('securityNo') + window.sessionStorage.getItem('buildNo')
                                 },
-                                body: getFormDataAsObject('detailsForm'),
+                                body: JSON.stringify(getFormDataAsObject('detailsForm'))
                             })
                             .then(res => res.json())
                             .then(json => {

@@ -1,0 +1,20 @@
+const getFormBody = formId => {
+    const form = document.getElementById(formId);
+    const inputs = [
+        ...form.getElementsByTagName('input'),
+        ...form.getElementsByTagName('select'),
+        ...form.getElementsByTagName('textarea')
+    ];
+    const formData = [];
+    for (input in inputs) {
+        const currentInput = inputs[input];
+        if (currentInput.tagName == 'INPUT' && (currentInput.type == 'button' || currentInput.type == 'submit')) {
+            // console.log('The input of value ' + currentInput.value + ' has been deemed a button.');
+            continue;
+        }
+        // console.log(currentInput.tagName + ' - ' + currentInput.type + ' - ' + currentInput.value);
+        formData.push(currentInput.name + '=' + currentInput.value);
+    }
+    const bodyData = new URLSearchParams(formData.join('&'));
+    return bodyData;
+}

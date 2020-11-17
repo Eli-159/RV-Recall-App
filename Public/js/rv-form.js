@@ -5,10 +5,13 @@ let toBeValidated = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Removes the second form and stores in a variable.
+    // Removes the second form and success message and stores them in a variable.
     const userForm = document.getElementById('detailsForm');
     userForm.remove();
     userForm.style.display = 'block';
+    const successMessage = document.getElementById('successMessage');
+    successMessage.remove();
+    successMessage.style.display = 'block';
     
     document.getElementById('verificationSubmitBtn').addEventListener('click', () => {
         // This function is the one that deals with the vin and build number secrity check. It is trigged by the submit button press.
@@ -20,9 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 vin: document.getElementById('vinInput').value,
                 buildNo: document.getElementById('buildNoInput').value
             };
+            const formData = new FormData();
+            formData.append('vin', document.getElementById('vinInput').value);
+            formData.append('buildNo', document.getElementById('buildNoInput').value);
+            console.log(formData);
+
             fetch('/verifyDetails', {
-                'method': 'GET',
-                'headers': JSON.stringify(bodyData)
+                method: 'POST',
+                body: getFormBody('verificationForm')
             })
             .then(res => res.json())
             .then(json => {
@@ -46,18 +54,34 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Checks if the inputed values are valid.
                         let submitValidation = validateSubmit();
                         if (submitValidation.parsed) {
-                            // If the values are valid, add the security number to the form and remove it from session storage.
-                            const securityNoInput = document.getElementById('securityNoInput');
-                            securityNoInput.disabled = false;
-                            securityNoInput.value = window.sessionStorage.getItem('vin') + window.sessionStorage.getItem('securityNo') + window.sessionStorage.getItem('buildNo');
-                            window.sessionStorage.removeItem('vin');
-                            window.sessionStorage.removeItem('securityNo');
-                            window.sessionStorage.removeItem('buildNo');
                             // Posts the data.
-                            const postBtn = document.getElementById('detailsPostBtn');
-                            postBtn.disabled = false;
-                            postBtn.click();
-                            postBtn.disabled = true;
+                                    // const postBtn = document.getElementById('detailsPostBtn');
+                                    // postBtn.disabled = false;
+                                    // postBtn.click();
+                                    // postBtn.disabled = true;
+                            fetch('/verifyDetails', {
+                                method: 'POST',
+                                body: getFormBody('detailsForm'),
+                                headers: {
+                                    securityNo: window.sessionStorage.getItem('vin') + window.sessionStorage.getItem('securityNo') + window.sessionStorage.getItem('buildNo')
+                                }
+                            })
+                            .then(res => res.json())
+                            .then(json => {
+                                json = JSON.parse(json);
+                                console.log(json);
+                                console.log(json.proceed);
+                                if (json.proceed == true) {
+                                    window.sessionStorage.removeItem('vin');
+                                    window.sessionStorage.removeItem('securityNo');
+                                    window.sessionStorage.removeItem('buildNo');
+                                    userForm.remove();
+                                    document.getElementsByTagName('main')[0].appendChild(successMessage);
+                                } else {
+                                    alert('An unexpected error occured. Please try again.');
+                                    //window.history.go();
+                                }
+                            });
                         } else {
                             // If the values were not valid, the first problematic field is selected and scrolled into view.
                             document.getElementById(submitValidation.problemElement).select();

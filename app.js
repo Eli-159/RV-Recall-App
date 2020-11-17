@@ -14,30 +14,32 @@ app.set('view engine', 'pug');
 app.set('views', 'Views');
 
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "Public")));
 
 app.use('/form-submit', (req, res, next) => {
     const body = req.body;
+    const headers = req.headers;
     let found = false;
     for (let i = 0; i < okDetails.length; i++) {
-        console.log(body);
-        if (body['securityNo'] == okDetails[i]['securityNo']) {
-            console.log(body);
+        if (headers['securityNo'] == okDetails[i]['securityNo']) {
             found = true;
-            res.redirect('/pages/details-form-success.html');
+            res.json(JSON.stringify({found: true}));
+            console.log(body);
         }
     }
     if (!found) {
-        res.redirect('/pages/RV-Form.html'); 
+        console.log(headers['securityNo']);
+        console.log(okDetails[i]['securityNo']);
+        res.json(JSON.stringify({found: false}));
     }
 });
 
-app.get('/verifyDetails', (req, res, next) => {
+app.post('/verifyDetails', (req, res, next) => {
     // This is the API that compares the VIN and Build Number given by the user to those known and returns its finding.
     // Gets and logs given VIN and Build Number.
-    console.log(req.headers);
-    const givenVin = req.headers.vin;
-    const givenBuildNo = req.headers.buildno;
+    const givenVin = req.body.vin;
+    const givenBuildNo = req.body.buildNo;
     // Loops over known values and tests to see if they match the given ones.
     let found = false;
     for (let i = 0; i < okDetails.length; i++) {
@@ -51,9 +53,6 @@ app.get('/verifyDetails', (req, res, next) => {
             res.json(JSON.stringify({proceed: true, description: okDetails[i].description, securityNo: securityNo}));
             found = true;
             break;
-        } else {
-            console.log('vin: ' + givenVin + ' != ' + okDetails[i].vin);
-            console.log('buildNo: ' + givenBuildNo + ' != ' + okDetails[i].buildNo);
         }
     }
     if (!found) {

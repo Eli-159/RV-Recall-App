@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 
 let okDetails = [
-    {vin: '123456789', buildNo: '987654321', description: "2020 AUTO-TRAIL EKS HI LINE"}
+    {vin: 'ZFA25000001234567', buildNo: '987654321', description: "2020 AUTO-TRAIL EKS HI LINE"}
 ];
 
 app.set('view engine', 'pug');
@@ -16,6 +16,10 @@ app.set('views', 'Views');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "Public")));
+
+app.get('/', (req, res, next) => {
+    res.redirect('/pages/RV-Form.html');
+});
 
 app.post('/form-submit', (req, res, next) => {
     const body = req.body;
@@ -57,6 +61,15 @@ app.post('/verifyDetails', (req, res, next) => {
         // If the given data is not known, return a message to that effect.
         res.json(JSON.stringify({proceed: false}));
     }
+    const logDetails = {
+        ip: req.ip,
+        url: req.protocol + '://' + req.get('host') + req.originalUrl,
+        date: Date.now(),
+        vin: givenVin,
+        buildNo: givenBuildNo,
+        found: found
+    }
+    console.log(logDetails);
 });
 
 app.use('/email-logo/', (req, res, next) => {

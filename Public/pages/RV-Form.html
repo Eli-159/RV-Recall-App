@@ -37,7 +37,7 @@
                 <form>
                     <label for="vinInput" class="required-label" id="vinInputLabel">VIN</label>
                     <div class="textInput">
-                        <input type="text" id="vinInput" name="vin" required />
+                        <input type="text" id="vinInput" name="vin" value="ZFA2500000" pattern="ZFA2500000......." required />
                     </div>
                     <span class="errorMessage" id="vinInputError"></span>
                     <br>
@@ -95,9 +95,6 @@
                     <span class="errorMessage" id="postCodeInputError"></span>
                     <br>
                     <input type="button" value="Submit" id="detailsSubmitBtn">
-                    <br>
-                    <input type="text" name="securityNo" id="securityNoInput" disabled style="display: none;">
-                    <input type="submit" value="POST" id="detailsPostBtn" disabled style="display: none;">
                 </form>
             </div>
             <div id="successMessage" style="display: none;">

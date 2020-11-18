@@ -27,7 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             fetch('/verifyDetails', {
                 method: 'POST',
-                body: getFormBody('verificationForm')
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    securityNo: window.sessionStorage.getItem('vin') + window.sessionStorage.getItem('securityNo') + window.sessionStorage.getItem('buildNo')
+                },
+                body: JSON.stringify(getFormDataAsObject('verificationForm'))
             })
             .then(res => res.json())
             .then(json => {
@@ -59,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     'Content-Type': 'application/json',
                                     securityNo: window.sessionStorage.getItem('vin') + window.sessionStorage.getItem('securityNo') + window.sessionStorage.getItem('buildNo')
                                 },
-                                body: getFormDataAsObject('detailsForm'),
+                                body: JSON.stringify(getFormDataAsObject('detailsForm'))
                             })
                             .then(res => res.json())
                             .then(json => {

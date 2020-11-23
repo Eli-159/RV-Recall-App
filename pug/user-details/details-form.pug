@@ -1,0 +1,39 @@
+div(class="form-section", id="detailsForm", style="display: none")
+    h2 Your Vehicle:
+    h4
+        span(id="vehicleDescription")
+    br
+    br
+    h2 Your Details
+    form(action="/form-submit", method="POST")
+        label(for="nameInput", class="required-label", id="nameInputLabel") Name
+        div(class="textInput")
+            input(type="text", id="nameInput", name="name", required)
+        span(class="errorMessage", id="nameInputError")
+        br
+        label(for="phoneInput", id="phoneInputLabel") Phone
+        div(class="textInput")
+            input(type="text", id="phoneInput", name="phone", pattern="[0-9]{10}", required)
+        span(class="errorMessage", id="phoneInputError")
+        br
+        label(for="emailInput", class="required-label", id="emailInputLabel") Email
+        div(class="textInput")
+            input(type="email", id="emailInput", name="email", required)
+        span(class="errorMessage", id="emailInputError")
+        br
+        label(for="addressInput", class="required-label", id="addressInputLabel") Postal Address
+        div(class="textInput")
+            input(type="text", id="addressInput", name="address", required)
+        span(class="errorMessage", id="addressInputError")
+        br
+        label(for="suburbInput", class="required-label", id="suburbInputLabel") Suburb
+        div(class="textInput")
+            input(type="text", id="suburbInput", name="suburb", required)
+        span(class="errorMessage", id="suburbInputError")
+        br
+        label(for="postCodeInput", class="required-label", id="postCodeInputLabel") Post Code
+        div(class="textInput")
+            input(type="text", id="postCodeInput", name="postCode", pattern="[0-9]{4}", required)
+        span(class="errorMessage", id="postCodeInputError")
+        br
+        input(type="button", value="Submit", id="detailsSubmitBtn")

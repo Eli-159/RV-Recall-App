@@ -1,0 +1,14 @@
+div(class="form-section", id="verificationForm")
+    h2 Enter Your Motorhome Details
+    form
+    label(for="vinInput", class="required-label", id="vinInputLabel") VIN
+    <div class="textInput">
+        input(type="text", id="vinInput", name="vin", value="ZFA2500000", pattern="ZFA2500000.......", required)
+    span(class="errorMessage", id="vinInputError")
+    br
+    label(for="buildNoInput", class="required-label", id="buildNoInputLabel") Build Number
+    div(class="textInput")
+        input(type="text", id="buildNoInput", name="buildNo", required)
+    span(class="errorMessage", id="buildNoInputError")
+    br
+    input(type="button", value="Submit", id="verificationSubmitBtn")

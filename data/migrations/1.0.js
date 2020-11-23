@@ -77,8 +77,16 @@ module.exports = {
                     FOREIGN KEY(vehicleId) REFERENCES vehicle(id)
                 )`);
 
+                // Create AccessLog Table
+                db.run(`CREATE TABLE accessLog (
+                    url TEXT,
+                    ip TEXT,
+                    success BOOLEAN,
+                    createdAt DATE
+                )`);
+
             });
-            db.close()
+            db.close();
         })
     },
 

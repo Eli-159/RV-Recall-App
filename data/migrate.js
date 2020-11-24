@@ -6,7 +6,7 @@ let umzug = new Umzug({
     console.log.apply(null, arguments);
   },
   migrations: {
-    path: "./migrations",
+    path: "./data/migrations",
     pattern: /\.js$/
   },
   upName: "up",

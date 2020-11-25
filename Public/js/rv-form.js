@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 vin: document.getElementById('vinInput').value,
                 buildNo: document.getElementById('buildNoInput').value
             };
-            fetch('/verifyDetails', {
+            fetch('/owner-registration/verifyDetails', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         let submitValidation = validateSubmit();
                         if (submitValidation.parsed) {
                             // Posts the data.
-                            fetch('/form-submit', {
+                            fetch('/owner-registration/submit-details', {
                                 method: 'POST',
                                 headers: {
                                     'Accept': 'application/json',

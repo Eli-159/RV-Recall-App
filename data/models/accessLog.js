@@ -11,6 +11,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
+    user: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
     success: {
       type: DataTypes.BOOLEAN,
       allowNull: true

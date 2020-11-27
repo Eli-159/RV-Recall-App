@@ -13,6 +13,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
+    workInstructionUrl: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
     createdBy: {
       type: DataTypes.TEXT,
       allowNull: true

@@ -1,104 +1,88 @@
 "use strict";
 const sqlite3 = require("sqlite3");
-
 const path = require('path');
 
-module.exports = {
-    up: () => {
-        return new Promise(function(resolve, reject) {
-            let db = new sqlite3.Database('../myrv-recall.db');
-            db.run(`PRAGMA foreign_keys = ON `);
-            db.serialize(function() {
+//USAGE: DBPATH='myrv.db' node 'data/migrations/1.0.js'
 
-                // Create Vehicle Table
-                db.run(`CREATE TABLE vehicle (
-                    id INTEGER PRIMARY KEY,
-                    buildNo INTEGER,
-                    vin TEXT,
-                    modelDesc TEXT,
-                    addSpec TEXT,
-                    createdBy TEXT,
-                    updatedBy TEXT,
-                    createdAt DATE,
-                    updatedAt DATE
-                )`);
+let db = new sqlite3.Database(process.env.DBPATH);
+db.run(`PRAGMA foreign_keys = ON `);
+db.serialize(function() {
 
-                // Create Owner Table
-                db.run(`CREATE TABLE owner (
-                    id INTEGER PRIMARY KEY,
-                    vehicleId INTEGER,
-                    name TEXT,
-                    email TEXT,
-                    phone TEXT,
-                    street TEXT,
-                    suburb TEXT,
-                    state TEXT,
-                    postcode TEXT,
-                    createdBy TEXT,
-                    updatedBy TEXT,
-                    createdAt DATE,
-                    updatedAt DATE,
-                    FOREIGN KEY(vehicleId) REFERENCES vehicle(vehicleId)
-                )`);
+    // VERSION 1 - Create all tables & keys
 
-                // Create Workshop Table
-                db.run(`CREATE TABLE workshop (
-                    id INTEGER PRIMARY KEY,
-                    name TEXT,
-                    code TEXT,
-                    createdBy TEXT,
-                    updatedBy TEXT,
-                    createdAt DATE,
-                    updatedAt DATE    
-                )`);
+    // Create Vehicle Table
+    db.run(`CREATE TABLE vehicle (
+        id INTEGER PRIMARY KEY,
+        buildNo INTEGER,
+        vin TEXT,
+        modelDesc TEXT,
+        addSpec TEXT,
+        createdBy TEXT,
+        updatedBy TEXT,
+        createdAt DATE,
+        updatedAt DATE
+    )`);
 
-                // Create RecallItem Table
-                db.run(`CREATE TABLE recallItem (
-                    id INTEGER PRIMARY KEY,
-                    description TEXT,
-                    createdBy TEXT,
-                    updatedBy TEXT,
-                    createdAt DATE,
-                    updatedAt DATE
-                )`);
+    // Create Owner Table
+    db.run(`CREATE TABLE owner (
+        id INTEGER PRIMARY KEY,
+        vehicleId INTEGER,
+        name TEXT,
+        email TEXT,
+        phone TEXT,
+        street TEXT,
+        suburb TEXT,
+        state TEXT,
+        postcode TEXT,
+        createdBy TEXT,
+        updatedBy TEXT,
+        createdAt DATE,
+        updatedAt DATE,
+        FOREIGN KEY(vehicleId) REFERENCES vehicle(vehicleId)
+    )`);
 
+    // Create Workshop Table
+    db.run(`CREATE TABLE workshop (
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        code TEXT,
+        createdBy TEXT,
+        updatedBy TEXT,
+        createdAt DATE,
+        updatedAt DATE    
+    )`);
 
+    // Create RecallItem Table
+    db.run(`CREATE TABLE recallItem (
+        id INTEGER PRIMARY KEY,
+        description TEXT,
+        workInstructionUrl TEXT,
+        createdBy TEXT,
+        updatedBy TEXT,
+        createdAt DATE,
+        updatedAt DATE
+    )`);
 
-                // Create VehicleRecallItem Table
-                db.run(`CREATE TABLE vehicleRecallItem (
-                    id INTEGER PRIMARY KEY,
-                    recallItemId INTEGER,
-                    vehicleId INTEGER,
-                    createdBy TEXT,
-                    updatedBy TEXT,
-                    createdAt DATE,
-                    updatedAt DATE,
-                    FOREIGN KEY(recallItemId) REFERENCES recallItem(id),
-                    FOREIGN KEY(vehicleId) REFERENCES vehicle(id)
-                )`);
+    // Create VehicleRecallItem Table
+    db.run(`CREATE TABLE vehicleRecallItem (
+        id INTEGER PRIMARY KEY,
+        recallItemId INTEGER,
+        vehicleId INTEGER,
+        createdBy TEXT,
+        updatedBy TEXT,
+        createdAt DATE,
+        updatedAt DATE,
+        FOREIGN KEY(recallItemId) REFERENCES recallItem(id),
+        FOREIGN KEY(vehicleId) REFERENCES vehicle(id)
+    )`);
 
-                // Create AccessLog Table
-                db.run(`CREATE TABLE accessLog (
-                    url TEXT,
-                    ip TEXT,
-                    success BOOLEAN,
-                    createdAt DATE
-                )`);
-
-            });
-            db.close();
-        })
-    },
-
-    down: () => {
-        let db = new sqlite3.Database('../myrv-recall.db');
-        db.serialize(function() {
-            db.run(`DROP TABLE vehicleRecallItem`);
-            db.run(`DROP TABLE recallItem`);
-            db.run(`DROP TABLE workshop`);
-            db.run(`DROP TABLE owner`);
-            db.run(`DROP TABLE vehicle`);
-        });
-        db.close();
-    }
-}
+    // Create AccessLog Table
+    db.run(`CREATE TABLE accessLog (
+        url TEXT,
+        ip TEXT,
+        user TEXT,
+        success BOOLEAN,
+        createdAt DATE
+    )`);
+});
+db.close();

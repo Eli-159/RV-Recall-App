@@ -1,8 +1,10 @@
 "use strict";
+
+// USAGE: DBPATH='myrv.db' node 'data/migrations/db_v01'
+// To import data: sqlite3 myrv.db < data/migrations/_import-all.txt
+
 const sqlite3 = require("sqlite3");
 const path = require('path');
-
-//USAGE: DBPATH='myrv.db' node 'data/migrations/1.0.js'
 
 let db = new sqlite3.Database(process.env.DBPATH);
 db.run(`PRAGMA foreign_keys = ON `);
@@ -68,6 +70,7 @@ db.serialize(function() {
         id INTEGER PRIMARY KEY,
         recallItemId INTEGER,
         vehicleId INTEGER,
+        status TEXT,
         createdBy TEXT,
         updatedBy TEXT,
         createdAt DATE,

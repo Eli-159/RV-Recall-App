@@ -9,8 +9,6 @@ const recallRoutes = require('./routes/recall.js');
 const ownerDetailsRoutes = require('./routes/owner-details.js');
 const complaintsRoutes = require('./routes/complaints.js');
 
-const dao = require('./data/dao');
-
 app.set('view engine', 'pug');
 app.set('views', 'Views');
 
@@ -33,8 +31,18 @@ app.use('/email-logo', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'Public', 'images', 'logo.png'));
 });
 
+
+// Sample call to dao object
+const dao = require('./data/dao');
 app.get('/dao/:id', async (req, res) => {
-    const data = await dao.getOwner(req.params.id);
-    res.json(data);
+    try {
+        const data = await dao.getOwner(req.params.id);
+        res.json(data);
+    }
+    catch (err) {
+        // Do something better than this
+        console.log(err);
+    }
+    
 })
 app.listen(3000);

@@ -4,16 +4,20 @@
 process.env.DBPATH = "myrv.db";
 
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DBPATH);
-const models = require('data/models/init-models')(sequelize);
-const dao = () => {
-    var getOwner: async (id) => {
-        data = await models.owner.findAll({where: {id: id}})
-        return data;
+const sequelize = new Sequelize({dialect: 'sqlite', storage: process.env.DBPATH});
+const models = require('./models/init-models')(sequelize);
+
+function dao() {
+    var getOwner = function (id) {
+        return models.owner.findAll({where: {id: id}})
+    }
+
+    return {
+        getOwner
     }
 }
 
 
-module.exports = dao;
-module.exports.dao = dao;
-module.exports.default = dao;
+module.exports = dao();
+module.exports.dao = dao();
+module.exports.default = dao();

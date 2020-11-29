@@ -8,6 +8,7 @@ const app = express();
 const recallRoutes = require('./routes/recall.js');
 const ownerDetailsRoutes = require('./routes/owner-details.js');
 const complaintsRoutes = require('./routes/complaints.js');
+const apiRoutes = require('./routes/api.js');
 
 app.set('view engine', 'pug');
 app.set('views', 'Views');
@@ -31,31 +32,6 @@ app.use('/email-logo', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'Public', 'images', 'logo.png'));
 });
 
-
-// Sample call to dao object
-const dao = require('./data/dao');
-app.get('/dao/vehicle/:vin', async (req, res) => {
-    // curl http://localhost:3000/dao/vehicle/ZFA25000002775146/
-    try {
-        const data = await dao.getVehicleByVin(req.params.vin);
-        res.json(data);
-    }
-    catch (err) {
-        // Do something better than this
-        res.status(500).send({error: 'method failed'});
-    }
-})
-
-app.get('/dao/owner/:id', async (req, res) => {
-    // curl http://localhost:3000/dao/owner/3/
-    try {
-        const data = await dao.getOwner(req.params.id);
-        res.json(data);
-    }
-    catch (err) {
-        // Do something better than this
-        res.status(500).send({error: 'method failed'});
-    }
-})
+app.use('/api', apiRoutes);
 
 app.listen(3000);

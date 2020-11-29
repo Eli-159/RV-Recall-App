@@ -8,17 +8,13 @@ const sequelize = new Sequelize({dialect: 'sqlite', storage: process.env.DBPATH}
 const models = require('./models/init-models')(sequelize);
 
 function dao() {
-    var getDealerFromCode = function(code) {
-        return models.dealer.findOne(
-            {
-                attributes: {exclude: ['createdBy', 'updatedBy','createdAt', 'updatedAt']},
-                where: {code: code}
-            }
-        )
-    }
     
     var getOwner = function (id) {
         return models.owner.findByPk(id)
+    }
+
+    var newOwner = function (owner) {
+        return models.owner.create(owner);
     }
 
     var getVehicleByVin = function(vin) {
@@ -42,11 +38,21 @@ function dao() {
             })
     }
 
-
-
+    var getWorkshopByCode = function(code) {
+        return models.workshop.findOne(
+            {
+                attributes: {exclude: ['createdBy', 'updatedBy','createdAt', 'updatedAt']},
+                where: {code: code}
+            }
+        )
+    }
+    
     return {
         getOwner,
+        newOwner,
         getVehicleByVin,
+        getWorkshopByCode,
+
     }
 }
 

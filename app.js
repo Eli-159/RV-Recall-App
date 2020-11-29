@@ -34,15 +34,28 @@ app.use('/email-logo', (req, res, next) => {
 
 // Sample call to dao object
 const dao = require('./data/dao');
-app.get('/dao/:id', async (req, res) => {
+app.get('/dao/vehicle/:vin', async (req, res) => {
+    // curl http://localhost:3000/dao/vehicle/ZFA25000002775146/
     try {
-        const data = await dao.getVehicle(req.params.id);
+        const data = await dao.getVehicleByVin(req.params.vin);
         res.json(data);
     }
     catch (err) {
         // Do something better than this
-        console.log(err);
+        res.status(500).send({error: 'method failed'});
     }
-    
 })
+
+app.get('/dao/owner/:id', async (req, res) => {
+    // curl http://localhost:3000/dao/owner/3/
+    try {
+        const data = await dao.getOwner(req.params.id);
+        res.json(data);
+    }
+    catch (err) {
+        // Do something better than this
+        res.status(500).send({error: 'method failed'});
+    }
+})
+
 app.listen(3000);

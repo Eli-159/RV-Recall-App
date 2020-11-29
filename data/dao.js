@@ -8,25 +8,45 @@ const sequelize = new Sequelize({dialect: 'sqlite', storage: process.env.DBPATH}
 const models = require('./models/init-models')(sequelize);
 
 function dao() {
+    var getDealerFromCode = function(code) {
+        return models.dealer.findOne(
+            {
+                attributes: {exclude: ['createdBy', 'updatedBy','createdAt', 'updatedAt']},
+                where: {code: code}
+            }
+        )
+    }
+    
     var getOwner = function (id) {
-        return models.owner.findAll({where: {id: id}})
+        return models.owner.findByPk(id)
     }
 
-    var getVehicle = function(vin) {
-        return models.vehicle.findAll(
+    var getVehicleByVin = function(vin) {
+        return models.vehicle.findOne(
             {
+                attributes: {exclude: ['createdBy', 'updatedBy','createdAt', 'updatedAt']},
                 include:
                 [
-                    {model: models.owner},
-                    {model: models.recallItem}
+                    {
+                        model: models.owner,
+                        attributes: {exclude: ['createdBy', 'updatedBy','createdAt', 'updatedAt']},
+                        order: ['id', 'DESC']
+                    },
+                    {
+                        model: models.recallItem,
+                        attributes: {exclude: ['createdBy', 'updatedBy','createdAt', 'updatedAt']},
+                        order: ['id', 'ASC'],
+                    }
             ],
                 where: {vin: vin}
             })
     }
 
+
+
     return {
         getOwner,
-        getVehicle
+        getVehicleByVin,
     }
 }
 

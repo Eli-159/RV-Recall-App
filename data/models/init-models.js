@@ -20,6 +20,7 @@ function initModels(sequelize) {
   vehicle.hasMany(vehicleRecallItem, { foreignKey: "vehicleId"});
   vehicleRecallItem.belongsTo(recallItem, { foreignKey: "recallItemId"});
   recallItem.hasMany(vehicleRecallItem, { foreignKey: "recallItemId"});
+  recallItem.belongsToMany(vehicle, { through: "vehicleRecallItem", foreignKey: "recallItemId"});
 
   return {
     accessLog,

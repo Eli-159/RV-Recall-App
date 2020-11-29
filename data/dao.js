@@ -18,7 +18,7 @@ function dao() {
                 include:
                 [
                     {model: models.owner},
-                    {model: models.vehicleRecallItem}
+                    {model: models.recallItem}
             ],
                 where: {vin: vin}
             })

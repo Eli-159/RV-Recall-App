@@ -36,7 +36,7 @@ app.use('/email-logo', (req, res, next) => {
 const dao = require('./data/dao');
 app.get('/dao/:id', async (req, res) => {
     try {
-        const data = await dao.getOwner(req.params.id);
+        const data = await dao.getVehicle(req.params.id);
         res.json(data);
     }
     catch (err) {

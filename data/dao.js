@@ -12,8 +12,21 @@ function dao() {
         return models.owner.findAll({where: {id: id}})
     }
 
+    var getVehicle = function(vin) {
+        return models.vehicle.findAll(
+            {
+                include:
+                [
+                    {model: models.owner},
+                    {model: models.vehicleRecallItem}
+            ],
+                where: {vin: vin}
+            })
+    }
+
     return {
-        getOwner
+        getOwner,
+        getVehicle
     }
 }
 

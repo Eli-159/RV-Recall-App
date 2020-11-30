@@ -1,5 +1,7 @@
 var dao = require ('./data/dao.js');
 
+
+/*
 dao.newOwner(
     {
         vehicleId: 100,
@@ -16,4 +18,7 @@ dao.newOwner(
 ).catch(err => {
     console.log(err);
 })
+*/
 
+dao.getVehicleByVin('ZFA25000002775146')
+  .then(data => console.log(JSON.stringify(data)));

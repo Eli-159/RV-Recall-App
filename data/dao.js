@@ -26,12 +26,14 @@ function dao() {
                     {
                         model: models.owner,
                         attributes: {exclude: ['createdBy', 'updatedBy','createdAt', 'updatedAt']},
-                        order: ['id', 'DESC']
+                        order: [['id', 'DESC']],
+                        separate: true,
+                        limit: 1,
                     },
                     {
                         model: models.recallItem,
                         attributes: {exclude: ['createdBy', 'updatedBy','createdAt', 'updatedAt']},
-                        order: ['id', 'ASC'],
+                        order: [['id', 'ASC']],
                     }
             ],
                 where: {vin: vin}

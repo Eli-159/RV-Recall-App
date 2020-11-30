@@ -11,15 +11,15 @@ module.exports = function(sequelize, DataTypes) {
     },
     vehicleId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'vehicle',
-        key: 'vehicleId'
+        key: 'id'
       }
     },
     name: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: false
     },
     email: {
       type: DataTypes.TEXT,

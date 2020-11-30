@@ -1,7 +1,7 @@
 "use strict";
 
 // USAGE: DBPATH='myrv.db' node 'data/migrations/db_v01'
-// To import data: sqlite3 myrv.db < data/migrations/_import-all.txt
+// To import data: sqlite3 myrv.db < data/migrations/_import-all.sql
 
 const sqlite3 = require("sqlite3");
 const path = require('path');
@@ -40,7 +40,7 @@ db.serialize(function() {
         updatedBy TEXT,
         createdAt DATE,
         updatedAt DATE,
-        FOREIGN KEY(vehicleId) REFERENCES vehicle(vehicleId)
+        FOREIGN KEY(vehicleId) REFERENCES vehicle(id)
     )`);
 
     // Create Workshop Table

@@ -17,6 +17,10 @@ function dao() {
         return models.owner.create(owner);
     }
 
+    var updateOwner = function (owner) {
+        return models.owner.update(owner)
+    }
+
     var getVehicleByVin = function(vin) {
         return models.vehicle.findOne(
             {
@@ -40,6 +44,10 @@ function dao() {
             })
     }
 
+    var updateVehicleRecallItem = function(vehicleRecallItem) {
+        return models.owner.update(vehicleRecallItem);
+    }
+
     var getWorkshopByCode = function(code) {
         return models.workshop.findOne(
             {
@@ -52,7 +60,9 @@ function dao() {
     return {
         getOwner,
         newOwner,
+        updateOwner,
         getVehicleByVin,
+        updateVehicleRecallItem,
         getWorkshopByCode,
 
     }

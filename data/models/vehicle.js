@@ -11,11 +11,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     buildNo: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      unique: true
     },
     vin: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
+      unique: true
     },
     modelDesc: {
       type: DataTypes.TEXT,
@@ -36,6 +38,22 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'vehicle',
-    timestamps: true
+    timestamps: true,
+    indexes: [
+      {
+        name: "idxVin",
+        unique: true,
+        fields: [
+          { name: "vin" },
+        ]
+      },
+      {
+        name: "idxBuildNo",
+        unique: true,
+        fields: [
+          { name: "buildNo" },
+        ]
+      },
+    ]
   });
 };

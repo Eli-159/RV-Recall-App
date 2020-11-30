@@ -24,6 +24,8 @@ db.serialize(function() {
         createdAt DATE,
         updatedAt DATE
     )`);
+    db.run(`CREATE UNIQUE INDEX idxVin ON vehicle (vin);`);
+    db.run(`CREATE UNIQUE INDEX idxBuildNo ON vehicle (buildNo);`)
 
     // Create Owner Table
     db.run(`CREATE TABLE owner (

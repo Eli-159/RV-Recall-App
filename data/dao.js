@@ -14,11 +14,14 @@ function dao() {
     }
 
     var newOwner = function (owner) {
-        return models.owner.create(owner);
+        return models.owner.create(owner)
     }
 
     var updateOwner = function (owner) {
-        return models.owner.update(owner)
+        //console.log(JSON.stringify(owner));
+        return models.owner.update(owner,
+            {where: {id: owner.id}}
+        )
     }
 
     var getVehicleByVin = function(vin) {

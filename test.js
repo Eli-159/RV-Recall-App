@@ -18,7 +18,22 @@ dao.newOwner(
 ).catch(err => {
     console.log(err);
 })
+
 */
 
 dao.getVehicleByVin('ZFA25000002775146')
-  .then(data => console.log(JSON.stringify(data)));
+  .then(data => {
+      let owner = data.owners[0];
+      owner.name = "2nd v100 Owner";
+      owner.updatedBy = "dao.update";
+      dao.updateOwner(owner.dataValues)
+      .then(count => {
+          console.log(`Count of update: ${count}`);
+      })
+    })
+
+
+/*
+dao.updateOwner({id: 5, name: '2nd Owner', updatedBy: 'EQ01'})
+  .then(rowCount => console.log(rowCount))
+*/

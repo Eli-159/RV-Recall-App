@@ -1,3 +1,4 @@
 *.db
 data/import/
 node_modules/
+.vscode/

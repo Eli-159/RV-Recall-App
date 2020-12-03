@@ -56,4 +56,8 @@ router.post('/verifyDetails', (req, res, next) => {
     console.log(logDetails);
 });
 
+router.get('/', (req, res, next) => {
+    res.render('owner-details/verification-form');
+});
+
 module.exports = router;

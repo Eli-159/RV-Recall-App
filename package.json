@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Eli-159/RV-Recall-App/issues"
   },
-  "homepage": "https://github.com/Eli-159/RV-Recall-App#readme"
+  "homepage": "https://github.com/Eli-159/RV-Recall-App#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }

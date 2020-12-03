@@ -11,7 +11,7 @@ const complaintsRoutes = require('./routes/complaints.js');
 const apiRoutes = require('./routes/api.js');
 
 app.set('view engine', 'pug');
-app.set('views', 'Views');
+app.set('views', 'pug');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());

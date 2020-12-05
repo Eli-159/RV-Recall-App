@@ -36,14 +36,17 @@ router.post('/verifyDetails', (req, res, next) => {
                 securityNo = securityNo + (Math.floor(Math.random() * 9)).toString();
             }
             okDetails[i]['securityNo'] = okDetails[i].vin + securityNo + okDetails[i].buildNo;
-            res.json(JSON.stringify({proceed: true, description: okDetails[i].description, securityNo: securityNo}));
+            //res.json(JSON.stringify({proceed: true, description: okDetails[i].description, securityNo: securityNo}));
+            res.setHeader('proceed', true);
+            res.setHeader('securityNo', securityNo);
+            res.render('owner-details/details-form');
             found = true;
             break;
         }
     }
     if (!found) {
         // If the given data is not known, return a message to that effect.
-        res.json(JSON.stringify({proceed: false}));
+        res.sendStatus(501);
     }
     const logDetails = {
         ip: req.ip,
@@ -57,7 +60,7 @@ router.post('/verifyDetails', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-    res.render('owner-details/verification-form');
+    res.render('owner-details/first-load');
 });
 
 module.exports = router;

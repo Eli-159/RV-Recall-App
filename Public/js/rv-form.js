@@ -1,8 +1,9 @@
 // This is the variable that holds the ids to be validated by valid.js
-let toBeValidated = [
-    'vinInput',
-    'buildNoInput'
-];
+let toBeValidated;
+// let toBeValidated = [
+//     'vinInput',
+//     'buildNoInput'
+// ];
 
 document.addEventListener('DOMContentLoaded', () => {
     // Removes any properties still stored in session storage.
@@ -22,33 +23,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify(getFormDataAsObject('verificationForm'))
             })
-            .then(res => res.text())
-            .then(html => {
-                // Gets the json returned by the server.
-                json = JSON.parse(json);
-                if (json['proceed']) {
-                    // If the json says that the vin and build number were a match, the security number and given details are loaded into session Storage.
-                    window.sessionStorage.setItem('securityNo', json['securityNo']);
+            // .then(res => {
+            //     return {headers: res.headers, content: res.text()};
+            // })
+            .then(res => {
+                console.log(res.headers);
+                console.log(res.headers.get('securityNo'));
+                if (res.status != 501) {
+                    // If the header says that the vin and build number were a match, the security number and given details are loaded into session Storage.
+                    window.sessionStorage.setItem('securityNo', res.headers.get('securityNo'));
                     window.sessionStorage.setItem('vin', document.getElementById('vinInput').value);
                     window.sessionStorage.setItem('buildNo', document.getElementById('buildNoInput').value);
-                    // Removes the Security form and adds the details one that was stored in the variable 'userForm' in the beginning.
-                    document.getElementById('verificationForm').remove();
-                    document.getElementsByTagName('main')[0].appendChild(userForm);
-                    // Adds the vehicle description to the form.
-                    document.getElementById('vehicleDescription').textContent = json['description'];
-                    // Updates the fields to be validated and then adds the event listeners.
-                    toBeValidated = ['nameInput', 'phoneInput', 'emailInput', 'addressInput', 'suburbInput', 'postCodeInput'];
-                    addValidationEventListeners();
-                    
+                    // Removes the Security form, adds the one returned and adds the appropriate event listeners.
+                    res.text().then(html => {
+                        document.getElementById('verificationForm').remove();
+                        console.log(html);
+                        const main = document.getElementsByTagName('main')[0];
+                        main.innerHTML = '';
+                        main.insertAdjacentHTML('afterbegin', html);
+                        //addValidationEventListeners();
+                    });
                 } else {
                     // If the server returned that the vin and build number were not a match, the fields are cleared and an alert tells the user it was not a match.
-                    const vinInput = document.getElementById('vinInput');
-                    vinInput.value = '';
-                    vinInput.parentElement.classList.remove('inputValid');
-                    const buildNoInput = document.getElementById('buildNoInput');
-                    buildNoInput.value = '';
-                    buildNoInput.parentElement.classList.remove('inputValid');
-                    alert('That VIN or Build Number did not match any known.');
+                    document.getElementById('vinInput').parentElement.classList.remove('inputValid');
+                    document.getElementById('buildNoInput').parentElement.classList.remove('inputValid');
+                    document.getElementById('generalUnknownError').style.display = 'block';
                 }
             })
         } else {

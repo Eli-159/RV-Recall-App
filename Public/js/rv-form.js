@@ -1,9 +1,8 @@
 // This is the variable that holds the ids to be validated by valid.js
 let toBeValidated;
-// let toBeValidated = [
-//     'vinInput',
-//     'buildNoInput'
-// ];
+
+// This is the variable that holds the number of incorrect validation attempts.
+let incorrectValidationSubmits = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
     // Removes any properties still stored in session storage.
@@ -44,10 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         //addValidationEventListeners();
                     });
                 } else {
-                    // If the server returned that the vin and build number were not a match, the fields are cleared and an alert tells the user it was not a match.
-                    document.getElementById('vinInput').parentElement.classList.remove('inputValid');
-                    document.getElementById('buildNoInput').parentElement.classList.remove('inputValid');
+                    // If the server returned that the vin and build number were not a match, it is indicated to the user.
                     document.getElementById('generalUnknownError').style.display = 'block';
+                    incorrectValidationSubmits++;
+                    if (incorrectValidationSubmits >= 3) {
+                        document.getElementById('persistingUnknownError').style.display = 'block';
+                    }
                 }
             })
         } else {

@@ -7,6 +7,8 @@ let incorrectValidationSubmits = 0;
 document.addEventListener('DOMContentLoaded', () => {
     // Removes any properties still stored in session storage.
     window.sessionStorage.clear();
+    // Adds the Verification Form event listeners.
+    addValidationEventListeners();
     
     document.getElementById('verificationSubmitBtn').addEventListener('click', () => {
         // This function is the one that deals with the vin and build number secrity check. It is trigged by the submit button press.
@@ -22,12 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify(getFormDataAsObject('verificationForm'))
             })
-            // .then(res => {
-            //     return {headers: res.headers, content: res.text()};
-            // })
             .then(res => {
-                console.log(res.headers);
-                console.log(res.headers.get('securityNo'));
                 if (res.status != 501) {
                     // If the header says that the vin and build number were a match, the security number and given details are loaded into session Storage.
                     window.sessionStorage.setItem('securityNo', res.headers.get('securityNo'));
@@ -35,12 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.sessionStorage.setItem('buildNo', document.getElementById('buildNoInput').value);
                     // Removes the Security form, adds the one returned and adds the appropriate event listeners.
                     res.text().then(html => {
-                        document.getElementById('verificationForm').remove();
-                        console.log(html);
                         const main = document.getElementsByTagName('main')[0];
                         main.innerHTML = '';
                         main.insertAdjacentHTML('afterbegin', html);
-                        //addValidationEventListeners();
+                        addValidationEventListeners();
+                        addDetailsSubmitEventListener();
                     });
                 } else {
                     // If the server returned that the vin and build number were not a match, it is indicated to the user.
@@ -59,9 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const addDetailsEventListener = () => {
+const addDetailsSubmitEventListener = () => {
     // Adds the new submit button event listener.
     document.getElementById('detailsSubmitBtn').addEventListener('click', () => {
+        console.log('Submit Button Clicked!');
         // Checks if the inputed values are valid.
         let submitValidation = validateSubmit();
         if (submitValidation.parsed) {
@@ -75,19 +72,17 @@ const addDetailsEventListener = () => {
                 },
                 body: JSON.stringify(getFormDataAsObject('detailsForm'))
             })
-            .then(res => res.json())
-            .then(json => {
-                json = JSON.parse(json);
-                if (json.found == true) {
-                    window.sessionStorage.removeItem('vin');
-                    window.sessionStorage.removeItem('securityNo');
-                    window.sessionStorage.removeItem('buildNo');
-                    userForm.remove();
-                    document.getElementsByTagName('main')[0].appendChild(successMessage);
-                } else {
-                    alert('An unexpected error occured. Please try again.');
-                    //window.history.go();
-                }
+            .then(res => {
+                res.text()
+                .then(returnedHtml => {
+                    const main = document.getElementsByTagName('main')[0];
+                    main.innerHTML = '';
+                    main.insertAdjacentHTML('afterbegin', returnedHtml);
+                    if (res.status == 501) {
+                        console.log(501);
+                        startRedirect();
+                    }
+                });
             });
         } else {
             // If the values were not valid, the first problematic field is selected and scrolled into view.

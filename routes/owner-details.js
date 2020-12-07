@@ -5,20 +5,10 @@ let okDetails = [
     {vin: 'ZFA25000001234567', buildNo: '987654321', description: "2020 AUTO-TRAIL EKS HI LINE"}
 ];
 
-router.post('/submit-details', (req, res, next) => {
-    const body = req.body;
-    const headers = req.headers;
-    let found = false;
-    for (let i = 0; i < okDetails.length; i++) {
-        if (headers.securityno == okDetails[i]['securityNo']) {
-            found = true;
-            res.json(JSON.stringify({found: true}));
-            console.log(body);
-        }
-    }
-    if (!found) {
-        res.json(JSON.stringify({found: false}));
-    }
+router.get('/', (req, res, next) => {
+    res.render('owner-details/first-load', {
+        pageTitle: 'MyRV Owner Details Form'
+    });
 });
 
 router.post('/verifyDetails', (req, res, next) => {
@@ -59,8 +49,28 @@ router.post('/verifyDetails', (req, res, next) => {
     console.log(logDetails);
 });
 
-router.get('/', (req, res, next) => {
-    res.render('owner-details/first-load');
+router.post('/submit-details', (req, res, next) => {
+    const body = req.body;
+    const headers = req.headers;
+    let found = false;
+    for (let i = 0; i < okDetails.length; i++) {
+        if (headers.securityno == okDetails[i]['securityNo']) {
+            found = true;
+            res.render('owner-details/success-message');
+            console.log(body);
+        }
+    }
+    if (!found) {
+        res.status(501);
+        res.render('errors/general-redirect-error', {
+            errorHeading: 'Page Timeout',
+            errorBody: 'Sorry, it appears your connection timed out. Please try again.',
+            includeRedirect: true,
+            redirectTime: 15,
+            redirectAddress: '/owner-registration',
+            redirectPageName: 'Owner Registration'
+        })
+    }
 });
 
 module.exports = router;

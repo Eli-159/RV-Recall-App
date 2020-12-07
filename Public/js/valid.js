@@ -39,7 +39,6 @@ const showValidationFeedback = (id, ok, errMes) => {
         // If the input was not found to be valid, the error message and cross are displayed.
         feedbackElement.classList.remove('inputValid');
         if (document.activeElement.id == id) {
-            console.log( id + ' focused');
         } else {
             feedbackElement.classList.add('inputInvalid');
             errorElement.textContent = errMes;
@@ -49,11 +48,12 @@ const showValidationFeedback = (id, ok, errMes) => {
 }
 
 const validateSubmit = () => {
-    // Validates the submit by looping over all elements in the 'toBeValidated' variable and stopping if there was an issue.
+    // Validates the submit by looping over all elements with the class 'validate' and stopping if there was an issue.
+    let toBeValidated = document.getElementsByClassName('validate');
     let allOk = true;
     let problem = null;
     for (let i = 0; i < toBeValidated.length; i++) {
-        const validatedElement = document.getElementById(toBeValidated[i]).parentElement;
+        const validatedElement = toBeValidated[i].parentElement;
         if ((validatedElement.classList.contains('inputInvalid')) || !(validatedElement.classList.contains('inputValid'))) {
             allOk = false;
             problem = toBeValidated[i];
@@ -66,9 +66,10 @@ const validateSubmit = () => {
 
 const addValidationEventListeners = () => {
     // Adds the validation event listeners to all elements in the 'toBeValidated' variable. They are trigged by input and blur events.
+    let toBeValidated = document.getElementsByClassName('validate');
     for (let i = 0; i < toBeValidated.length; i++) {
-        const id = toBeValidated[i];
-        const element = document.getElementById(id);
+        const element = toBeValidated[i];
+        const id = element.id;
         const func = () => {
             const valid = hasError(element);
             if (valid == null) {
@@ -80,9 +81,4 @@ const addValidationEventListeners = () => {
         element.addEventListener('input', func);
         element.addEventListener('blur', func, true);
     }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Adds the event listeners once the document has loaded.
-    addValidationEventListeners();
-});
+};

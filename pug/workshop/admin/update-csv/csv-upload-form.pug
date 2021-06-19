@@ -1,0 +1,19 @@
+extends ../../../templates/admin-layout
+
+block js
+    script(src="/js/csv-upload.js")
+    script(src="/js/valid.js")
+    script(src="/js/form-funcs.js")
+    script(src="/js/redirect.js")
+
+block content
+    div(class="form-section", id="csvForm")
+        h2 Upload the Vehicle Details CSV File
+        br
+        form(action="/workshop/admin/csv-upload/submit", method="POST", encType="multipart/form-data", class="form")
+            label(for="csvFileInput",  id="csvFileInputLabel") Vehicle CSV File
+            div(class="textInput")
+                input(type="file", id="csvFileInput", class="validate", name="csvFile", required)
+            span(class="errorMessage", id="csvFileInputError")
+            br
+            input(type="submit", value="Submit", id="csvSubmitBtn", class="submitBtn")

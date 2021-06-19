@@ -1,0 +1,38 @@
+extends ../templates/admin-layout
+
+block css
+    link(rel="stylesheet", href="/css/workshop-layout.css")
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/actions.css")
+    link(rel="stylesheet", href="/css/header.css")
+
+block content
+    p Use the links below to navigate to the functions you wish to use.
+    br
+    ul.body-nav-list
+        li.body-nav-list-item
+            a(href="/workshop/contact") Contact Form
+                p.body-nav-desc Record an interaction with an owner regarding a vehicle recall
+        li.body-nav-list-item
+            a(href="/workshop/recall") Recall Form
+                p.body-nav-desc Record completed work on a vehicle regarding a recall
+        if role == 'admin' || role == 'elite'
+            li.body-nav-list-item
+                a(href="/workshop/elite/update-owner-details") Update Owner Details
+                    p.body-nav-desc Add or update vehicle owner details
+            li.body-nav-list-item
+                a(href="/workshop/elite/get-vehicle-details") Get Vehicle Details
+                    p.body-nav-desc Lookup all data for a vehicle
+        if role == 'admin'
+            li.body-nav-list-item
+                a(href="/workshop/admin/get-owner-contact-details") Get All Owner Contact Details
+                    p.body-nav-desc View all owners and their contact details.
+            li.body-nav-list-item
+                a(href="/workshop/admin/reports") Find a Report
+                    p.body-nav-desc Lists all available reports and provides the download link
+            li.body-nav-list-item
+                a(href="/workshop/admin/reports/DailyReport.zip") Download Today's Daily Report
+                    p.body-nav-desc Downloads today's daily report (updated every 10 minutes)
+            li.body-nav-list-item
+                a(href="/workshop/admin/csv-upload") Upload New Vehicle Data
+                    p.body-nav-desc Allows upload of vehicle data csv file.

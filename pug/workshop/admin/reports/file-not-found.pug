@@ -1,0 +1,7 @@
+extends ../../../templates/admin-layout
+
+block content
+    h2 File Not Found #{formatIncorrect ? ' - Bad Date' : ''}
+    p Sorry, but we were unable to find the report you were looking for.
+    if formatIncorrect
+        p The date you provided appeared to be invalid.

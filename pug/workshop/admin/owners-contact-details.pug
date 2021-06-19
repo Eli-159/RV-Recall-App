@@ -1,0 +1,17 @@
+extends ../../templates/admin-layout
+
+block content
+    h2 All Owners
+    table(class="table")
+        tr
+            th Name
+            th Email
+            th Phone
+            th Vehicle Vin
+        each owner in owners
+            tr
+                td #{owner.name}
+                td #{owner.email}
+                td #{owner.phone}
+                td
+                    a(href="/workshop/elite/get-vehicle-details/vehicle-details/" + owner.vehicle.vin) #{owner.vehicle.vin}

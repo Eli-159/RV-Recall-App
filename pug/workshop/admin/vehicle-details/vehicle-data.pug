@@ -1,0 +1,134 @@
+div(class="form-section", id="vehicleData")
+    if success
+        h2 Vehicle Properties
+        table(class="table")
+            tr
+                th Property
+                th Value
+            tr
+                td IPA
+                td #{data.ipa}
+            tr
+                td VIN
+                td #{data.vin}
+            tr
+                td Build Number
+                td #{data.buildNo}
+            tr 
+                td Engine Number 
+                td #{data.engineNo}
+            tr
+                td Model
+                td #{data.modelDesc}
+            tr
+                td Additional Spec 
+                td #{data.addSpec}
+            tr
+                td Variant Code 
+                td #{data.variantCode}
+        br
+        h2 Recall Work
+        a(href="/workshop/recall/verifyDetails?vin="+data.vin, class="a") Report Recall Work
+        br
+        br
+        table(class="table")
+            tr
+                th Work Item
+                th Status
+                th Last Updated By
+            if data.recallItems.length == 0
+                tr
+                    td(colspan=3) No recall items for this vehicle.
+            else
+                each recallItem in data.recallItems
+                    tr
+                        td #{recallItem.description}
+                        td #{(recallItem.vehicleRecallItem.status == 'new' ? 'New' : (recallItem.vehicleRecallItem.status == 'complete' ? 'Complete' : 'N/A'))}
+                        td #{recallItem.vehicleRecallItem.updatedBy}            
+        br
+        h2 Owner Details
+        a(href="/workshop/elite/update-owner-details/verifyDetails?vin="+data.vin, class="a") Update Owner Details
+        br
+        br
+        - var hasOwner = (data.owners.length > 0);
+        table(class="table")
+            tr
+                th Property
+                th Value
+            tr
+                td Name
+                td #{hasOwner ? data.owners[0].name : '' }
+            tr
+                td Phone
+                td #{hasOwner ? data.owners[0].phone : ''}
+            tr
+                td Email
+                td #{hasOwner ? data.owners[0].email : ''}
+            tr
+                td Street
+                td #{hasOwner ? data.owners[0].street : ''}
+            tr
+                td Suburb
+                td #{hasOwner ? data.owners[0].suburb : ''}
+            tr
+                td State 
+                td #{hasOwner ? data.owners[0].state : ''}
+            tr
+                td Postcode
+                td #{hasOwner ? data.owners[0].postcode : ''}
+        br
+        h2 Vehicle Registration Details
+        a(href="/workshop/elite/update-owner-details/verifyDetails?vin="+data.vin, class="a") Update Registration Details
+        br
+        br
+        table(class="table")
+            tr
+                th Property
+                th Value 
+            tr 
+                td Number 
+                td #{hasOwner ? data.owners[0].regoNo : ''}
+            tr 
+                td State 
+                td #{hasOwner ? data.owners[0].regoState : ''}
+            tr 
+                td Date 
+                if hasOwner 
+                    if data.owners[0].regoDt != null 
+                        td #{data.owners[0].regoDt.substr(0,10)}
+                    else 
+                        td
+                else
+                    td
+        br
+        h2 Contact Records
+        a(href="/workshop/contact/verifyVin?vin="+data.vin, class="a") Create New Contact Record
+        br
+        br
+        table(class="table")
+            tr
+                th Action
+                th Response
+                th Notes 
+                th Created 
+            if data.recallContacts.length == 0
+                tr
+                    td(colspan=4) No contact records for this vehicle.
+            else 
+                each recallContact in data.recallContacts
+                    tr
+                        td #{recallContact.action}
+                        td #{recallContact.response}
+                        if recallContact.recallFeedbacks.length > 0
+                            td 
+                                span.tag #{recallContact.recallFeedbacks[0].tag}
+                                br
+                                span.feedback  #{recallContact.recallFeedbacks[0].feedback}
+                        else 
+                            td &nbsp;
+                        td #{recallContact.createdAt.substr(0,16)}
+                            if role == 'admin'
+                                br
+                                | &nbsp;by&nbsp;#{recallContact.createdBy}
+    else
+        h2 Sorry, That Vehicle Could Not Be Found.

@@ -1,0 +1,10 @@
+*.db*
+server/
+data/import/
+data/reports/
+node_modules/
+.vscode/
+.env
+testing/
+Public/resources
+myrv-serviceaccount-credentials.json

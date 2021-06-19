@@ -1,0 +1,14 @@
+extends ../../../templates/admin-layout
+
+block js
+
+block content
+    .form-section
+        h2 Daily Report
+        a(href="/workshop/admin/reports/DailyReport.zip", class="large-spaced-link") Today's Report 
+    br
+    .form-section
+        h2 Monthly Reports
+        each report in monthlyReports
+            a(href="/workshop/admin/reports/"+report.file, class="large-spaced-link") #{report.title}
+            br

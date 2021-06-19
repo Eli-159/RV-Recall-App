@@ -1,0 +1,14 @@
+extends ../../../templates/admin-layout
+
+block content
+    br
+    h2 Vehicle Upload Processed 
+    p The file has been successfully processed with the following results:
+    ul 
+        each val, key in data.actions 
+            li= key + ': ' + val 
+    if data.errs.length 
+        p Failed items: 
+        ul 
+            each val in data.errs 
+                li= 'Vehicle ' + val.id + ' (' + val.vin + ')  ' + val.msg.name + ': ' + val.msg.errors[0].message

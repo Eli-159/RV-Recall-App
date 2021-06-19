@@ -1,0 +1,84 @@
+body {
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  width: 100%;
+  margin: auto;
+  background-color: #232d47;
+  margin-bottom: 50px;
+}
+
+.container {
+  width: 95%;
+  max-width: 800px;
+  margin: auto;
+}
+
+main {
+  opacity: 1;
+  transition: opacity 250ms;
+}
+
+main.hide {
+  opacity: 0;
+}
+
+.stop-page-load-transition * {
+  transition: none !important;
+}
+
+a, .a {
+  text-decoration: underline;
+  font-style: italic;
+  color: #ffffff;
+  display: inline;
+  cursor: pointer;
+}
+
+.aStyle {
+  text-decoration: underline;
+  font-style: italic;
+  display: inline;
+  cursor: default;
+}
+
+a.large-spaced-link {
+  text-decoration: underline;
+  font-style: normal;
+  color: #ffffff;
+  display: block;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 2px;
+}
+
+.form input[type="button"].aButton,
+.form input[type="button"].aButton:hover {
+  border: none !important;
+  text-decoration: underline;
+  font-style: italic;
+  font-size: inherit !important;
+  color: #ffffff !important;
+  display: inline;
+  cursor: pointer;
+  background: none !important;
+  outline: none;
+}
+
+.inlineP {
+  display: inline !important;
+}
+
+.expandingSection {
+  height: 0;
+  transition: height 1s;
+  overflow: hidden;
+  margin-left: 10%;
+  max-width: 90%;
+}
+
+.center {
+  margin: auto !important;
+  text-align: center;
+}

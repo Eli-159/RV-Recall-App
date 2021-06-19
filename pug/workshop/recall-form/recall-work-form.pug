@@ -1,0 +1,33 @@
+div(class="form-section", id="recallWorkForm")
+    include ../../templates/vehicle-heading
+    h2 Please Indicate the Work that has been Completed
+    .form
+        table
+            each workItem in recallWorkItems
+                tr
+                    td(class=["checkboxArea", (workItem.status!='new' ? 'disabledCheckbox' : '')])
+                        -
+                            let disableCheckbox = workItem.status!='new';
+                            let checkCheckbox = workItem.status=='complete';
+                            let disabledClass = workItem.status=='new' ? 'dataCheckbox' : '';
+                            let inputId = workItem.name.split(' ').join('') + 'Checkbox';
+                            let inputName = workItem.id;
+
+                        input(type="checkbox", checked=checkCheckbox, disabled=disableCheckbox, class=disabledClass, id=inputId, name=inputName)
+                        label(for=inputId, id=inputId + "Label") #{workItem.name}
+                            if workItem.status=='na'
+                                |  - N/A
+                    td
+                        if workItem.status=='new'
+                            a(href=workItem.workInstructions) Work Instructions
+                        else
+                            p(class="aStyle") Work Instructions
+        br
+        div(class="checkboxArea")
+            input(type="checkbox", id="workCertification")
+            label(for="workCertification", class="required-label", id="workCertificationLabel")
+                | I certify that all work marked as completed was done in accordance with the work instructions.
+        span(class="errorMessage", id="workCertificationError")
+            | Please tick this box.
+        br
+        input(type="button", value="Submit", id="recallSubmitBtn", class="submitBtn")

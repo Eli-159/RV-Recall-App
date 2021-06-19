@@ -1,0 +1,13 @@
+div(class="form-section", id="vinForm")
+    h2 Enter the Motorhome Details
+    p(class=["error", "hide"], id="generalUnknownError") The Vin did not match any known.
+    p(class=["error", "hide", "Error0"], id="persistingUnknownError") If the details cannot be found, please contact 
+        a(href="mailto:info@myrv.com.au") info@myrv.com.au
+        |  for assistance.
+    .form
+        label(for="vinInput", class="required-label", id="vinInputLabel") VIN
+        div(class="textInput")
+            input(type="text", id="vinInput", class="validate", name="vin", value="ZFA2500000", pattern="ZFA2500000.......", required, data-pattern-err-msg="VIN requires 17 characters.")
+        span(class="errorMessage", id="vinInputError")
+        br
+        input(type="button", value="Submit", id="vinSubmitBtn", class="submitBtn")

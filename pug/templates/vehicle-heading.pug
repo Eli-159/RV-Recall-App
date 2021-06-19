@@ -1,0 +1,17 @@
+.boxInfo
+    h3 
+        if role == 'admin' || role == 'elite'
+            a(href="/workshop/elite/get-vehicle-details/vehicle-details/"+data.vin) Vehicle Details
+        else
+            | Vehicle Details
+        
+    table
+        tr
+            th Vin:
+            td #{data.vin}
+        tr
+            th Build Number:
+            td #{data.buildNo}
+        tr
+            th Model:
+            td #{data.modelDesc}

@@ -1,0 +1,13 @@
+extends ../../templates/admin-layout
+
+block js
+    script(src="/js/valid.js")
+    script(src="/js/form-funcs.js")
+    script(src="/js/contact-form.js")
+    script(src="/js/redirect.js")
+
+block content
+    if skipFirstForm === true
+        include ./contact-form
+    else
+        include ./submit-vin

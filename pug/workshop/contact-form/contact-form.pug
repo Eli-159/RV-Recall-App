@@ -1,0 +1,46 @@
+div(class="form-section", id="contactForm")
+    include ../../templates/vehicle-heading
+    h2 Contact Details
+    .form
+        label(for="nameInput", class="required-label", id="nameInputLabel") Name
+        div(class="textInput")
+            input(type="text", id="nameInput", name="name", class="validate", value=ownerName, required)
+        span(class="errorMessage", id="nameInputError")
+        br
+        br
+        label(for="") Contact Type
+        input(type="radio", id="phoneContactActionInput", name="action", value="phone", checked)
+        label(for="phoneContactActionInput", id="phoneContactActionInputLabel", class="checkboxLabel") Phone
+        br
+        input(type="radio", id="emailContactActionInput", name="action", value="email")
+        label(for="emailContactActionInput", id="emailContactActionInputLabel", class="checkboxLabel") Email
+        br
+        input(type="radio", id="inPersonContactActionInput", name="action", value="inPerson")
+        label(for="inPersonContactActionInput", id="inPersonContactActionInputLabel", class="checkboxLabel") In Person
+        br
+        input(type="radio", id="letterContactActionInput", name="action", value="letter")
+        label(for="letterContactActionInput", id="letterContactActionInputLabel", class="checkboxLabel") Letter
+        br
+        br
+        label(for="") Tags
+        input(type="checkbox", id="ownerAcknowledgedRecallReasonInput", name="ownerAcknowledgedRecallReason")
+        label(for="ownerAcknowledgedRecallReasonInput", id="ownerAcknowledgedRecallReasonInputLabel", class="checkboxLabel") Owner Acknowledged Recall Notice
+        br
+        input(type="checkbox", id="recallBookingReasonInput", name="recallBookingReason")
+        label(for="recallBookingReasonInput", id="recallBookingReasonInputLabel", class="checkboxLabel") Recall Booking
+        br
+        input(type="checkbox", id="notOwnerReasonInput", name="notOwnerReason")
+        label(for="notOwnerReasonInput", id="notOwnerReasonInputLabel", class="checkboxLabel") No Longer Owner
+        br
+        input(type="checkbox", id="complaintReasonInput", name="complaintReason")
+        label(for="complaintReasonInput", id="complaintReasonInputLabel", class="checkboxLabel") Complaint
+        br
+        input(type="checkbox", id="complimentReasonInput", name="complimentReason")
+        label(for="complimentReasonInput", id="complimentReasonInputLabel", class="checkboxLabel") Compliment
+        br
+        br
+        label(for="notesInput", id="notesInputLabel") Notes
+        div(class="textareaInput")
+            textarea(name="notes", id="notesInput", cols="60", rows="10")
+        br
+        input(type="button", value="Submit", id="contactSubmitBtn", class="submitBtn")

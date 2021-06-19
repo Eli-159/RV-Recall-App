@@ -1,0 +1,36 @@
+.body-nav-list-item {
+    text-align: left;
+    margin: 10px auto;
+}
+
+.body-nav-list-item a {
+    text-align: left;
+    transition: all 0.3s;
+    text-decoration: none;
+    font-style: normal;
+}
+
+.body-nav-list-item:hover a {
+    text-align: left;
+    color: #ffcc00;
+}
+
+.body-nav-list-item .body-nav-desc {
+    opacity: 0;
+    display: block;
+    height: 1px;
+    transition: all 0.5s;
+    text-align: left;
+    margin: 0 auto;
+    padding: 0;
+    font-size: 14px;
+    color: #ffcc00;
+}
+
+.body-nav-list-item:hover .body-nav-desc {
+    opacity: 1;
+    padding: 5px;
+    padding-bottom: 25px;
+    transition-delay: 1s;
+    font-style: normal;
+}

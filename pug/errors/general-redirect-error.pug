@@ -1,0 +1,12 @@
+div(id="errorMessage")
+    h2 #{errorHeading}
+    br
+    h4 #{errorBody}
+    br
+    br
+    if includeRedirect
+        p In 
+            span(id="redirectTime") #{redirectTime}
+            |  seconds you will be redirected to the 
+            a(href=redirectAddress, id="redirectAddress") #{redirectPageName}
+            |  page.

@@ -1,0 +1,34 @@
+#errorMessage,
+#successMessage {
+  text-align: center;
+  width: 100%;
+  max-width: 700px;
+  margin: auto;
+}
+.error {
+  color: #2f3c60;
+  text-align: center;
+  font-style: italic;
+  background-color: #ffffcc;
+  border-radius: 5px;
+  padding: 10px 2px;
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+  transition: opacity 1s, font-size 1s, padding 1s;
+  margin-bottom: 20px;
+}
+
+.error.hide {
+  display: none;
+  opacity: 0;
+  max-height: 0;
+  padding: 0;
+  font-size: 2;
+}
+
+.error a {
+  color: #2f3c60;
+  font-style: italic;
+  text-decoration: underline;
+}

@@ -1,0 +1,9 @@
+extends ../templates/main-layout
+
+block js
+    if includeRedirect
+        script(src="/js/redirect.js")
+        script(src="/js/start-redirect.js")
+
+block content
+    include ./general-redirect-error

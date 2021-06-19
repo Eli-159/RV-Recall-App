@@ -1,0 +1,18 @@
+extends ./templates/main-layout
+
+block append css
+    link(rel="stylesheet", href="/css/home.css")
+
+block content
+    div.colHolder
+        div(class="leftCol")
+            p MYRV are proud to offer Auto Trail motorhomes to the Australian market. 
+                a(href="https://www.auto-trail.co.uk") Auto Trail
+                | &nbsp;are a long established manufacturer of premium motorhomes offering elegant styling and refined details representing incredible value.  Our motorhomes are available exclusively in Australia through 
+                a(href='https://www.auto-trail.com.au') EliteRV
+                | .
+        div.colBreak
+            br
+            br
+        div(class="rightCol")
+            img(src="/images/vehicle.png")

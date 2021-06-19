@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title #{pageTitle}
+    block css
+      link(rel="stylesheet", href="/css/main-layout.css")
+      link(rel="stylesheet", href="/css/main.css")
+      link(rel="stylesheet", href="/css/form.css")
+      link(rel="stylesheet", href="/css/header.css")
+      link(rel="stylesheet", href="/css/error.css")
+      link(rel="stylesheet", href="/css/table.css")
+    block js
+    script(src="/js/global.js")
+  body.stop-page-load-transition
+    div(class="container")
+      header
+        div(class="header-logo")
+          a(href="/")
+            img(src="/images/logo.png", class="header-logo-img")
+        nav(class="header-nav-menu")
+          ul(class="header-nav-menu-list")
+            li(class="header-nav-list-item")
+              a(href="/home", class=(path==='/home' ? 'active' : '')) Home
+            li(class="header-nav-list-item")
+              a(href="/owner-registration", class=(path==='/owner-registration' ? 'active' : '')) Owner Registration
+            li(class="header-nav-list-item")
+              a(href="/login", class=(path==='/login' ? 'active' : '')) Login
+      main
+        block content

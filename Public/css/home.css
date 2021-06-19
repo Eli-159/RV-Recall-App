@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+.colHolder {
+    margin-top: 50px;
+}
+
+h1 {
+    font-size: 50px;
+    font-family: 'Gill Sans Ultra Bold', 'Arial Black', 'Rockwell Extra Bold', 'Arial';
+    margin: 5px 0px;
+}
+
+@media only screen and (min-width: 820px) {
+    .leftCol {
+        width: 40%;
+        min-width: 200px;
+        float: left;
+    }
+
+    .colBreak {
+        display: none;
+    }
+    
+    .rightCol {
+        width: 55%;
+        float: right;
+    }
+}
+
+@media only screen and (max-width: 819px)  {
+    .leftCol {
+        width: 80%;
+        min-width: 200px;
+        margin: auto;
+    }
+    
+    .rightCol {
+        width: 80%;
+        margin: auto;
+    }
+}
+
+
+.leftCol p {
+    text-align: left;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 110%;
+}
+
+.leftCol p a {
+    font-style: normal;
+}
+
+.rightCol img {
+    margin-top: 1em;
+    width: 95%;
+    /* max-width: 400px; */
+}

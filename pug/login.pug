@@ -1,0 +1,23 @@
+extends ./templates/main-layout
+
+block js
+    script(src="/js/login.js")
+    script(src="/js/form-funcs.js")
+    script(src="/js/valid.js")
+
+block content
+    div(id="loginForm", class="form-section")
+        h2 Enter Your Admin Credentials
+        p(class=["error", "hide"], id="credentialsError") The Username or Password did not match any known.
+        .form
+            label(for="usernameInput", class="required-label", id="usernameInputLabel") Username
+            div(class="textInput")
+                input(type="text", id="usernameInput", class="validate", name="name", required)
+            span(class="errorMessage", id="usernameInputError")
+            br
+            label(for="passwordInput", class="required-label", id="passwordInputLabel") Password
+            div(class="textInput")
+                input(type="password", id="passwordInput", class="validate", name="dealerCode", required)
+            span(class="errorMessage", id="passwordInputError")
+            br
+            input(type="button", value="Submit", id="loginSubmitBtn", class="submitBtn")

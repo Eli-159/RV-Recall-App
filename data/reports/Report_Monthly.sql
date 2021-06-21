@@ -44,7 +44,7 @@ FROM vehicle as `v`
 
 -- Current Owners Report
 .output data/reports/temp/MonthlyReporting_CurrentOwners.csv
-SELECT v.id, v.buildNo, v.vin, o.id, o.vehicleId, o.name, o.email, o.phone, o.street, o.suburb, o.state, o.postcode, o.regoState, o.regoNo, o.regoDt, v.updatedBy, v.updatedAt, o.updatedBy, o.updatedAt
+SELECT v.buildNo, v.vin, o.id, o.vehicleId, o.name, o.email, o.phone, o.street, o.suburb, o.state, o.postcode, o.regoState, o.regoNo, o.regoDt, o.createdAt AS ownerCreatedAt, o.createdBy AS ownerCreatedBy, o.updatedBy AS ownerUpdatedBy, o.updatedAt AS ownerUpdatedAt
 FROM vehicle AS `v` 
   INNER JOIN (
     SELECT id, vehicleId, name, email, phone, street, suburb, state, postcode, regoState, regoNo, regoDt, createdBy, updatedBy, createdAt, updatedAt 
@@ -52,11 +52,11 @@ FROM vehicle AS `v`
     GROUP BY vehicleId 
     HAVING ROWID = MAX(ROWID) 
     ORDER BY id
-  ) AS `o` ON v.id = o.vehicleId
+  ) AS `o` ON v.id = o.vehicleId;
 
 -- NTI Report - all Owner or Vehicle records updated in the last 7 days
 .output data/reports/temp/NtiReport.csv
-SELECT v.id, v.ipa, v.buildNo, v.vin, v.engineNo, v.modelDesc, v.addSpec, v.variantCode, o.id, o.vehicleId, o.name, o.email, o.phone, o.street, o.suburb, o.state, o.postcode, o.regoState, o.regoNo, o.regoDt, v.updatedBy, v.updatedAt, o.updatedBy, o.updatedAt
+SELECT v.id, v.ipa, v.buildNo, v.vin, v.engineNo, v.modelDesc, v.addSpec, v.variantCode, o.id, o.vehicleId, o.name, o.email, o.phone, o.street, o.suburb, o.state, o.postcode, o.regoState, o.regoNo, o.regoDt, v.updatedBy AS vehicleUpdatedBy, v.updatedAt AS vehicleUpdatedAt, o.updatedBy AS ownerUpdatedBy, o.updatedAt AS ownerUpdatedAt
 FROM vehicle AS `v` 
   LEFT JOIN (
     SELECT id, vehicleId, name, email, phone, street, suburb, state, postcode, regoState, regoNo, regoDt, createdBy, updatedBy, createdAt, updatedAt 

@@ -8,3 +8,4 @@ node_modules/
 testing/
 Public/resources
 myrv-serviceaccount-credentials.json
+*.csv

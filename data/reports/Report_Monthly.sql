@@ -51,7 +51,7 @@ FROM vehicle AS `v`
     FROM owner
     GROUP BY vehicleId 
     HAVING ROWID = MAX(ROWID) 
-    ORDER BY id DESC
+    ORDER BY id
   ) AS `o` ON v.id = o.vehicleId
 
 -- NTI Report - all Owner or Vehicle records updated in the last 7 days
@@ -63,7 +63,7 @@ FROM vehicle AS `v`
     FROM owner
     GROUP BY vehicleId 
     HAVING ROWID = MAX(ROWID) 
-    ORDER BY id DESC
+    ORDER BY id
   ) AS `o` ON v.id = o.vehicleId
   WHERE 
     v.updatedAt BETWEEN date('now', 'start of month', '-1 months') AND date('now', 'start of month')

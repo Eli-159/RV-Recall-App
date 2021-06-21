@@ -25,3 +25,18 @@ FROM recallContact as `rC`
   INNER JOIN vehicle AS `v` ON rC.vehicleId = v.id
   LEFT JOIN recallFeedback AS `rF` ON rC.id = rF.recallContactId
 WHERE rC.updatedAt BETWEEN date('now', '-7 days') AND datetime('now');
+
+-- NTI Report - all Owner or Vehicle records updated in the last 7 days
+.output data/reports/temp/NtiReport.csv
+SELECT v.id, v.ipa, v.buildNo, v.vin, v.engineNo, v.modelDesc, v.addSpec, v.variantCode, o.id, o.vehicleId, o.name, o.email, o.phone, o.street, o.suburb, o.state, o.postcode, o.regoState, o.regoNo, o.regoDt, v.updatedBy, v.updatedAt, o.updatedBy, o.updatedAt
+FROM vehicle AS `v` 
+  LEFT JOIN (
+    SELECT id, vehicleId, name, email, phone, street, suburb, state, postcode, regoState, regoNo, regoDt, createdBy, updatedBy, createdAt, updatedAt 
+    FROM owner
+    GROUP BY vehicleId 
+    HAVING ROWID = MAX(ROWID) 
+    ORDER BY id
+  ) AS `o` ON v.id = o.vehicleId
+  WHERE 
+    v.updatedAt BETWEEN date('now', '-7 days') AND datetime('now')
+    OR o.updatedAt BETWEEN date('now', '-7 days') AND datetime('now');

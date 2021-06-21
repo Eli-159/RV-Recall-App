@@ -42,3 +42,29 @@ FROM vehicle as `v`
   LEFT JOIN (SELECT vehicleId, name FROM owner GROUP BY vehicleId HAVING id = MAX(id)) AS `q_O` ON v.id = q_O.vehicleId
   LEFT JOIN (SELECT vehicleId, response, action, updatedBy, updatedAt FROM recallContact WHERE response IS NOT NULL GROUP BY vehicleId HAVING id = MAX(id)) AS `q_rC` ON v.id = q_rC.vehicleId;
 
+-- Current Owners Report
+.output data/reports/temp/MonthlyReporting_CurrentOwners.csv
+SELECT v.id, v.buildNo, v.vin, o.id, o.vehicleId, o.name, o.email, o.phone, o.street, o.suburb, o.state, o.postcode, o.regoState, o.regoNo, o.regoDt, v.updatedBy, v.updatedAt, o.updatedBy, o.updatedAt
+FROM vehicle AS `v` 
+  INNER JOIN (
+    SELECT id, vehicleId, name, email, phone, street, suburb, state, postcode, regoState, regoNo, regoDt, createdBy, updatedBy, createdAt, updatedAt 
+    FROM owner
+    GROUP BY vehicleId 
+    HAVING ROWID = MAX(ROWID) 
+    ORDER BY id DESC
+  ) AS `o` ON v.id = o.vehicleId
+
+-- NTI Report - all Owner or Vehicle records updated in the last 7 days
+.output data/reports/temp/NtiReport.csv
+SELECT v.id, v.ipa, v.buildNo, v.vin, v.engineNo, v.modelDesc, v.addSpec, v.variantCode, o.id, o.vehicleId, o.name, o.email, o.phone, o.street, o.suburb, o.state, o.postcode, o.regoState, o.regoNo, o.regoDt, v.updatedBy, v.updatedAt, o.updatedBy, o.updatedAt
+FROM vehicle AS `v` 
+  LEFT JOIN (
+    SELECT id, vehicleId, name, email, phone, street, suburb, state, postcode, regoState, regoNo, regoDt, createdBy, updatedBy, createdAt, updatedAt 
+    FROM owner
+    GROUP BY vehicleId 
+    HAVING ROWID = MAX(ROWID) 
+    ORDER BY id DESC
+  ) AS `o` ON v.id = o.vehicleId
+  WHERE 
+    v.updatedAt BETWEEN date('now', 'start of month', '-1 months') AND date('now', 'start of month')
+    OR o.updatedAt BETWEEN date('now', 'start of month', '-1 months') AND date('now', 'start of month');

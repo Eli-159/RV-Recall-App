@@ -159,7 +159,7 @@ document.addEventListener('keydown', key => {
         const activeElTag = activeEl.tagName;
         const activeElType = activeEl.type;
         // Tests that there is only one element with the class name 'submitBtn' and that the current field in focus is not an ignored one.
-        if (submitBtns.length == 1 && activeElTag != 'TEXTAREA' && activeElTag != 'BUTTON' && activeElTag != 'A' && !(activeElTag == 'INPUT' && (activeElType == 'button' || activeElType == 'submit'))) {
+        if (submitBtns.length == 1 && activeElTag != 'TEXTAREA' && activeElTag != 'BUTTON' && activeElTag != 'A' && !(activeElTag == 'INPUT' && (activeElType == 'button' || activeElType == 'submit')) && activeElTag != 'SELECT') {
             // Executes the blur event on the current active element.
             document.activeElement.dispatchEvent(new Event('blur'));
             // Clicks the submit button.

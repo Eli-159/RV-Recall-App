@@ -128,8 +128,17 @@ router.post('/submit-recall-work-details', (req, res, next) => {
     Promise.all(promises).then(() => {
         // Tests if the current user has the role of elite or admin.
         if (payload.role == 'elite' || payload.role == 'admin') {
-            // If the vehicle recall items all saved successfully, the owner details form is rendered and returned.
-            res.render('workshop/recall-form/details-form', {data: payload});
+            // Gets the date as yyyy-mm-dd.
+            const date = new Date();
+            const year = date.getFullYear().toString();
+            const month = (date.getMonth()<9 ? '0' : '') + (date.getMonth()+1).toString();
+            const day = (date.getDate()<10 ? '0' : '') + date.getDate().toString();
+            const stringDate = year + '-' + month + '-' + day;
+            // The owner details form is rendered and returned.
+            res.render('workshop/recall-form/details-form', {
+                data: payload,
+                todayDate: stringDate
+            });
         } else {
             // Returns the success page.
             res.render('workshop/recall-form/success-message', {

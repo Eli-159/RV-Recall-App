@@ -128,5 +128,16 @@ const formatFields = id => {
     } else if (element.id.toLowerCase().includes('vin') || element.id.includes('regoNo')) {
         // Applies the toUpperCase() function to the value of the element.
         element.value = element.value.toUpperCase();
+    } else if (element.id.includes('regoDt') && element.type == 'date' && element.value != '') {
+        // Splits the date and gets the year.
+        const splitDate = element.value.split('-');
+        const year = parseInt(splitDate[0]);
+        // Tests if the year is less than or equal to 50.
+        if (year <= 50) {
+            // Adds 2000 to the year and sets the date again.
+            splitDate[0] = (year+2000).toString();
+            element.value = splitDate.join('-');
+        }
+        
     }
 }

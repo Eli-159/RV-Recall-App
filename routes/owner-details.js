@@ -50,9 +50,16 @@ router.post('/verifyDetails', (req, res, next) => {
                 }), { httpOnly: true});
                 // Sets the response status to 200.
                 res.status(200);
+                // Gets the date as yyyy-mm-dd.
+                const date = new Date();
+                const year = date.getFullYear().toString();
+                const month = (date.getMonth()<9 ? '0' : '') + (date.getMonth()+1).toString();
+                const day = (date.getDate()<10 ? '0' : '') + date.getDate().toString();
+                const stringDate = year + '-' + month + '-' + day;
                 // Renders the second page of the owner registration form (details form) with the model description.
                 res.render('owner-details/details-form', {
-                    data: data
+                    data: data,
+                    todayDate: stringDate
                 });
                 // Changes the success value of the log object to true.
                 logDetails.success = true;

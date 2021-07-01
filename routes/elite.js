@@ -166,11 +166,18 @@ router.use('/update-owner-details/verifyDetails', (req, res, next) => {
             }), { httpOnly: true});
             // Sets the response status to 200.
             res.status(200);
+            // Gets the date as yyyy-mm-dd.
+            const date = new Date();
+            const year = date.getFullYear().toString();
+            const month = (date.getMonth()<9 ? '0' : '') + (date.getMonth()+1).toString();
+            const day = (date.getDate()<10 ? '0' : '') + date.getDate().toString();
+            const stringDate = year + '-' + month + '-' + day;
             // Tests if the request was made using a post request.
             if (method == 'POST') {
                 // Renders the part page pug file using the data stored in the payload.
                 res.render('workshop/recall-form/details-form', {
                     data: vehicleData,
+                    todayDate: stringDate,
                     allowSkip: false
                 });
             } else {

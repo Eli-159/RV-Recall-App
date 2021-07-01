@@ -58,10 +58,10 @@ div(class="form-section", id="detailsForm")
                 option(value="WA") Western Australia 
         span(class="errorMessage", id="regoStateInputError")
         div(class="textInput")
-            input(type="date", id="regoDtInput", name="regoDt", class="validate", placeholder="Date of Registration")
-        span(class="errorMessage", id="postcodeInputError")
+            input(type="date", id="regoDtInput", name="regoDt", class="validate", pattern="29052025" placeholder="Date of Registration")
+        span(class="errorMessage", id="regoDtInputInputError")
         br
         input(type="button", value="Submit", id="detailsSubmitBtn", class="submitBtn")
     br
-    p If you have any difficulty in completing this form please email us at
+    p If you have any difficulty in completing this form please email us at 
         a(href="mailto:info@myrv.com.au") info@myrv.com.au.

@@ -205,7 +205,7 @@ const addDatePlaceholderFunctions = () => {
                     inputs[i].type = 'text';
                 }
             }
-            // Ties the changeDateInputType function to a focus and blur event listner.
+            // Ties the changeDateInputType function to a focus and blur event listener.
             inputs[i].addEventListener('focus', changeDateInputType);
             inputs[i].addEventListener('blur', changeDateInputType);
             // Executes the function now.

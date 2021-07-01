@@ -59,7 +59,7 @@ div(class="form-section", id="detailsForm")
         span(class="errorMessage", id="regoStateInputError")
         div(class="textInput")
             input(type="date", id="regoDtInput", name="regoDt", class="validate", placeholder="Date of Registration", value= (data.owner.regoDt==null?null:data.owner.regoDt.substr(0,10)))
-        span(class="errorMessage", id="postcodeInputError")
+        span(class="errorMessage", id="regoDtInputInputError")
         br
         input(type="button", value="Submit", id="detailsSubmitBtn", class="submitBtn")
         if allowSkip !== false

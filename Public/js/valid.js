@@ -125,7 +125,7 @@ const formatFields = id => {
         } else {
             element.value = element.value.slice(0, 2) + ' ' + element.value.slice(2, 6) + ' ' + element.value.slice(6);
         }
-    } else if (element.id.toLowerCase().includes('vin')) {
+    } else if (element.id.toLowerCase().includes('vin') || element.id.includes('regoNo')) {
         // Applies the toUpperCase() function to the value of the element.
         element.value = element.value.toUpperCase();
     }

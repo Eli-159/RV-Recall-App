@@ -6,8 +6,9 @@ const dao = require ('../data/dao.js');
 const vehicle = require('../data/models/vehicle.js');
 const auth = require('../models/authenticate.js');
 
+// /email/recall-registration/ZFA25000002775146/123457188700
 // Catches all requests for the owner-details form from the email.
-router.use('/owner-details/:vin/:trackingNumber', (req, res, next) => {
+router.use(['/owner-registration/:vin/:trackingNumber', '/recall-registration/:vin/:trackingNumber'], (req, res, next) => {
     // Loads the url parameters into a variable.
     const urlParams = req.params;
     // Loads the vin and tracking number into variables.
@@ -28,12 +29,12 @@ router.use('/owner-details/:vin/:trackingNumber', (req, res, next) => {
                 }
             }
             // The request is redirected to the owner registration form, regardless of whether the cookie was added.
-            res.redirect('/owner-registration');
+            res.redirect((req.originalUrl.includes('/recall-registration')) ? '/recall-registration/verifyDetails' : '/owner-registration/verifyDetails');
         });
     } else {
         // If the vin and tracking number were not formatted correctly, the request is redirected to the owner registration form.
         // This has to be done seperatly to the previous redirect as the one above is inside a '.then' statement.
-        res.redirect('/owner-registration');
+        res.redirect((req.originalUrl.includes('/recall-registration')) ? '/recall-registration/verifyDetails' : '/owner-registration/verifyDetails');
     }
 });
 // Catches all requests that are passed in from the submit of the owner registration form.

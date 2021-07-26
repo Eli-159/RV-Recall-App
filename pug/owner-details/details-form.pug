@@ -61,6 +61,19 @@ div(class="form-section", id="detailsForm")
             input(type="date", id="regoDtInput", name="regoDt", class="validate", min="2000-01-01", max=todayDate, placeholder="Date of Registration")
         span(class="errorMessage", id="regoDtInputError")
         br
+        if recallSection
+            label(for="workshopChoiceInput", id="workshopChoiceInputLabel", class="required-label") Preferred Workshop for Service
+            div(class="textInput")
+                select(id="workshopChoiceInput", name="workshopChoice", class="validate dropdown", required)
+                    option(value="", selected, disabled, hidden) Workshop
+                    option(value="sydney") Elite Sydney
+                    option(value="melbourne") Elite Melbourne
+                    option(value="gold-coast") Elite Gold Coast
+                    option(value="other") None of these are accessible
+            span(class="errorMessage", id="workshopChoiceInputError")
+            div(class="textareaInput")
+                textarea(name="notes", id="notesInput", placeholder="Notes/Comments" cols="60", rows="10")
+            br
         input(type="button", value="Submit", id="detailsSubmitBtn", class="submitBtn")
     br
     p If you have any difficulty in completing this form please email us at 

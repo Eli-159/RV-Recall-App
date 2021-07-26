@@ -7,26 +7,26 @@ const emailRoutes = require('./email.js');
 
 // Catches all get requests to the owner details form.
 router.get('/', (req, res, next) => {
-    // Declares a variable to hold a vin if one is found.
-    let vin;
-    // Checks to see if a vehicleTrackingData cookie is present, as if so it should contain a vin.
-    if (req.cookies.vehicleTrackingData != undefined && req.cookies.vehicleTrackingData != null && req.cookies.vehicleTrackingData != '') {
-        // If so, the cookie is parsed as a JSON and the vin is extracted.
-        vin = JSON.parse(req.cookies.vehicleTrackingData).vin;
-    }
     // The first-load page of the form is rendered, passing the vin in so it can be prefilled. Pug checks it isn't null.
     res.render('owner-details/first-load', {
         pageTitle: 'MyRV Owner Details Form',
-        path: '/owner-registration',
-        vin: vin
+        path: req.baseUrl
     });
 });
 
-// Catches all post requests to veriry the owner details from the first page of the form.
-router.post('/verifyDetails', (req, res, next) => {
+// Catches all requests to veriry the owner details from the first page of the form.
+router.use('/verifyDetails', (req, res, next) => {
     // Gets the given VIN and Build Number.
-    const givenVin = req.body.vin;
-    const givenBuildNo = req.body.buildNo;
+    let givenVin = req.body.vin;
+    let givenBuildNo = req.body.buildNo;
+    let givenId;
+    // Checks to see if a vehicleTrackingData cookie is present, as if so it should contain a vin.
+    if (req.cookies.vehicleTrackingData != undefined && req.cookies.vehicleTrackingData != null && req.cookies.vehicleTrackingData != '') {
+        // The tracking data is taken from the cookie and put into the data.
+        const trackingData = JSON.parse(req.cookies.vehicleTrackingData);
+        givenVin = trackingData.vin;
+        givenId = parseInt(trackingData.trackingNumber)/process.env.TRACKING_MULTIPLIER;
+    }
     // Sets the values for the log object, with success defaulting to false.
     const logDetails = {
         ip: req.ip,
@@ -38,14 +38,16 @@ router.post('/verifyDetails', (req, res, next) => {
     dao.getVehicleByVin(givenVin).then(data => {
         // Tests the data isn't null, which means the vehicle cannot be found.
         if (data != null) {
+            console.log('First Test Passed');
             // Tests that the given build number is the same as the one returned by the database.
-            if (givenBuildNo == data.buildNo) {
+            if (givenBuildNo == data.buildNo || givenId == data.id) {
+                console.log('Second Test Passed');
                 // Provided the previous two tests are passed, a JWT is issued and added to the response as a cookie.
                 // TODO: Add secure true option to cookie.
                 res.cookie("jwt", auth.generateToken({
                     user: 'owner',
-                    role: 'owner', 
-                    id: data.id, 
+                    role: 'owner',
+                    id: data.id,
                     vin: data.vin
                 }), { httpOnly: true});
                 // Sets the response status to 200.
@@ -56,20 +58,47 @@ router.post('/verifyDetails', (req, res, next) => {
                 const month = (date.getMonth()<9 ? '0' : '') + (date.getMonth()+1).toString();
                 const day = (date.getDate()<10 ? '0' : '') + date.getDate().toString();
                 const stringDate = year + '-' + month + '-' + day;
-                // Renders the second page of the owner registration form (details form) with the model description.
-                res.render('owner-details/details-form', {
-                    data: data,
-                    todayDate: stringDate
-                });
+                if (req.method == 'post') {
+                    // Renders the second page of the owner registration form (details form) with the model description.
+                    res.render('owner-details/details-form', {
+                        data: data,
+                        todayDate: stringDate,
+                        recallSection: req.headers.referer.includes('/recall-registration')
+                    });
+                } else {
+                    // Renders the second page of the owner registration form (details form) with the model description as a full page load.
+                    res.render('owner-details/first-load', {
+                        pageTitle: 'MyRV Owner Details Form',
+                        path: req.baseUrl,
+                        skipFirstForm: true,
+                        data: data,
+                        todayDate: stringDate,
+                        recallSection: (req.originalUrl.includes('/recall-registration') || req.headers.referer.includes('/recall-registration'))
+                    });
+                }
                 // Changes the success value of the log object to true.
                 logDetails.success = true;
             } else {
-                // Returns the status 500 if the two build numbers were not matches.
-                res.sendStatus(500);
+                // Tests if the method used was post.
+                if (req.method == 'post') {
+                    // Returns the status 500.
+                    res.sendStatus(500);
+                } else {
+                    // Redirects to the verify details page.
+                    res.redirect('/recall-registration')
+                }
             }
         } else {
-            // Returns the status 500 if the data returned from the database was null.
-            res.sendStatus(500);
+            console.log('Data was Null');
+            console.log(data);
+            // Tests if the method used was post.
+            if (req.method == 'post') {
+                // Returns the status 500.
+                res.sendStatus(500);
+            } else {
+                // Redirects to the verify details page.
+                res.redirect('/recall-registration')
+            }
         }
         // Logs the log object to the database.
         dao.newAccessLog(logDetails);
@@ -84,17 +113,55 @@ router.post('/submit-details', auth.authenticateToken, emailRoutes, (req, res, n
         if (req.payload.role == 'owner') {
             // Loads the body of the request into a variable.
             const body = req.body;
-            // Adds the new owner to the database using the vehicleId from the payload and the data from the request body.
+            // Updates data in the body for the database calls.
             body.vehicleId = req.payload.id;
-            body.createdBy = 'owner';
             body.updatedBy = 'owner';
-            dao.newOwner(body)
+            // Gets the vehicle data.
+            dao.getVehicleByVin(req.payload.vin)
+            .then(vehicleData => {
+                // Tests if the name given is the same as the one previously recorded.
+                if (vehicleData.owners != null && vehicleData.owners[0].name.toLowerCase() == body.name.toLowerCase()) {
+                    // Updates the data in the body for the database call, and then calls the updateOwner function using the body data.
+                    body.id = vehicleData.owners[0].id;
+                    return dao.updateOwner(body);
+                } else {
+                    // Updates the data in the body for the database call, and then calls the newOwner function using the body data.
+                    body.createdBy = 'owner';
+                    return dao.newOwner(body);
+                }
+            })
+            .then(data => {
+                // Tests if the request came from the recall registration page, and if so, creates a new recall contact record.
+                if (req.headers.referer.includes('/recall-registration')) {
+                    return dao.newRecallContact({
+                        vehicleId: req.payload.id, 
+                        action: 'recall registration', 
+                        response: 'positive', 
+                        createdBy: 'owner', 
+                        updatedBy: 'owner'
+                    });
+                }
+            })
+            .then(data => {
+                // Tests if the request came from the recall registration page, and if so, creates a new recall feedback record.
+                if (req.headers.referer.includes('/recall-registration')) {
+                    return dao.newRecallFeedback({
+                        recallContactId: data.dataValues.id, 
+                        name: body.name, 
+                        tag: 'recall acknowledged', 
+                        feedback: body.workshopChoice + ';' + body.notes, 
+                        createdBy: 'owner', 
+                        updatedBy: 'owner'
+                    })
+                }
+            })
             .then(data => {
                 // Renders the success message page.
                 res.render('owner-details/success-message');
             })
             .catch(err => {
                 // Returns a status of 500 with an unexpected error message.
+                console.log(err);
                 res.status(500);
                 res.render('errors/small-error-message', {
                     errorTitle: 'An Unexpected Error Occured',

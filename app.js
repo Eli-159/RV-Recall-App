@@ -42,7 +42,7 @@ app.get('/home', (req, res, next) => {
 });
 
 // Catches all requests going through the owner registration route and points them to the owner registration routes file.
-app.use('/owner-registration', ownerDetailsRoutes);
+app.use(['/owner-registration', '/recall-registration'], ownerDetailsRoutes);
 
 // Catches all requests and passes them through the login routes file.
 app.use('/', loginRoutes);

@@ -70,7 +70,15 @@ const validateSubmit = () => {
             showValidationFeedback(toBeValidated[i].id, false, valid);
             if (allOk) {
                 allOk = false;
-                toBeValidated[i].select();
+                try {
+                    toBeValidated[i].select();
+                } catch {
+                    try {
+                        toBeValidated[i].focus();
+                    } catch {
+                        document.getElementsByTagName('body')[0].focus();
+                    }
+                }
                 document.getElementById((toBeValidated[i].id) + 'Label').scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         } else {

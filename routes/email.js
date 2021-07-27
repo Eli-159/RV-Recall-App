@@ -42,26 +42,26 @@ router.use('/submit-details', (req, res, next) => {
     // Defines a function to create a recall contact record for a new owner being registered.
     const createNewOwnerRecord = vehicleRecordId => {
         // Adds the recall contact record to the database.
-        dao.newRecallContact({
-            vehicleId: vehicleRecordId, 
-            action: 'owner registration', 
-            response: 'new owner', 
-            createdBy: 'owner', 
-            updatedBy: 'owner'
-        });
+        // dao.newRecallContact({
+        //     vehicleId: vehicleRecordId, 
+        //     action: 'owner registration', 
+        //     response: 'new owner', 
+        //     createdBy: 'owner', 
+        //     updatedBy: 'owner'
+        // });
         // Proceeds to the next function for the request.
         next();
     };
     // Defines a function to create a recall contact record for a current owner registering themselves.
     const createPositiveRecord = vehicleRecordId => {
         // Adds the recall contact record to the database.
-        dao.newRecallContact({
-            vehicleId: vehicleRecordId, 
-            action: 'owner registration', 
-            response: 'positive', 
-            createdBy: 'owner', 
-            updatedBy: 'owner'
-        });
+        // dao.newRecallContact({
+        //     vehicleId: vehicleRecordId, 
+        //     action: 'owner registration', 
+        //     response: 'positive', 
+        //     createdBy: 'owner', 
+        //     updatedBy: 'owner'
+        // });
         // Proceeds to the next function for the request.
         next();
     };

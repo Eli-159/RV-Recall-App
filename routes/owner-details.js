@@ -34,14 +34,17 @@ router.use('/verifyDetails', (req, res, next) => {
         user: 'owner',
         success: false
     }
+    // Tests if it is a new page request, and if so, if there is a vin input.
+    if (req.method == 'GET' && (typeof givenVin != 'string' || givenVin == '')) {
+        // Redirects to the verify details page.
+        return res.redirect(req.baseUrl.includes('/recall-registration') ? '/recall-registration' : '/owner-registration');
+    }
     // Queries the database to see if there are any vins matching the one given.
     dao.getVehicleByVin(givenVin).then(data => {
         // Tests the data isn't null, which means the vehicle cannot be found.
         if (data != null) {
-            console.log('First Test Passed');
             // Tests that the given build number is the same as the one returned by the database.
             if (givenBuildNo == data.buildNo || givenId == data.id) {
-                console.log('Second Test Passed');
                 // Provided the previous two tests are passed, a JWT is issued and added to the response as a cookie.
                 // TODO: Add secure true option to cookie.
                 res.cookie("jwt", auth.generateToken({
@@ -58,7 +61,7 @@ router.use('/verifyDetails', (req, res, next) => {
                 const month = (date.getMonth()<9 ? '0' : '') + (date.getMonth()+1).toString();
                 const day = (date.getDate()<10 ? '0' : '') + date.getDate().toString();
                 const stringDate = year + '-' + month + '-' + day;
-                if (req.method == 'post') {
+                if (req.method == 'POST') {
                     // Renders the second page of the owner registration form (details form) with the model description.
                     res.render('owner-details/details-form', {
                         data: data,
@@ -66,6 +69,7 @@ router.use('/verifyDetails', (req, res, next) => {
                         recallSection: req.headers.referer.includes('/recall-registration')
                     });
                 } else {
+                    console.log(req.headers.referer);
                     // Renders the second page of the owner registration form (details form) with the model description as a full page load.
                     res.render('owner-details/first-load', {
                         pageTitle: 'MyRV Owner Details Form',
@@ -73,31 +77,29 @@ router.use('/verifyDetails', (req, res, next) => {
                         skipFirstForm: true,
                         data: data,
                         todayDate: stringDate,
-                        recallSection: (req.originalUrl.includes('/recall-registration') || req.headers.referer.includes('/recall-registration'))
+                        recallSection: (req.originalUrl.includes('/recall-registration') || (req.headers.referer && req.headers.referer.includes('/recall-registration')))
                     });
                 }
                 // Changes the success value of the log object to true.
                 logDetails.success = true;
             } else {
                 // Tests if the method used was post.
-                if (req.method == 'post') {
+                if (req.method == 'POST') {
                     // Returns the status 500.
                     res.sendStatus(500);
                 } else {
                     // Redirects to the verify details page.
-                    res.redirect('/recall-registration')
+                    res.redirect(req.baseUrl.includes('/recall-registration') ? '/recall-registration' : '/owner-registration');
                 }
             }
         } else {
-            console.log('Data was Null');
-            console.log(data);
             // Tests if the method used was post.
-            if (req.method == 'post') {
+            if (req.method == 'POST') {
                 // Returns the status 500.
                 res.sendStatus(500);
             } else {
                 // Redirects to the verify details page.
-                res.redirect('/recall-registration')
+                res.redirect(req.baseUrl.includes('/recall-registration') ? '/recall-registration' : '/owner-registration');
             }
         }
         // Logs the log object to the database.
@@ -161,7 +163,6 @@ router.post('/submit-details', auth.authenticateToken, emailRoutes, (req, res, n
             })
             .catch(err => {
                 // Returns a status of 500 with an unexpected error message.
-                console.log(err);
                 res.status(500);
                 res.render('errors/small-error-message', {
                     errorTitle: 'An Unexpected Error Occured',

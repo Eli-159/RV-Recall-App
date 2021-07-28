@@ -69,15 +69,16 @@ router.use('/verifyDetails', (req, res, next) => {
                         recallSection: req.headers.referer.includes('/recall-registration')
                     });
                 } else {
-                    console.log(req.headers.referer);
                     // Renders the second page of the owner registration form (details form) with the model description as a full page load.
+                    console.log(data.owners[0]);
                     res.render('owner-details/first-load', {
                         pageTitle: 'MyRV Owner Details Form',
                         path: req.baseUrl,
                         skipFirstForm: true,
                         data: data,
                         todayDate: stringDate,
-                        recallSection: (req.originalUrl.includes('/recall-registration') || (req.headers.referer && req.headers.referer.includes('/recall-registration')))
+                        recallSection: (req.originalUrl.includes('/recall-registration') || (req.headers.referer && req.headers.referer.includes('/recall-registration'))),
+                        emailLink: (givenId != undefined)
                     });
                 }
                 // Changes the success value of the log object to true.

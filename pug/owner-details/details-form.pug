@@ -5,60 +5,60 @@ div(class="form-section", id="detailsForm")
         label(for="nameInput", class="required-label inlineP", id="nameInputLabel") Name
         input(type="button", value="Clear All", id="clearBtn", class="aButton")
         div(class="textInput")
-            input(type="text", id="nameInput", name="name", class="validate", required)
+            input(type="text", id="nameInput", name="name", class="validate", value=(emailLink ? data.owners[0].name : ''), required)
         span(class="errorMessage", id="nameInputError")
         br
         label(for="phoneInput", class="required-label", id="phoneInputLabel") Phone
         div(class="textInput")
-            input(type="text", id="phoneInput", name="phone", class="validate phone", pattern="(04[0-9]{2} [0-9]{3} [0-9]{3})|(0[1-3|5-9] [0-9]{4} [0-9]{4})", required)
+            input(type="text", id="phoneInput", name="phone", class="validate phone", pattern="(04[0-9]{2} [0-9]{3} [0-9]{3})|(0[1-3|5-9] [0-9]{4} [0-9]{4})", value=(emailLink ? data.owners[0].phone : ''), required)
         span(class="errorMessage", id="phoneInputError")
         br
         label(for="emailInput", class="required-label", id="emailInputLabel") Email
         div(class="textInput")
-            input(type="email", id="emailInput", name="email", class="validate", required)
+            input(type="email", id="emailInput", name="email", class="validate", value=(emailLink ? data.owners[0].email : ''), required)
         span(class="errorMessage", id="emailInputError")
         br
         label(for="streetInput", id="streetInputLabel") Postal Address
         div(class="textInput")
-            input(type="text", id="streetInput", name="street", class="validate", placeholder="Street")
+            input(type="text", id="streetInput", name="street", class="validate", placeholder="Street", value=(emailLink ? data.owners[0].street : ''))
         span(class="errorMessage", id="streetInputError")
         div(class="textInput")
-            input(type="text", id="suburbInput", name="suburb", class="validate", placeholder="Suburb")
+            input(type="text", id="suburbInput", name="suburb", class="validate", placeholder="Suburb", value=(emailLink ? data.owners[0].suburb  : ''))
         span(class="errorMessage", id="suburbInputError")
         div(class="textInput")
             select(id="stateInput", name="state", class="validate dropdown")
                 option(value="", selected, disabled, hidden) State
-                option(value="ACT") Australian Capital Territory 
-                option(value="NSW") New South Wales
-                option(value="NT") Northern Territory
-                option(value="Qld") Queensland
-                option(value="SA") South Australia
-                option(value="Tas") Tasmania
-                option(value="Vic") Victoria 
-                option(value="WA") Western Australia 
+                option(value="ACT", selected=(data.owners[0].state == 'ACT')) Australian Capital Territory 
+                option(value="NSW", selected=(data.owners[0].state == 'NSW')) New South Wales
+                option(value="NT", selected=(data.owners[0].state == 'NT')) Northern Territory
+                option(value="Qld", selected=(data.owners[0].state == 'Qld')) Queensland
+                option(value="SA", selected=(data.owners[0].state == 'SA')) South Australia
+                option(value="Tas", selected=(data.owners[0].state == 'Tas')) Tasmania
+                option(value="Vic", selected=(data.owners[0].state == 'Vic')) Victoria 
+                option(value="WA", selected=(data.owners[0].state == 'WA')) Western Australia 
         span(class="errorMessage", id="stateInputError")
         div(class="textInput")
-            input(type="text", id="postcodeInput", name="postcode", class="validate", pattern="[0-9]{4}", placeholder="Postcode")
+            input(type="text", id="postcodeInput", name="postcode", class="validate", pattern="[0-9]{4}", placeholder="Postcode", value=(emailLink ? data.owners[0].postcode : ''))
         span(class="errorMessage", id="postcodeInputError")
         br
         label(for="regoNInput", id="streetInputLabel") Registration Details
         div(class="textInput")
-            input(type="text", id="regoNoInput", name="regoNo", class="validate", placeholder="Registration Plate Number")
+            input(type="text", id="regoNoInput", name="regoNo", class="validate", placeholder="Registration Plate Number", value=(emailLink ? data.owners[0].regoNo : ''))
         span(class="errorMessage", id="regoNoInputError")
         div(class="textInput")
             select(id="regoStateInput", name="regoState", class="validate dropdown")
                 option(value="", disabled, selected, hidden) State of Registration
-                option(value="ACT") Australian Capital Territory 
-                option(value="NSW") New South Wales
-                option(value="NT") Northern Territory
-                option(value="Qld") Queensland
-                option(value="SA") South Australia
-                option(value="Tas") Tasmania
-                option(value="Vic") Victoria 
-                option(value="WA") Western Australia 
+                option(value="ACT", selected=(data.owners[0].regoState == 'ACT')) Australian Capital Territory 
+                option(value="NSW", selected=(data.owners[0].regoState == 'NSW')) New South Wales
+                option(value="NT", selected=(data.owners[0].regoState == 'NT')) Northern Territory
+                option(value="Qld", selected=(data.owners[0].regoState == 'Qld')) Queensland
+                option(value="SA", selected=(data.owners[0].regoState == 'SA')) South Australia
+                option(value="Tas", selected=(data.owners[0].regoState == 'Tas')) Tasmania
+                option(value="Vic", selected=(data.owners[0].regoState == 'Vic')) Victoria 
+                option(value="WA", selected=(data.owners[0].regoState == 'WA')) Western Australia 
         span(class="errorMessage", id="regoStateInputError")
         div(class="textInput")
-            input(type="date", id="regoDtInput", name="regoDt", class="validate", min="2000-01-01", max=todayDate, placeholder="Date of Registration")
+            input(type="date", id="regoDtInput", name="regoDt", class="validate", min="2000-01-01", max=todayDate, placeholder="Date of Registration", value=(emailLink ? data.owners[0].regoDt.substr(0,10) : ''))
         span(class="errorMessage", id="regoDtInputError")
         br
         if recallSection

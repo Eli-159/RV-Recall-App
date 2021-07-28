@@ -43,18 +43,22 @@ FROM vehicle as `v`
   LEFT JOIN (SELECT vehicleId, response, action, updatedBy, updatedAt FROM recallContact WHERE response IS NOT NULL GROUP BY vehicleId HAVING id = MAX(id)) AS `q_rC` ON v.id = q_rC.vehicleId;
 
 -- Current Owners Report
+-- Gets most recent owner records by vehicleId then filters for active records only
 .output data/reports/temp/MonthlyReporting_CurrentOwners.csv
-SELECT v.buildNo, v.vin, o.id, o.vehicleId, o.name, o.email, o.phone, o.street, o.suburb, o.state, o.postcode, o.regoState, o.regoNo, o.regoDt, o.createdAt AS ownerCreatedAt, o.createdBy AS ownerCreatedBy, o.updatedBy AS ownerUpdatedBy, o.updatedAt AS ownerUpdatedAt
+SELECT v.buildNo, v.vin, o.id AS `ownerId`, o.vehicleId, o.name, o.email, o.phone, o.street, o.suburb, o.state, o.postcode, o.regoState, o.regoNo, o.regoDt, o.createdAt AS ownerCreatedAt, o.createdBy AS ownerCreatedBy, o.updatedBy AS ownerUpdatedBy, o.updatedAt AS ownerUpdatedAt
 FROM vehicle AS `v` 
-  INNER JOIN (
-    SELECT id, vehicleId, name, email, phone, street, suburb, state, postcode, regoState, regoNo, regoDt, createdBy, updatedBy, createdAt, updatedAt 
-    FROM owner
-    GROUP BY vehicleId 
-    HAVING ROWID = MAX(ROWID) 
-    ORDER BY id
+  LEFT JOIN (
+    SELECT *
+    FROM (
+      SELECT id, vehicleId, name, email, phone, street, suburb, state, postcode, regoState, regoNo, regoDt, isActive, createdBy, updatedBy, createdAt, updatedAt 
+      FROM owner
+      GROUP BY vehicleId 
+      HAVING ROWID = MAX(ROWID) 
+      ORDER BY id
+    ) WHERE isActive = 1
   ) AS `o` ON v.id = o.vehicleId;
 
--- NTI Report - all Owner or Vehicle records updated in the last 7 days
+-- NTI Report - all Owner or Vehicle records updated in the last month
 .output data/reports/temp/NtiReport.csv
 SELECT v.id, v.ipa, v.buildNo, v.vin, v.engineNo, v.modelDesc, v.addSpec, v.variantCode, o.id, o.vehicleId, o.name, o.email, o.phone, o.street, o.suburb, o.state, o.postcode, o.regoState, o.regoNo, o.regoDt, v.updatedBy AS vehicleUpdatedBy, v.updatedAt AS vehicleUpdatedAt, o.updatedBy AS ownerUpdatedBy, o.updatedAt AS ownerUpdatedAt
 FROM vehicle AS `v` 

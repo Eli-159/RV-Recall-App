@@ -5,14 +5,9 @@ div(class="form-section", id="verificationForm")
         a(href="mailto:info@my-rv.com.au") info@my-rv.com.au
         |  for assistance.
     .form
-        -
-            let vinFill = 'ZFA2500000';
-            if (vin != undefined && vin != null && vin != '') {
-                vinFill = vin
-            }
         label(for="vinInput", class="required-label", id="vinInputLabel") VIN
         div(class="textInput")
-            input(type="text", id="vinInput", class="validate", name="vin", value=vinFill, pattern="ZFA2500000.......", required, data-pattern-err-msg="VIN requires 17 characters.")
+            input(type="text", id="vinInput", class="validate", name="vin", value="ZFA2500000", pattern="ZFA2500000.......", required, data-pattern-err-msg="VIN requires 17 characters.")
         span(class="errorMessage", id="vinInputError")
         br
         label(for="buildNoInput", class="required-label", id="buildNoInputLabel") Build Number

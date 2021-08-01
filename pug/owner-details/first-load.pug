@@ -7,4 +7,7 @@ block js
     script(src="/js/redirect.js")
 
 block content
-    include ./verification-form
+    if skipFirstForm === true
+        include ./details-form
+    else
+        include ./verification-form

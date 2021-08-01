@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-// Catches all requests to veriry the owner details from the first page of the form.
+// Catches all requests to verify the owner details from the first page of the form.
 router.use('/verifyDetails', (req, res, next) => {
     // Gets the given VIN and Build Number.
     let givenVin = req.body.vin;

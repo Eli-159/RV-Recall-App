@@ -28,14 +28,14 @@ div(class="form-section", id="detailsForm")
         div(class="textInput")
             select(id="stateInput", name="state", class="validate dropdown")
                 option(value="", selected, disabled, hidden) State
-                option(value="ACT", selected=(data.owners[0].state == 'ACT')) Australian Capital Territory 
-                option(value="NSW", selected=(data.owners[0].state == 'NSW')) New South Wales
-                option(value="NT", selected=(data.owners[0].state == 'NT')) Northern Territory
-                option(value="Qld", selected=(data.owners[0].state == 'Qld')) Queensland
-                option(value="SA", selected=(data.owners[0].state == 'SA')) South Australia
-                option(value="Tas", selected=(data.owners[0].state == 'Tas')) Tasmania
-                option(value="Vic", selected=(data.owners[0].state == 'Vic')) Victoria 
-                option(value="WA", selected=(data.owners[0].state == 'WA')) Western Australia 
+                option(value="ACT", selected=(emailLink ? (data.owners[0].state == 'ACT') : false)) Australian Capital Territory 
+                option(value="NSW", selected=(emailLink ? (data.owners[0].state == 'NSW') : false)) New South Wales
+                option(value="NT", selected=(emailLink ? (data.owners[0].state == 'NT') : false)) Northern Territory
+                option(value="Qld", selected=(emailLink ? (data.owners[0].state == 'Qld') : false)) Queensland
+                option(value="SA", selected=(emailLink ? (data.owners[0].state == 'SA') : false)) South Australia
+                option(value="Tas", selected=(emailLink ? (data.owners[0].state == 'Tas') : false)) Tasmania
+                option(value="Vic", selected=(emailLink ? (data.owners[0].state == 'Vic') : false)) Victoria 
+                option(value="WA", selected=(emailLink ? (data.owners[0].state == 'WA') : false)) Western Australia 
         span(class="errorMessage", id="stateInputError")
         div(class="textInput")
             input(type="text", id="postcodeInput", name="postcode", class="validate", pattern="[0-9]{4}", placeholder="Postcode", value=(emailLink ? data.owners[0].postcode : ''))
@@ -48,14 +48,14 @@ div(class="form-section", id="detailsForm")
         div(class="textInput")
             select(id="regoStateInput", name="regoState", class="validate dropdown")
                 option(value="", disabled, selected, hidden) State of Registration
-                option(value="ACT", selected=(data.owners[0].regoState == 'ACT')) Australian Capital Territory 
-                option(value="NSW", selected=(data.owners[0].regoState == 'NSW')) New South Wales
-                option(value="NT", selected=(data.owners[0].regoState == 'NT')) Northern Territory
-                option(value="Qld", selected=(data.owners[0].regoState == 'Qld')) Queensland
-                option(value="SA", selected=(data.owners[0].regoState == 'SA')) South Australia
-                option(value="Tas", selected=(data.owners[0].regoState == 'Tas')) Tasmania
-                option(value="Vic", selected=(data.owners[0].regoState == 'Vic')) Victoria 
-                option(value="WA", selected=(data.owners[0].regoState == 'WA')) Western Australia 
+                option(value="ACT", selected=(emailLink ? (data.owners[0].regoState == 'ACT') : false)) Australian Capital Territory 
+                option(value="NSW", selected=(emailLink ? (data.owners[0].regoState == 'NSW') : false)) New South Wales
+                option(value="NT", selected=(emailLink ? (data.owners[0].regoState == 'NT') : false)) Northern Territory
+                option(value="Qld", selected=(emailLink ? (data.owners[0].regoState == 'Qld') : false)) Queensland
+                option(value="SA", selected=(emailLink ? (data.owners[0].regoState == 'SA') : false)) South Australia
+                option(value="Tas", selected=(emailLink ? (data.owners[0].regoState == 'Tas') : false)) Tasmania
+                option(value="Vic", selected=(emailLink ? (data.owners[0].regoState == 'Vic') : false)) Victoria 
+                option(value="WA", selected=(emailLink ? (data.owners[0].regoState == 'WA') : false)) Western Australia 
         span(class="errorMessage", id="regoStateInputError")
         div(class="textInput")
             input(type="date", id="regoDtInput", name="regoDt", class="validate", min="2000-01-01", max=todayDate, placeholder="Date of Registration", value=(emailLink ? data.owners[0].regoDt.substr(0,10) : ''))

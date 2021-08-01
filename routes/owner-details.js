@@ -70,7 +70,6 @@ router.use('/verifyDetails', (req, res, next) => {
                     });
                 } else {
                     // Renders the second page of the owner registration form (details form) with the model description as a full page load.
-                    console.log(data.owners[0]);
                     res.render('owner-details/first-load', {
                         pageTitle: 'MyRV Owner Details Form',
                         path: req.baseUrl,

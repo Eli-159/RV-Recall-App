@@ -116,38 +116,37 @@ router.use('/submit-details', (req, res, next) => {
 
 // /email/logo/ZFA25000002775146/123457188700/logo.png
 // Catches all requests for the email tracking image.
-router.use('/logo/:vin/:trackingNumber', (req, res, next) => {
-    next();
-    console.log('Still Running!');
+router.use('/logo/:vin/:trackingNumber/', (req, res, next) => {
     // Sends the image file so that there is no delay.
-    // res.sendFile(path.resolve('./Public/images/logo.png'));
+    res.sendFile(path.resolve('./Public/images/logo.png'));
+    // res.end();
     // Loads the vin and tracking number into variables.
-    const vin = req.params.vin;
-    const trackingNumber = req.params.trackingNumber;
-    // Tests that the vin and tracking number are formatted correctly.
-    if (vin != null && vin != undefined && vin.length == 17 && trackingNumber != null && trackingNumber != undefined && !isNaN(parseInt(trackingNumber))) {
-        // If the vin and tracking number were correctly formatted, the vehicle id is extracted from the tracking number.
-        const vehicleId = trackingNumber/process.env.TRACKING_MULTIPLIER;
-        // Quiries the database for the vehicled data associated with the vin supplied.
-        dao.getVehicleByVin(vin).then(rawData => {
-            // Tests that the data from the database is not null, meaning the vehicle doesn't exist.
-            if (rawData != null) {
-                // The data from the json is cleaned up using a stringify and parse.
-                const data = JSON.parse(JSON.stringify(rawData));
-                // The vehicle id from the database is compared to the one extracted from the tracking number to ensure the data is valid.
-                if (data.id == vehicleId) {
-                    // A new recall contact record in created.
-                    dao.newRecallContact({
-                        vehicleId: vehicleId, 
-                        action: 'image', 
-                        response: 'passive', 
-                        createdBy: 'owner', 
-                        updatedBy: 'owner'
-                    });
-                }
-            }
-        });
-    }
-}, express.static(path.resolve('./Public/images')));
+    // const vin = req.params.vin;
+    // const trackingNumber = req.params.trackingNumber;
+    // // Tests that the vin and tracking number are formatted correctly.
+    // if (vin != null && vin != undefined && vin.length == 17 && trackingNumber != null && trackingNumber != undefined && !isNaN(parseInt(trackingNumber))) {
+    //     // If the vin and tracking number were correctly formatted, the vehicle id is extracted from the tracking number.
+    //     const vehicleId = trackingNumber/process.env.TRACKING_MULTIPLIER;
+    //     // Quiries the database for the vehicled data associated with the vin supplied.
+    //     dao.getVehicleByVin(vin).then(rawData => {
+    //         // Tests that the data from the database is not null, meaning the vehicle doesn't exist.
+    //         if (rawData != null) {
+    //             // The data from the json is cleaned up using a stringify and parse.
+    //             const data = JSON.parse(JSON.stringify(rawData));
+    //             // The vehicle id from the database is compared to the one extracted from the tracking number to ensure the data is valid.
+    //             if (data.id == vehicleId) {
+    //                 // A new recall contact record in created.
+    //                 dao.newRecallContact({
+    //                     vehicleId: vehicleId, 
+    //                     action: 'image', 
+    //                     response: 'passive', 
+    //                     createdBy: 'owner', 
+    //                     updatedBy: 'owner'
+    //                 });
+    //             }
+    //         }
+    //     });
+    // }
+});
 
 module.exports = router;

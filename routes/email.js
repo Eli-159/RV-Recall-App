@@ -114,13 +114,10 @@ router.use('/submit-details', (req, res, next) => {
     }
 });
 
-// /email/logo/ZFA25000002775146/123457188700/logo.png
 // Catches all requests for the email tracking image.
 router.use('/logo/:vin/:trackingNumber', (req, res, next) => {
-    next();
-    console.log('Still Running!');
     // Sends the image file so that there is no delay.
-    // res.sendFile(path.resolve('./Public/images/logo.png'));
+    res.sendFile(path.resolve('./Public/images/logo.png'));
     // Loads the vin and tracking number into variables.
     const vin = req.params.vin;
     const trackingNumber = req.params.trackingNumber;
@@ -148,6 +145,6 @@ router.use('/logo/:vin/:trackingNumber', (req, res, next) => {
             }
         });
     }
-}, express.static(path.resolve('./Public/images')));
+});
 
 module.exports = router;

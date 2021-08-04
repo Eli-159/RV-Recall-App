@@ -114,12 +114,13 @@ router.use('/submit-details', (req, res, next) => {
     }
 });
 
-// /email/logo/ZFA25000002775146/123457188700
+// https://test.my-rv.com.au/email/logo/ZFA25000002E10013/246914377400
+// https://test.my-rv.com.au/email/logo/ZFA25000002775146/123457188700
 // Catches all requests for the email tracking image.
 router.use('/logo/:vin/:trackingNumber', (req, res, next) => {
     // Sends the image file so that there is no delay.
     res.status(200);
-    res.download(path.resolve('./Public/images/logo.png'));
+    res.download(path.resolve('./Public/images/email-logo.png'), 'Email_Logo.png');
     // Loads the vin and tracking number into variables.
     const vin = req.params.vin;
     const trackingNumber = req.params.trackingNumber;

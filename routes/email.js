@@ -114,10 +114,12 @@ router.use('/submit-details', (req, res, next) => {
     }
 });
 
+// /email/logo/ZFA25000002775146/123457188700
 // Catches all requests for the email tracking image.
 router.use('/logo/:vin/:trackingNumber', (req, res, next) => {
     // Sends the image file so that there is no delay.
-    res.sendFile(path.resolve('./Public/images/logo.png'));
+    res.status(200);
+    res.download(path.resolve('./Public/images/logo.png'));
     // Loads the vin and tracking number into variables.
     const vin = req.params.vin;
     const trackingNumber = req.params.trackingNumber;

@@ -20,7 +20,7 @@ SELECT * FROM vehicleRecallItem;
 .output data/reports/temp/owner.csv
 SELECT * FROM owner;
 
-.output data/reports/temp/recallFeedback.csv;
+.output data/reports/temp/recallFeedback.csv
 SELECT * FROM recallFeedback;
 
 .output data/reports/temp/vehicle.csv

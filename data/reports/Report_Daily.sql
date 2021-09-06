@@ -40,3 +40,14 @@ FROM vehicle AS `v`
   WHERE 
     v.updatedAt BETWEEN date('now', 'start of month') AND datetime('now')
     OR o.updatedAt BETWEEN date('now', 'start of month') AND datetime('now');
+
+-- Recall Registration Report - Owners who have registered for the recall in the last 14 days
+.output data/reports/temp/recallRegistrationReport_14Days.csv
+SELECT 
+  rC.id, rC.action, rC.response, rF.name, rF.tag, rF.feedback, v.vin, v.modelDesc, rC.createdAt
+FROM 
+  ((recallContact rC 
+      INNER JOIN recallFeedback rF ON rC.id = rF.recallContactId)
+    LEFT JOIN vehicle v ON rC.vehicleId = v.id)
+WHERE rC.action = 'recall registration' AND rC.createdAt > date('now', '-14 days')
+ORDER BY rC.createdAt DESC;

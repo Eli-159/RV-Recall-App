@@ -5,10 +5,22 @@ const fs = require('fs');
 const SCOPES = ['https://www.googleapis.com/auth/script.external_request', 'https://www.googleapis.com/auth/gmail.modify'];
 const TOKEN_PATH = './token.json';
 
+module.exports.scopes = SCOPES;
+
+module.exports.getAuthDetails = () => {
+    return new Promise((resolve, reject) => {
+        // Load client secrets from a local file.
+        fs.readFile('./google/oauth-credentials.json', (err, content) => {
+            if (err) return reject(err);
+            resolve(JSON.parse(content));
+        });
+    });
+}
+
 module.exports.getAuthUrl = () => {
     return new Promise((resolve, reject) => {
         // Load client secrets from a local file.
-        fs.readFile('oauth-credentials.json', (err, content) => {
+        fs.readFile('./google/oauth-credentials.json', (err, content) => {
             if (err) return reject(err);
             // Loads the client auth data into variables.
             const credentials = JSON.parse(content);
@@ -31,7 +43,7 @@ module.exports.getAuthUrl = () => {
 module.exports.createTokenFromCode = (code) => {
     return new Promise((resolve, reject) => {
         // Load client secrets from a local file.
-        fs.readFile('oauth-credentials.json', (err, content) => {
+        fs.readFile('./google/oauth-credentials.json', (err, content) => {
             if (err) return console.log('Error loading client secret file:', err);
             // Loads the client auth data into variables.
             const credentials = JSON.parse(content);
@@ -60,7 +72,7 @@ module.exports.createTokenFromCode = (code) => {
 module.exports.loadToken = () => {
     return new Promise((resolve, reject) => {
         // Load client secrets from a local file.
-        fs.readFile('oauth-credentials.json', (err, content) => {
+        fs.readFile('./google/oauth-credentials.json', (err, content) => {
             if (err) return resolve(err);
             // Loads the client auth data into variables.
             const credentials = JSON.parse(content);
@@ -101,5 +113,5 @@ module.exports.sendEmail = () => {
                 }
             }).then(res => resolve(res.data)).catch(err => reject(err));
         }).catch(err => reject(err));
-    })
+    });
 };

@@ -10,8 +10,8 @@ router.get('/auth/url', (req, res, next) => {
 });
 
 router.get('/auth/code', (req, res, next) => {
-    const requestedScopes = gmail.scopes.join(' ');
-    const givenScopes = req.params.scope;
+    const requestedScopes = JSON.stringify(gmail.scopes.sort());
+    const givenScopes = JSON.stringify(req.params.scope.split(' ').sort());
     const givenCode = req.params.code;
     if (requestedScopes == givenScopes) {
         gmail.createTokenFromCode(givenCode).then(res.redirect('/workshop/actions')).catch(next());

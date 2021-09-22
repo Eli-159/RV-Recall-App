@@ -9,3 +9,4 @@ testing/
 Public/resources
 myrv-serviceaccount-credentials.json
 *.csv
+token.json

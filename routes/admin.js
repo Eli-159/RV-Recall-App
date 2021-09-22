@@ -7,23 +7,18 @@ const stripBom = require('strip-bom-stream');
 
 const dao = require ('../data/dao.js');
 const reportsRoutes = require('./reports.js');
-
-// const storage = multer.diskStorage({
-//     destination: function(req, file, cb) {
-//         cb(null, '/');
-//     },
-
-//     // By default, multer removes file extensions so let's add them back
-//     filename: function(req, file, cb) {
-//         cb(null, 'vehicle.csv');
-//     }
-// });
-
+const googleRoutes = require('./google.js')
 
 // If no further route is provided, the client is redirected to the actions page.
 router.get('/', (req, res, next) => {
     res.redirect('/workshop/actions');
 });
+
+// If the request url includes '/reports', it is parsed off to the reports routes file.
+router.use('/reports', reportsRoutes);
+
+// If the request url includes '/google', it is parsed off to the reports routes file.
+router.use('/google', googleRoutes);
 
 // If the 'get-owner-contact-details' page is requested, the necessary data is requested, reformatted and rendered in a pug file.
 router.get('/get-owner-contact-details', (req, res, next) => {
@@ -38,9 +33,6 @@ router.get('/get-owner-contact-details', (req, res, next) => {
         });
     });
 });
-
-// If the request url includes '/reports', it is parsed off to the reports routes file.
-router.use('/reports', reportsRoutes);
 
 // If the request url is for the '/csv-upload' route, the initial page is rendered.
 router.get('/csv-upload', (req, res, next) => {

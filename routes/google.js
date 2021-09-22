@@ -3,20 +3,20 @@ const express = require('express');
 const router = express.Router();
 const gmail = require('../google/gmail.js')
 
-router.get('/authorise/url', (req, res, next) => {
+router.get('/auth/url', (req, res, next) => {
     gmail.getAuthUrl().then(url => {
         res.redirect(url);
     });
 });
 
-router.get('/authorise/code', (req, res, next) => {
+router.get('/auth/code', (req, res, next) => {
     const requestedScopes = gmail.scopes.join(' ');
-    const givenScopes = req.params.scopes;
+    const givenScopes = req.params.scope;
     const givenCode = req.params.code;
     if (requestedScopes == givenScopes) {
         gmail.createTokenFromCode(givenCode).then(res.redirect('/workshop/actions')).catch(next());
     } else {
-        res.redirect('/workshop/admin/google/authorise/url');
+        res.redirect('/workshop/admin/google/auth/url');
     }
 });
 

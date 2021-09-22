@@ -1,0 +1,16 @@
+extends ../../../templates/admin-layout
+
+block js
+    script(src="/js/redirect.js")
+    script(src="/js/start-redirect.js")
+
+block content
+    h2 Authentication Fail
+    p The authentication failed for an unkown reason.
+    br
+    br
+    p In 
+        span(id="redirectTime") 30
+        |  seconds you will be redirected to the 
+        a(href="/workshop/admin/google/auth/url", id="redirectAddress") Google Authentication
+        |  page.

@@ -79,27 +79,27 @@ module.exports.loadToken = () => {
 };
 
 module.exports.sendEmail = () => {
-    module.exports.loadToken().then(auth => {
-        console.log(auth);
-        const appsScript = google.script('v1');
-        appsScript.scripts.run({
-            auth: auth,
-            scriptId: '17YmwpeFyhYDR8DDx2nMYhzQMcLnLq1027Il_LMCXTXOMA8kVQ9gep6wg',
-            resource: {
-                function: 'sendEmailFromDraft',
-                parameters: [
-                    'TEMPLATE:MyRV - Registration Confirmation',
-                    'eli.gearing@gmail.com',
-                    {
-                        name: 'Eli',
-                        vin: '2F354289jfj234',
-                        buildNo: '345755'
-                    }
-                ],
-                devMode: true
-            }
-        }).then(res => console.log(res.data)).catch(err => console.log(err));
-    }).catch(err => console.log(err));
+    return new Promise((resolve, reject) => {
+        module.exports.loadToken().then(auth => {
+            console.log(auth);
+            const appsScript = google.script('v1');
+            appsScript.scripts.run({
+                auth: auth,
+                scriptId: '17YmwpeFyhYDR8DDx2nMYhzQMcLnLq1027Il_LMCXTXOMA8kVQ9gep6wg',
+                resource: {
+                    function: 'sendEmailFromDraft',
+                    parameters: [
+                        'TEMPLATE:MyRV - Registration Confirmation',
+                        'eli.gearing@gmail.com',
+                        {
+                            name: 'Eli',
+                            vin: '2F354289jfj234',
+                            buildNo: '345755'
+                        }
+                    ],
+                    devMode: true
+                }
+            }).then(res => resolve(res.data)).catch(err => reject(err));
+        }).catch(err => reject(err));
+    })
 };
-
-module.exports.sendEmail();

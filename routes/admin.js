@@ -8,18 +8,6 @@ const stripBom = require('strip-bom-stream');
 const dao = require ('../data/dao.js');
 const reportsRoutes = require('./reports.js');
 
-// const storage = multer.diskStorage({
-//     destination: function(req, file, cb) {
-//         cb(null, '/');
-//     },
-
-//     // By default, multer removes file extensions so let's add them back
-//     filename: function(req, file, cb) {
-//         cb(null, 'vehicle.csv');
-//     }
-// });
-
-
 // If no further route is provided, the client is redirected to the actions page.
 router.get('/', (req, res, next) => {
     res.redirect('/workshop/actions');

@@ -2,66 +2,85 @@ const google = require('googleapis').google;
 const readline = require('readline');
 const fs = require('fs');
 
-function authenticate() {
-    const SCOPES = ['https://www.googleapis.com/auth/script.external_request', 'https://www.googleapis.com/auth/gmail.modify'];
-    const TOKEN_PATH = './token.json';
+const SCOPES = ['https://www.googleapis.com/auth/script.external_request', 'https://www.googleapis.com/auth/gmail.modify'];
+const TOKEN_PATH = './token.json';
+
+module.exports.getAuthUrl = () => {
+    return new Promise((resolve, reject) => {
+        // Load client secrets from a local file.
+        fs.readFile('oauth-credentials.json', (err, content) => {
+            if (err) return reject(err);
+            // Loads the client auth data into variables.
+            const credentials = JSON.parse(content);
+            const client_secret = credentials.web.client_secret;
+            const client_id = credentials.web.client_id;
+            // Declares a new instance of the google OAuth2 client.
+            const oAuth2Client = new google.auth.OAuth2(client_id, client_secret);
+            // Returns the authentication url.
+            resolve(oAuth2Client.generateAuthUrl({
+                access_type: 'offline',
+                response_type: 'code',
+                client_id: credentials.web.client_id,
+                scope: SCOPES,
+                redirect_uri: credentials.web.redirect_uris[0]
+            }));
+        });
+    });
+};
+
+module.exports.createTokenFromCode = (code) => {
     return new Promise((resolve, reject) => {
         // Load client secrets from a local file.
         fs.readFile('oauth-credentials.json', (err, content) => {
             if (err) return console.log('Error loading client secret file:', err);
             // Loads the client auth data into variables.
             const credentials = JSON.parse(content);
-            const {client_secret, client_id, redirect_uris} = credentials.web;
+            const client_secret = credentials.web.client_secret;
+            const client_id = credentials.web.client_id;
+            const redirect_uri = credentials.web.redirect_uris[0];
             // Declares a new instance of the google OAuth2 client.
             const oAuth2Client = new google.auth.OAuth2(client_id, client_secret);
-
-            // Reads the file where the would be a previously stored token.
-            fs.readFile(TOKEN_PATH, (err, savedToken) => {
-                const prom = new Promise((res, rej) => {
-                    if (err) {
-                        const authUrl = oAuth2Client.generateAuthUrl({
-                            access_type: 'offline',
-                            response_type: 'code',
-                            client_id: client_id,
-                            scope: SCOPES,
-                            redirect_uri: redirect_uris[0]
-                        });
-                        console.log('Authorize this app by visiting this url:', authUrl);
-                        const rl = readline.createInterface({
-                            input: process.stdin,
-                            output: process.stdout,
-                        });
-                        rl.question('Enter the code from that page here: ', (code) => {
-                            rl.close();
-                            oAuth2Client.getToken({code, redirect_uri: redirect_uris[0]}, (err, fetchedToken) => {
-                                if (err) rej(err);
-                                oAuth2Client.setCredentials(fetchedToken);
-                                // Store the token to disk for later program executions
-                                fs.writeFile(TOKEN_PATH, JSON.stringify(fetchedToken), (err) => {
-                                    if (err) return console.error(err);
-                                });
-                                res(fetchedToken);
-                            });
-                        });
-                    } else {
-                        // res((typeof savedToken == 'string' ? JSON.parse(savedToken) : savedToken));
-                        res(JSON.parse(savedToken.toString()));
-                    }
+            // Gets a new OAuth token.
+            oAuth2Client.getToken({code, redirect_uri}, (err, fetchedToken) => {
+                // Rejects the error if one occurs.
+                if (err) reject(err);
+                // Sets the oAuth credentials to those fetched.
+                oAuth2Client.setCredentials(fetchedToken);
+                // Store the token to disk for later program executions
+                fs.writeFile(TOKEN_PATH, JSON.stringify(fetchedToken), (err) => {
+                    if (err) return console.error(err);
                 });
-                prom.then(token => {
-                    console.log(token);
-                    console.log(Date.now());
-                    console.log(Date.now() < token.expiry_date);
-                    oAuth2Client.setCredentials(token);
-                    resolve(oAuth2Client);
-                }).catch(err => console.log(err));
+                // Resolves the promise, parsing the OAuth2 client.
+                resolve(oAuth2Client);
             });
         });
     });
-}
+};
+
+module.exports.loadToken = () => {
+    return new Promise((resolve, reject) => {
+        // Load client secrets from a local file.
+        fs.readFile('oauth-credentials.json', (err, content) => {
+            if (err) return resolve(err);
+            // Loads the client auth data into variables.
+            const credentials = JSON.parse(content);
+            const client_secret = credentials.web.client_secret;
+            const client_id = credentials.web.client_id;
+            // Declares a new instance of the google OAuth2 client.
+            const oAuth2Client = new google.auth.OAuth2(client_id, client_secret);
+            // Reads the file where the would be a previously stored token.
+            fs.readFile(TOKEN_PATH, (err, savedToken) => {
+                if (err) return reject(err);
+                oAuth2Client.setCredentials(JSON.parse(savedToken.toString()));
+                resolve(oAuth2Client);
+            });
+        });
+    });
+};
 
 module.exports.sendEmail = () => {
-    authenticate().then(auth => {
+    module.exports.loadToken().then(auth => {
+        console.log(auth);
         const appsScript = google.script('v1');
         appsScript.scripts.run({
             auth: auth,
@@ -81,6 +100,6 @@ module.exports.sendEmail = () => {
             }
         }).then(res => console.log(res.data)).catch(err => console.log(err));
     }).catch(err => console.log(err));
-}
+};
 
 module.exports.sendEmail();

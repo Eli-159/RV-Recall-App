@@ -10,6 +10,8 @@ router.get('/auth/url', (req, res, next) => {
 });
 
 router.get('/auth/code', (req, res, next) => {
+    console.log(req.params);
+    console.log(req.params.code);
     const requestedScopes = JSON.stringify(gmail.scopes.sort());
     const givenScopes = JSON.stringify(req.params.scope.includes(' ') ? req.params.scope.split(' ').sort() : req.params.scope);
     const givenCode = req.params.code;

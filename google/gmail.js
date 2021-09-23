@@ -3,24 +3,32 @@ const readline = require('readline');
 const fs = require('fs');
 
 const SCOPES = ['https://www.googleapis.com/auth/script.external_request', 'https://www.googleapis.com/auth/gmail.modify'];
-const TOKEN_PATH = './token.json';
+const TOKEN_PATH = './google/token.json';
 
+// Exports the scopes, so they are available in other files.
 module.exports.scopes = SCOPES;
 
+// Exports a function to get the OAuth2 details.
 module.exports.getAuthDetails = () => {
+    // Returns a promise.
     return new Promise((resolve, reject) => {
         // Load client secrets from a local file.
         fs.readFile('./google/oauth-credentials.json', (err, content) => {
+            // Rejects an error.
             if (err) return reject(err);
+            // Resolves the promise, passing the file content as an object.
             resolve(JSON.parse(content));
         });
     });
 }
 
+// Exports a function to get the auth url.
 module.exports.getAuthUrl = () => {
+    // Returns a promise.
     return new Promise((resolve, reject) => {
         // Load client secrets from a local file.
         fs.readFile('./google/oauth-credentials.json', (err, content) => {
+            // Rejects an error.
             if (err) return reject(err);
             // Loads the client auth data into variables.
             const credentials = JSON.parse(content);
@@ -28,7 +36,7 @@ module.exports.getAuthUrl = () => {
             const client_id = credentials.web.client_id;
             // Declares a new instance of the google OAuth2 client.
             const oAuth2Client = new google.auth.OAuth2(client_id, client_secret);
-            // Returns the authentication url.
+            // Resolves the promise, passing the authentication url.
             resolve(oAuth2Client.generateAuthUrl({
                 access_type: 'offline',
                 response_type: 'code',
@@ -40,11 +48,14 @@ module.exports.getAuthUrl = () => {
     });
 };
 
+// Exports a function to create and save an access token.
 module.exports.createTokenFromCode = (code) => {
+    // Returns a promise.
     return new Promise((resolve, reject) => {
         // Load client secrets from a local file.
         fs.readFile('./google/oauth-credentials.json', (err, content) => {
-            if (err) return console.log('Error loading client secret file:', err);
+            // Rejects an error.
+            if (err) return reject(err);
             // Loads the client auth data into variables.
             const credentials = JSON.parse(content);
             const client_secret = credentials.web.client_secret;
@@ -69,11 +80,14 @@ module.exports.createTokenFromCode = (code) => {
     });
 };
 
+// Exports a function to load the access token from the json file.
 module.exports.loadToken = () => {
+    // Returns a promise.
     return new Promise((resolve, reject) => {
         // Load client secrets from a local file.
         fs.readFile('./google/oauth-credentials.json', (err, content) => {
-            if (err) return resolve(err);
+            // Rejects an error.
+            if (err) return reject(err);
             // Loads the client auth data into variables.
             const credentials = JSON.parse(content);
             const client_secret = credentials.web.client_secret;
@@ -82,32 +96,80 @@ module.exports.loadToken = () => {
             const oAuth2Client = new google.auth.OAuth2(client_id, client_secret);
             // Reads the file where the would be a previously stored token.
             fs.readFile(TOKEN_PATH, (err, savedToken) => {
+                // Rejects an error.
                 if (err) return reject(err);
+                // Sets the OAuth2 client credentials to the saved token.
                 oAuth2Client.setCredentials(JSON.parse(savedToken.toString()));
+                // Resolves the promise, returning the OAuth2 client, meaning that it can just be passed as the auth in an api.
                 resolve(oAuth2Client);
             });
         });
     });
 };
 
-module.exports.sendEmail = () => {
+// Exports a function to list the user's draft emails.
+module.exports.listEmails = () => {
+    // Returns a promise.
     return new Promise((resolve, reject) => {
+        // Loads the auth token.
         module.exports.loadToken().then(auth => {
-            console.log(auth);
+            // Declares an instance of the gmail api.
+            const gmail = google.gmail({version: 'v1', auth});
+            // Gets a list of drafts.
+            gmail.users.drafts.list({
+                userId: 'me'
+            }).then(res => {
+                // Declares a variable to hold the final draft data.
+                const draftData = [];
+                // Declares a variable to hold the message promises.
+                const messageProms = [];
+                // Loops over the returned drafts.
+                for (draft in res.data.drafts) {
+                    // Pushes the draft id and message id to the draftData array.
+                    draftData.push({
+                        draftId: res.data.drafts[draft].id,
+                        messageId: res.data.drafts[draft].message.id
+                    });
+                    // Pushes a promise, containing the call to get the message data, to the messageProms array.
+                    messageProms.push(gmail.users.messages.get({
+                        userId: 'me',
+                        id: res.data.drafts[draft].message.id
+                    }));
+                }
+                // Waits for the promises to resolve.
+                Promise.all(messageProms).then(messages => {
+                    // Loops over the message data.
+                    for (mes in messages) {
+                        // Adds the subject and a snippet of the body to the draftData array.
+                        draftData[mes].subject = messages[mes].data.payload.headers.find(header => header.name == 'Subject').value;
+                        draftData[mes].snippet = messages[mes].data.snippet.replace('{{', '(').replace('}}', ')').substring(0, 99)+'...';
+                    }
+                    // Resolves the promise, passing the draftData array.
+                    resolve(draftData);
+                }).catch(err => reject(err));
+            }).catch(err => reject(err));
+        }).catch(err => reject(err));
+    });
+}
+
+// Exports a function to send an email.
+module.exports.sendEmail = (draftId, address, replaceValues) => {
+    // Returns a promise.
+    return new Promise((resolve, reject) => {
+        // Loads the access token.
+        module.exports.loadToken().then(auth => {
+            // Gets the Apps Script API.
             const appsScript = google.script('v1');
+            // Executes an apps script function.
             appsScript.scripts.run({
                 auth: auth,
-                scriptId: '17YmwpeFyhYDR8DDx2nMYhzQMcLnLq1027Il_LMCXTXOMA8kVQ9gep6wg',
+                scriptId: '1tUhbiXA7YYl2DsrhTCTYZr5jMMrJMORztyxaO9ta9XSQiCX2o_612ymD',
                 resource: {
                     function: 'sendEmailFromDraft',
                     parameters: [
-                        'TEMPLATE:MyRV - Registration Confirmation',
-                        'eli.gearing@gmail.com',
-                        {
-                            name: 'Eli',
-                            vin: '2F354289jfj234',
-                            buildNo: '345755'
-                        }
+                        draftId,
+                        address,
+                        replaceValues
                     ],
                     devMode: true
                 }
@@ -115,3 +177,10 @@ module.exports.sendEmail = () => {
         }).catch(err => reject(err));
     });
 };
+
+
+
+
+// module.exports.getAuthUrl().then(url => console.log(url));
+// module.exports.createTokenFromCode('4/0AX4XfWhZveE3NYNqdVXEBU3x6p2My5Zs-xAl-JJJbSIw7KxnF1XUr0bOw8rd7yKa3IZvjQ');
+module.exports.listEmails().then(data => console.log(data));

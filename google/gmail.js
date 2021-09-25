@@ -1,6 +1,7 @@
 const google = require('googleapis').google;
 const readline = require('readline');
 const fs = require('fs');
+const MailParser = require('mailparser').MailParser;
 
 const SCOPES = ['https://www.googleapis.com/auth/script.external_request', 'https://www.googleapis.com/auth/gmail.modify'];
 const TOKEN_PATH = './google/token.json';
@@ -156,24 +157,91 @@ module.exports.listEmails = () => {
 module.exports.sendEmail = (draftId, address, replaceValues) => {
     // Returns a promise.
     return new Promise((resolve, reject) => {
-        // Loads the access token.
+        // Loads the auth token.
         module.exports.loadToken().then(auth => {
-            // Gets the Apps Script API.
-            const appsScript = google.script('v1');
-            // Executes an apps script function.
-            appsScript.scripts.run({
-                auth: auth,
-                scriptId: '1tUhbiXA7YYl2DsrhTCTYZr5jMMrJMORztyxaO9ta9XSQiCX2o_612ymD',
-                resource: {
-                    function: 'sendEmailFromDraft',
-                    parameters: [
-                        draftId,
-                        address,
-                        replaceValues
-                    ],
-                    devMode: true
-                }
-            }).then(res => resolve(res.data)).catch(err => reject(err));
+            // Declares an instance of the gmail api.
+            const gmail = google.gmail({version: 'v1', auth});
+            gmail.users.drafts.get({
+                userId: 'me',
+                id: draftId
+            }).then(draft => {
+                gmail.users.messages.get({
+                    userId: 'me',
+                    id: draft.data.message.id,
+                    format: 'RAW'
+                }).then(message => {
+
+                    // ********************************************************************************
+
+                    
+
+                    // ********************************************************************************
+
+
+                    gmail.users.drafts.create({
+                        userId: 'me',
+                        resource: {
+                            message: {
+                                raw: message.data.raw
+                            }
+                        }
+                    }).then(newDraft => {
+                        Promise.all([
+                            gmail.users.drafts.get({
+                                userId: 'me',
+                                id: newDraft.data.id
+                            }),
+                            gmail.users.messages.get({
+                                userId: 'me',
+                                id: newDraft.data.message.id,
+                                format: 'FULL'
+                            })
+                        ]).then(res => {
+                            const updatedDraft = res[0].data;
+                            const updatedMessage = res[1].data;
+                            const html = Buffer.from(updatedMessage.payload.parts[0].parts[1].body.data, 'base64').toString();
+                            const replaceKeys = Object.keys(replaceValues);
+                            for (key in replaceKeys) {
+                                html.replace(replaceKeys[key], replaceValues[replaceKeys[key]]);
+                            }
+                            updatedMessage.payload.parts[0].parts[1].body.data = Buffer.from(html).toString('base64');
+
+                            const subjectIndex = updatedMessage.payload.headers.findIndex(header => header.name == 'Subject');
+                            if (subjectIndex >= 0) {
+                                updatedMessage.payload.headers[subjectIndex].value = updatedMessage.payload.headers[subjectIndex].value.replace(/:?TEMPLATE:?/, '');
+                            } else {
+                                updatedMessage.payload.headers.push({
+                                    name: 'Subject',
+                                    value: updatedMessage.payload.headers[subjectIndex].value.replace(/:?TEMPLATE:?/, '')
+                                });
+                            }
+
+                            const toIndex = updatedMessage.payload.headers.findIndex(header => header.name == 'To');
+                            if (toIndex >= 0) {
+                                updatedMessage.payload.headers[toIndex].value = address;
+                            } else {
+                                updatedMessage.payload.headers.push({
+                                    name: 'To',
+                                    value: address
+                                });
+                            }
+                            updatedDraft.message = updatedMessage;
+                            console.log(JSON.stringify(updatedDraft));
+
+
+                            gmail.users.drafts.update({
+                                userId: 'me',
+                                id: updatedDraft.id,
+                                resource: updatedDraft
+                            }).then(() => {
+                                resolve();
+                            }).catch(err => reject(err));
+                            
+
+                        }).catch(err => reject(err))
+                    }).catch(err => reject(err));
+                }).catch(err => reject(err));
+            }).catch(err => reject(err));
         }).catch(err => reject(err));
     });
 };
@@ -183,4 +251,9 @@ module.exports.sendEmail = (draftId, address, replaceValues) => {
 
 // module.exports.getAuthUrl().then(url => console.log(url));
 // module.exports.createTokenFromCode('4/0AX4XfWhZveE3NYNqdVXEBU3x6p2My5Zs-xAl-JJJbSIw7KxnF1XUr0bOw8rd7yKa3IZvjQ');
-module.exports.listEmails().then(data => console.log(data));
+// module.exports.listEmails().then(data => console.log(data)).catch(err => console.log(err));
+module.exports.sendEmail('r-8695073299110056522', 'eli.gearing@gmail.com', {
+    name: 'Eli Gearing',
+    vin: 'TestVin101',
+    buildNo: 'TestBuildNo202'
+}).then(data => console.log(data)).catch(err => console.log(err));

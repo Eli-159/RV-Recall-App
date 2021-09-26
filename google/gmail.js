@@ -153,107 +153,106 @@ module.exports.listEmails = () => {
     });
 }
 
+// Declares a function to get the draft object and raw message data.
+module.exports.getRawDraftData = (auth, draftId) => {
+    // Returns a promise.
+    return new Promise((resolve, reject) => {
+        // Declares an instance of the gmail api.
+        const gmail = google.gmail({version: 'v1', auth});
+        // Calls the gmail api to get the draft object.
+        gmail.users.drafts.get({
+            userId: 'me',
+            id: draftId
+        }).then(draft => {
+            // Calls the gmail api to get the raw message data.
+            gmail.users.messages.get({
+                userId: 'me',
+                id: draft.data.message.id,
+                format: 'RAW'
+            }).then(message => {
+                // Resolves an object with the draft and message.
+                resolve({
+                    draft: draft.data,
+                    message: message.data.raw
+                });
+            }).catch(err => reject(err));
+        }).catch(err => reject(err));
+    });
+}
+
+// Declares a function to alter the message to include the new properties.
+module.exports.replaceMessageData = (message, address, replaceValues) => {
+    // Gets the keys from the replaceValues object.
+    const replaceKeys = Object.keys(replaceValues);
+    // Decodes the base64 message passed in.
+    let stringMessage = Buffer.from(message, 'base64').toString();
+    // Loops over the keys pulled from the replaceValues object.
+    for (key in replaceKeys) {
+        // Creates a regular expression replace key, using the replace key and adding optional charaters inbetween to handle new lines.
+        const replaceKey = new RegExp(('{{'+replaceKeys[key]+'}}').split('').join('=?\\n?\\r?\\n?'),'g');
+        // Replaces any instance of the replace key with the replace value passed in through the replaceValues object.
+        stringMessage = stringMessage.replace(replaceKey, replaceValues[replaceKeys[key]]);
+    }
+    // Splits the message on each new line.
+    const messageLines = stringMessage.split('\n');
+    // Adds the 'To' header.
+    messageLines.splice(0, 0, 'To: ' + address);
+    // Finds the index of subject.
+    const subIndex = messageLines.findIndex(line => line.includes('Subject:'));
+    // If it's found, which should always be the case, the string 'TEMPLATE' is removed, along with a colen on either side.
+    if (subIndex >= 0) {
+        messageLines[subIndex] = messageLines[subIndex].replace(/:?TEMPLATE:?/, '');
+    }
+    // The index of id is seached for.
+    const idIndex = messageLines.findIndex(line => line.includes('Message-ID:'));
+    // If it's found, it's removed.
+    if (idIndex >= 0) {
+        messageLines.splice(idIndex, 1);
+    }
+    // The messageLines array is joined by the token '\n', as that is what it was split on.
+    stringMessage = messageLines.join('\n');
+    // Returns the base64 encoded version of stringMessage.
+    return Buffer.from(stringMessage).toString('base64');
+}
+
+module.exports.createAndSendDraft = (auth, message) => {
+    // Returns a promise.
+    return new Promise((resolve, reject) => {
+        // Declares an instance of the gmail api.
+        const gmail = google.gmail({version: 'v1', auth});
+        // Creates a draft.
+        gmail.users.drafts.create({
+            userId: 'me',
+            resource: {
+                message: {
+                    raw: message
+                }
+            }
+        }).then(newDraft => {
+            // Sends the created draft.
+            gmail.users.drafts.send({
+                userId: 'me',
+                requestBody: newDraft.data
+            }).then(resolve).catch(err => reject(err));
+        }).catch(err => reject(err));
+    });
+}
+
 // Exports a function to send an email.
-module.exports.sendEmail = (draftId, address, replaceValues) => {
+module.exports.sendTemplateEmail = (draftId, address, replaceValues) => {
     // Returns a promise.
     return new Promise((resolve, reject) => {
         // Loads the auth token.
         module.exports.loadToken().then(auth => {
             // Declares an instance of the gmail api.
             const gmail = google.gmail({version: 'v1', auth});
-            gmail.users.drafts.get({
-                userId: 'me',
-                id: draftId
-            }).then(draft => {
-                gmail.users.messages.get({
-                    userId: 'me',
-                    id: draft.data.message.id,
-                    format: 'RAW'
-                }).then(message => {
-
-                    // ********************************************************************************
-
-                    
-
-                    // ********************************************************************************
-
-
-                    gmail.users.drafts.create({
-                        userId: 'me',
-                        resource: {
-                            message: {
-                                raw: message.data.raw
-                            }
-                        }
-                    }).then(newDraft => {
-                        Promise.all([
-                            gmail.users.drafts.get({
-                                userId: 'me',
-                                id: newDraft.data.id
-                            }),
-                            gmail.users.messages.get({
-                                userId: 'me',
-                                id: newDraft.data.message.id,
-                                format: 'FULL'
-                            })
-                        ]).then(res => {
-                            const updatedDraft = res[0].data;
-                            const updatedMessage = res[1].data;
-                            const html = Buffer.from(updatedMessage.payload.parts[0].parts[1].body.data, 'base64').toString();
-                            const replaceKeys = Object.keys(replaceValues);
-                            for (key in replaceKeys) {
-                                html.replace(replaceKeys[key], replaceValues[replaceKeys[key]]);
-                            }
-                            updatedMessage.payload.parts[0].parts[1].body.data = Buffer.from(html).toString('base64');
-
-                            const subjectIndex = updatedMessage.payload.headers.findIndex(header => header.name == 'Subject');
-                            if (subjectIndex >= 0) {
-                                updatedMessage.payload.headers[subjectIndex].value = updatedMessage.payload.headers[subjectIndex].value.replace(/:?TEMPLATE:?/, '');
-                            } else {
-                                updatedMessage.payload.headers.push({
-                                    name: 'Subject',
-                                    value: updatedMessage.payload.headers[subjectIndex].value.replace(/:?TEMPLATE:?/, '')
-                                });
-                            }
-
-                            const toIndex = updatedMessage.payload.headers.findIndex(header => header.name == 'To');
-                            if (toIndex >= 0) {
-                                updatedMessage.payload.headers[toIndex].value = address;
-                            } else {
-                                updatedMessage.payload.headers.push({
-                                    name: 'To',
-                                    value: address
-                                });
-                            }
-                            updatedDraft.message = updatedMessage;
-                            console.log(JSON.stringify(updatedDraft));
-
-
-                            gmail.users.drafts.update({
-                                userId: 'me',
-                                id: updatedDraft.id,
-                                resource: updatedDraft
-                            }).then(() => {
-                                resolve();
-                            }).catch(err => reject(err));
-                            
-
-                        }).catch(err => reject(err))
-                    }).catch(err => reject(err));
-                }).catch(err => reject(err));
+            // Gets the raw draft data.
+            module.exports.getRawDraftData(auth, draftId).then(draftData => {
+                // Updates the message.
+                const updatedMessage = module.exports.replaceMessageData(draftData.message, address, replaceValues);
+                // Creates a new draft and sends it.
+                module.exports.createAndSendDraft(auth, updatedMessage).then(() => resolve()).catch(err => reject(err));
             }).catch(err => reject(err));
         }).catch(err => reject(err));
     });
 };
-
-
-
-
-// module.exports.getAuthUrl().then(url => console.log(url));
-// module.exports.createTokenFromCode('4/0AX4XfWhZveE3NYNqdVXEBU3x6p2My5Zs-xAl-JJJbSIw7KxnF1XUr0bOw8rd7yKa3IZvjQ');
-// module.exports.listEmails().then(data => console.log(data)).catch(err => console.log(err));
-module.exports.sendEmail('r-8695073299110056522', 'eli.gearing@gmail.com', {
-    name: 'Eli Gearing',
-    vin: 'TestVin101',
-    buildNo: 'TestBuildNo202'
-}).then(data => console.log(data)).catch(err => console.log(err));

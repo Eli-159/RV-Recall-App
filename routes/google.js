@@ -2,11 +2,12 @@
 const express = require('express');
 const router = express.Router();
 const gmail = require('../google/gmail.js');
+const googleAuth = require('../google/auth.js');
 
 // Catches all requests for the authentication url.
 router.get('/auth/url', (req, res, next) => {
     // Gets the authentication url from google.
-    gmail.getAuthUrl().then(url => {
+    googleAuth.getAuthUrl().then(url => {
         // Redirects the user to the given url.
         res.redirect(url);
     });
@@ -15,14 +16,14 @@ router.get('/auth/url', (req, res, next) => {
 // Catches all requests for the auth code. This should be a redirect from google, containing the scopes and auth code as url parameters.
 router.get('/auth/code', (req, res, next) => {
     // Loads the requested and given scopes into variables, sorting and stringifying them for comparison.
-    const requestedScopes = JSON.stringify(gmail.scopes.sort());
+    const requestedScopes = JSON.stringify(googleAuth.scopes.sort());
     const givenScopes = JSON.stringify(req.query.scope.includes(' ') ? req.query.scope.split(' ').sort() : req.query.scope);
     // Loads the access code into a variable.
     const givenCode = req.query.code;
     // Tests if the requested scopes are all granted by the user.
     if (requestedScopes == givenScopes) {
         // Generates an access token.
-        gmail.createTokenFromCode(givenCode).then(() => {
+        googleAuth.createTokenFromCode(givenCode).then(() => {
             // Redirects the user to the success page.
             res.redirect('/workshop/admin/google/auth/success');
         }).catch(err => {

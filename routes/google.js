@@ -1,7 +1,7 @@
 // Inports the required libraries and other files.
 const express = require('express');
 const router = express.Router();
-const gmail = require('../google/gmail.js')
+const gmail = require('../google/gmail.js');
 
 // Catches all requests for the authentication url.
 router.get('/auth/url', (req, res, next) => {

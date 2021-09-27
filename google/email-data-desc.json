@@ -1,0 +1,134 @@
+[
+    {
+        "key": "vehicleVin",
+        "name": "Vehicle VIN",
+        "type": "String",
+        "contents": "The VIN of the related vehicle."
+    },
+    {
+        "key": "vehicleBuildNo",
+        "name": "Vehicle Build Number",
+        "type": "Number",
+        "contents": "The build number of the related vehicle."
+    },
+    {
+        "key": "vehicleIpa",
+        "name": "Vehicle IPA",
+        "type": "String",
+        "contents": "The IPA of the related vehicle."
+    },
+    {
+        "key": "vehicleEngineNo",
+        "name": "Vehicle Engine Number",
+        "type": "String",
+        "contents": "The engine number of the related vehicle."
+    },
+    {
+        "key": "vehicleModelDesc",
+        "name": "Vehicle Model Description",
+        "type": "String",
+        "contents": "The model description of the related vehicle."
+    },
+    {
+        "key": "vehicleAddSpec",
+        "name": "Vehcile Additional Specification",
+        "type": "String",
+        "contents": "Any addition specification of the related vehicle."
+    },
+    {
+        "key": "vehicleVariantCode",
+        "name": "Vehicle Variant Code",
+        "type": "String",
+        "contents": "The varient code of the related vehicle."
+    },
+    {
+        "key": "ownerName",
+        "name": "Owner Name",
+        "type": "String",
+        "contents": "The name of the current owner."
+    },
+    {
+        "key": "ownerEmail",
+        "name": "Owner Email",
+        "type": "String",
+        "contents": "The email address of the current owner."
+    },
+    {
+        "key": "ownerPhone",
+        "name": "Owner Phone",
+        "type": "String",
+        "contents": "The phone number of the current owner."
+    },
+    {
+        "key": "ownerStreet",
+        "name": "Owner Street",
+        "type": "String",
+        "contents": "The street of the current owner."
+    },
+    {
+        "key": "ownerSuburb",
+        "name": "Owner Suburb",
+        "type": "String",
+        "contents": "The suburb of the current owner."
+    },
+    {
+        "key": "ownerState",
+        "name": "Owner State",
+        "type": "String",
+        "contents": "The state in which the current owner lives."
+    },
+    {
+        "key": "ownerPostcode",
+        "name": "Owner Postcode",
+        "type": "String",
+        "contents": "The postcode in which the current owner lives."
+    },
+    {
+        "key": "ownerRegoState",
+        "name": "Owner Registration State",
+        "type": "String",
+        "contents": "The state in which the current owner has registered their vehicle."
+    },
+    {
+        "key": "ownerRegoNo",
+        "name": "Owner Registration Number",
+        "type": "String",
+        "contents": "The registration number of the current owner's vehicle."
+    },
+    {
+        "key": "ownerRegoDt",
+        "name": "Owner Registration Date",
+        "type": "String",
+        "contents": "The registration date of the current owner's vehicle."
+    },
+    {
+        "key": "workshopFound",
+        "name": "Workshop Found",
+        "type": "Boolean",
+        "contents": "Whether an associated workshop was found."
+    },
+    {
+        "key": "workshopLocation",
+        "name": "Workshop Location",
+        "type": "String",
+        "contents": "The city that the associated workshop is in."
+    },
+    {
+        "key": "workshopCode",
+        "name": "Workshop Code",
+        "type": "String",
+        "contents": "The database code of the associated workshop."
+    },
+    {
+        "key": "workshopName",
+        "name": "Workshop Name",
+        "type": "String",
+        "contents": "The name (\"Elite [State]\") of the associated workshop."
+    },
+    {
+        "key": "workshopEmail",
+        "name": "Workshop Email",
+        "type": "String",
+        "contents": "The email address of the associated workshop."
+    }
+]

@@ -49,7 +49,7 @@ module.exports.sortWorkshopDataForEmail = (vehicleData) => {
         const currRec = vehicleData.recallContacts[record];
         const currDate = new Date(currRec.createdAt).getTime();
         // Tests if the date is more recent than the previously found one, and if it from a recall registration record created by the owner.
-        if (currDate > maxDate && currRec.action == 'recall registration' && currRec.createdBy == 'owner') {
+        if (currDate > currDate && currRec.action == 'recall registration' && currRec.createdBy == 'owner') {
             // Updates the recentDate and recentIndex variables.
             recentDate = currDate;
             recentIndex = record;

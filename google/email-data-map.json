@@ -1,11 +1,14 @@
 [
     {
         "triggerUrl": "/owner-registration/submit-details",
-        "active": false,
-        "addressLocation": "",
-        "draftId": "",
-        "replaceItems": {
-            "owner": "ownerName"
+        "active": true,
+        "address": "eli.gearing@gmail.com",
+        "draftId": "r6740561521309039917",
+        "replaceValues": {
+            "owner": "ownerName",
+            "vin": "vehicleVin",
+            "buildNo": "vehicleBuildNo",
+            "modelDesc": "vehicleModelDesc"
         }
     }
 ]

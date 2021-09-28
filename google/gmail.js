@@ -1,16 +1,15 @@
 const google = require('googleapis').google;
 const fs = require('fs');
-const auth = require('./auth.js');
-const dao = require ('../data/dao.js');
+const googleAuth = require('./auth.js');
 
 // Exports a function to list the user's draft emails.
-module.exports.listEmails = () => {
+module.exports.listDrafts = () => {
     // Returns a promise.
     return new Promise((resolve, reject) => {
         // Loads the auth token.
-        auth.loadToken().then(token => {
+        googleAuth.loadToken().then(token => {
             // Declares an instance of the gmail api.
-            const gmail = google.gmail({version: 'v1', token});
+            const gmail = google.gmail({version: 'v1', auth: token});
             // Gets a list of drafts.
             gmail.users.drafts.list({
                 userId: 'me'
@@ -53,7 +52,7 @@ module.exports.getRawDraftData = (token, draftId) => {
     // Returns a promise.
     return new Promise((resolve, reject) => {
         // Declares an instance of the gmail api.
-        const gmail = google.gmail({version: 'v1', token});
+        const gmail = google.gmail({version: 'v1', auth: token});
         // Calls the gmail api to get the draft object.
         gmail.users.drafts.get({
             userId: 'me',
@@ -114,7 +113,7 @@ module.exports.createAndSendDraft = (token, message) => {
     // Returns a promise.
     return new Promise((resolve, reject) => {
         // Declares an instance of the gmail api.
-        const gmail = google.gmail({version: 'v1', token});
+        const gmail = google.gmail({version: 'v1', auth: token});
         // Creates a draft.
         gmail.users.drafts.create({
             userId: 'me',
@@ -138,7 +137,7 @@ module.exports.sendTemplateEmail = (draftId, address, replaceValues) => {
     // Returns a promise.
     return new Promise((resolve, reject) => {
         // Loads the auth token.
-       auth.loadToken().then(token => {
+        googleAuth.loadToken().then(token => {
             // Gets the raw draft data.
             module.exports.getRawDraftData(token, draftId).then(draftData => {
                 // Updates the message.

@@ -67,7 +67,7 @@ module.exports.handleFailedEmail = (url, vin, numFails) => {
                 numFails: (numFails ? numFails+1 : 1)
             });
             // Writes the data back to the failed-emails.json file.
-            fs.writeFile('./google/failed-emails.json', (err) => {
+            fs.writeFile('./google/failed-emails.json', JSON.stringify(updatedData), (err) => {
                 // Rejects an error, if one occurs, and resolves the promise if not.
                 if (err) return reject(err);
                 resolve();
@@ -109,6 +109,39 @@ module.exports.sendAutoEmail = (url, vin, numFails) => {
                 // Logs the error and resolves the promise.
                 console.log(error);
                 resolve();
+            });
+        });
+    });
+};
+
+module.exports.sendFailedEmails = () => {
+    // Returns a promise.
+    return new Promise((resolve, reject) => {
+        // Reads the failed-emails.json file.
+        fs.readFile('./google/failed-emails.json', (err, data) => {
+            // Rejects an error if one occurs.
+            if (err) return reject(err);
+            // Clears the failed-emails.json file.
+            fs.writeFile('./google/failed-emails.json', '[]', (err) => {
+                // Rejects an error, if one occurs.
+                if (err) return reject(err);
+                // Parses the email data.
+                const failedEmails = JSON.parse(data);
+                // Declares a variable to contain the email promises.
+                const sendingEmails = [];
+                // Loops over the emails.
+                for (email in failedEmails) {
+                    // Loads the current email data into a variable.
+                    const currEmail = failedEmails[email];
+                    // Calls the sendAutoEmail function with the email data.
+                    sendingEmails.push(module.exports.sendAutoEmail(currEmail.url, currEmail.vin, currEmail.numFails));
+                }
+                // Waits for all of the promises to resolve.
+                Promise.all(sendingEmails).then(resolve).catch(err => {
+                    // Logs the error and resolves the promise.
+                    console.log(err);
+                    resolve();
+                });
             });
         });
     });

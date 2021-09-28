@@ -1,0 +1,11 @@
+[
+    {
+        "triggerUrl": "/owner-registration/submit-details",
+        "active": false,
+        "addressLocation": "",
+        "draftId": "",
+        "replaceItems": {
+            "owner": "ownerName"
+        }
+    }
+]

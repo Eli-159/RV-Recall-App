@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const gmail = require('../google/gmail.js');
 const googleAuth = require('../google/auth.js');
+const sendEmail = require('../google/send-email.js');
 
 // Catches all requests for the authentication url.
 router.get('/auth/url', (req, res, next) => {

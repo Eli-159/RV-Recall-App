@@ -49,10 +49,35 @@ module.exports.matchMapWithVals = (dataMap, values) => {
     return mapWithVals;
 };
 
-
+// Exports a function to handle an error sending the emails.
+module.exports.handleFailedEmail = (url, vin, numFails) => {
+    // Returns a promise.
+    return new Promise((resolve, reject) => {
+        // Reads the failed-emails.json file.
+        fs.readFile('./google/failed-emails.json', (err, data) => {
+            // Rejects an error if one occurs.
+            if (err) return reject(err);
+            // Parses the json data.
+            const updatedData = JSON.parse(data);
+            // Pushes a new object.
+            updatedData.push({
+                vin: vin,
+                url: url,
+                time: Date.now(),
+                numFails: (numFails ? numFails+1 : 1)
+            });
+            // Writes the data back to the failed-emails.json file.
+            fs.writeFile('./google/failed-emails.json', (err) => {
+                // Rejects an error, if one occurs, and resolves the promise if not.
+                if (err) return reject(err);
+                resolve();
+            });
+        })
+    });
+}
 
 // Declares a function to send an automated email, based on the url requested and vin of the current vehicle.
-module.exports.sendAutoEmail = (url, vin) => {
+module.exports.sendAutoEmail = (url, vin, numFails) => {
     // Returns a promise.
     return new Promise((resolve, reject) => {
         // Waits for the getEmailDataMap and getEmailDataObject functions to resolve.
@@ -66,9 +91,25 @@ module.exports.sendAutoEmail = (url, vin) => {
                 const emailDataMap = module.exports.matchMapWithVals(data[0], data[1]);
                 // Sends the template email with the map data.
                 gmail.sendTemplateEmail(emailDataMap.draftId, emailDataMap.address, emailDataMap.replaceValues).then(resolve).catch(err => {
+                    // Logs the error.
                     console.log(err);
+                    // Calls the function to write the error to the json file.
+                    module.exports.handleFailedEmail(url, vin, numFails).then(resolve).catch(error => {
+                        // Logs the error and resolves the promise.
+                        console.log(error);
+                        resolve();
+                    });
                 });
             }
-        }).catch(err => console.log(err));
+        }).catch(err => {
+            // Logs the error.
+            console.log(err);
+            // Calls the function to write the error to the json file.
+            module.exports.handleFailedEmail(url, vin, numFails).then(resolve).catch(error => {
+                // Logs the error and resolves the promise.
+                console.log(error);
+                resolve();
+            });
+        });
     });
 };

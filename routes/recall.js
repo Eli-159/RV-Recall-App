@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const dao = require ('../data/dao.js');
 const auth = require('../models/authenticate.js');
+const sendEmail = require('../google/send-email.js');
 
 // All get requests for the recall form are caught.
 router.get('/', (req, res, next) => {
@@ -182,6 +183,8 @@ router.post('/submit-owner-details', (req, res, next) => {
         res.render('workshop/recall-form/success-message', {
             role: req.payload.role
         });
+        // Sends automatic email.
+        sendEmail.sendAutoEmail(req.originalUrl, payload.vin);
     }).catch(err => {
         // If an error occurs while trying to save the data, the status code is set to 500 and a small error rendered and returned.
         res.status(500);

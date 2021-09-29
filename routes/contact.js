@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const dao = require ('../data/dao.js');
 const auth = require('../models/authenticate.js');
+const sendEmail = require('../google/send-email.js');
 
 // Catches any requests ending with /contact
 router.get('/', (req, res, next) => {
@@ -32,7 +33,8 @@ router.use('/verifyVin', (req, res, next) => {
             res.cookie('jwt', auth.generateToken({
                 user: payload.user,
                 role: payload.role,
-                vehicleId: data.id
+                vehicleId: data.id,
+                vin: vin
             }), {httpOnly: true});
             // Tests if the request was made using a post request.
             if (method == 'POST') {
@@ -86,12 +88,18 @@ router.post('/submit-contact-details', (req, res, next) => {
         reasons.push('booking');
         // If the reasons for contact include for a recall booking, the response type is set to postive, rather than null.
         response = 'positive';
+        // Sends an automatic email.
+        sendEmail.sendAutoEmail(req.originalUrl+'#booking', payload.vin);
     }
     if (body.ownerAcknowledgedRecallReason) {
         reasons.push('recall acknowledged');
         response = 'positive'
     }
-    if (body.notOwnerReason) reasons.push('not owner');
+    if (body.notOwnerReason) {
+        reasons.push('not owner');
+        // Sends an automatic email.
+        sendEmail.sendAutoEmail(req.originalUrl+'#notOwner', payload.vin);
+    }
     if (body.complaintReason) reasons.push('complaint');
     if (body.complimentReason) reasons.push('compliment');
     // Sets the reasons variable to the array constructed, joined by semicolons.

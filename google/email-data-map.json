@@ -2,7 +2,7 @@
     {
         "triggerUrl": "/owner-registration/submit-details",
         "active": true,
-        "address": "eli.gearing@gmail.com",
+        "address": "ownerEmail",
         "draftId": "r6740561521309039917",
         "replaceValues": {
             "owner": "ownerName",

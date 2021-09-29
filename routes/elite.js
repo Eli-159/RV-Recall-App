@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const dao = require ('../data/dao.js');
 const auth = require('../models/authenticate.js');
+const sendEmail = require('../google/send-email.js');
 
 
 // If the 'get-vehicle-details' form is requested, it is rendered and sent.
@@ -228,6 +229,7 @@ router.post('/update-owner-details/submit-owner-details', (req, res, next) => {
         res.render('workshop/update-owner-details/success-message', {
             role: req.payload.role
         });
+        sendEmail.sendAutoEmail(req.originalUrl, payload.vin);
     }).catch(err => {
         // If an error occurs while trying to save the data, the status code is set to 500 and a small error rendered and returned.
         res.status(500);

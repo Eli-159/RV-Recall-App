@@ -1,0 +1,38 @@
+@media only screen and (max-width: 674px) {
+    .header-nav-menu {
+        margin: auto;
+        padding: 2rem 0;
+        text-align: center;
+        float: none;
+        display: block;
+        width: 188px;
+    }
+    .header-logo {
+        display: block;
+        margin: auto;
+        float: none;
+        margin-top: 0.55rem;
+        margin-left: 1.5rem;
+        text-align: center;
+    }
+    ul li ul {
+        visibility: hidden !important;
+        opacity: 0 !important;
+        display: none !important;
+      }
+}
+
+
+@media only screen and (min-width: 675px) {
+    .header-nav-menu {
+        margin-right: 1rem;
+        padding: 2rem 0;
+        text-align: center;
+        float: right;
+    }
+    .header-logo {
+        display: block;
+        float: left;
+        margin-top: 0.55rem;
+    }
+}

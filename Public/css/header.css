@@ -48,11 +48,18 @@ ul.header-nav-menu-list li ul {
   opacity: 0;
   position: absolute;
   transition: 0.3s;
-  right: max(calc(50% - 410px), 10px);
   padding: 5px;
   width: 138px;
   background-color: rgba(61, 66, 93, 0.8);
   border-radius: 10px;
+}
+
+ul.header-nav-menu-list li ul.actions {
+  right: max(calc(50% - 410px), 10px);
+}
+
+ul.header-nav-menu-list li ul.google {
+  right: max(calc(50% - 348px), 70px);
 }
 
 ul.header-nav-menu-list li:hover ul,

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title #{pageTitle}
+    block css
+      link(rel="stylesheet", href="/css/workshop-layout.css")
+      link(rel="stylesheet", href="/css/main.css")
+      link(rel="stylesheet", href="/css/form.css")
+      link(rel="stylesheet", href="/css/header.css")
+      link(rel="stylesheet", href="/css/error.css")
+      link(rel="stylesheet", href="/css/table.css")
+      link(rel="stylesheet", href="/css/info.css")
+    block js
+    script(src="/js/global.js")
+  body.stop-page-load-transition
+    div(class="container")
+      header
+        div(class="header-logo")
+          a(href="/")
+            img(src="/images/logo.png", class="header-logo-img")
+        nav(class="header-nav-menu")
+          ul(class="header-nav-menu-list")
+            li(class="header-nav-list-item")
+              a(href="/workshop/admin/google", class=(path==='/workshop/admin/google' ? 'active' : '')) Google
+              ul(class=["dropdown", "google"])
+                li
+                  a(href="/workshop/admin/google/auth/url", class=(path.includes('/workshop/admin/google/auth') ? 'active' : '')) Authenticate
+            li(class="header-nav-list-item")
+              a(href="/workshop/actions", class=(path==='/workshop/actions' ? 'active' : '')) Actions
+              ul(class=["dropdown", "actinos"])
+                li
+                  a(href="/workshop/contact", class=(path==='/workshop/contact' ? 'active' : '')) Contact Form
+                li
+                  a(href="/workshop/recall", class=(path==='/workshop/recall' ? 'active' : '')) Recall Form
+                li
+                  a(href="/workshop/elite/update-owner-details", class=(path==='/workshop/elite/update-owner-details' ? 'active' : '')) Update Owner Details
+                li
+                  a(href="/workshop/elite/get-vehicle-details", class=(path==='/workshop/elite/get-vehicle-details' ? 'active' : '')) Get Vehicle Details
+                li
+                  a(href="/workshop/admin/get-owner-contact-details", class=(path==='/workshop/admin/get-owner-contact-details' ? 'active' : '')) Get All Contact Details
+                li
+                  a(href="/workshop/admin/reports", class=(path==='/workshop/admin/reports' ? 'active' : '')) Find a Report
+                li
+                  a(href="/workshop/admin/reports/DailyReport.zip", class=(path==='/workshop/admin/reports/DailyReport.zip' ? 'active' : '')) Today's Daily Report
+                li
+                  a(href="/workshop/admin/csv-upload", class=(path==='/workshop/admin/csv-upload' ? 'active' : '')) Upload Vehicle Data
+              li(class="header-nav-list-item")
+                a(href="/logout", class=(path==='/logout' ? 'active' : '')) Logout
+      main
+        block content

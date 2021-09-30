@@ -162,13 +162,18 @@ router.get('/view-auto-emails', (req, res, next) => {
     });
 });
 
+// Catches all requests for the initial page while the server sends the emails.
 router.get('/sending-failed-emails', (req, res, next) => {
     // Reads the failed-emails.json file.
     fs.readFile('./google/failed-emails.json', (err, data) => {
+        // Loads the number of emails into a variable.
         const numEmails = (err ? -1 : JSON.parse(data).length);
+        // Tests if there are no failed emails.
         if (numEmails == 0) {
+            // Redirects the user directly to the send-failed-emails page, as there should be none to send.
             res.redirect('/workshop/admin/google/send-failed-emails');
         } else {
+            // Renders the send-failed-emails page.
             res.render('workshop/admin/google/send-failed-emails', {
                 numEmails: numEmails,
                 error: (err ? true : false),
@@ -180,8 +185,11 @@ router.get('/sending-failed-emails', (req, res, next) => {
     });
 });
 
+// Catches all requests to send the failed emails.
 router.get('/send-failed-emails', (req, res, next) => {
+    // Sends the emails.
     sendEmail.sendFailedEmails().then(emailData => {
+        // Renders the send-emails page.
         res.render('workshop/admin/google/sent-emails.pug', {
             emails: emailData,
             pageTitle: 'Emails Sent',

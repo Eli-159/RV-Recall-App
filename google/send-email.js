@@ -85,8 +85,8 @@ module.exports.sendAutoEmail = (url, vin, numFails) => {
             module.exports.getEmailDataMap(url),
             dataFuncs.getEmailDataObject(vin)
         ]).then(data => {
-            // Tests if there was an email map enabled for the given url.
-            if (data[0]) {
+            // Tests if there was an email map enabled for the given url and if the workshop email is required and present.
+            if (data[0] && (data[0].address != "workshopEmail" || data[1].workshopFound)) {
                 // Loads the data map, with the substituted values, into a variable.
                 const emailDataMap = module.exports.matchMapWithVals(data[0], data[1]);
                 // Sends the template email with the map data.

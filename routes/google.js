@@ -1,6 +1,7 @@
 // Inports the required libraries and other files.
 const express = require('express');
 const router = express.Router();
+const emailKeys = require('../google/email-data-desc.json');
 const gmail = require('../google/gmail.js');
 const googleAuth = require('../google/auth.js');
 const sendEmail = require('../google/send-email.js');
@@ -86,6 +87,15 @@ router.get('/auth/scope-error', (req, res, next) => {
         role: req.payload.role
     });
 });
+
+router.get('/email-keys', (req, res, next) => {
+    res.render('workshop/admin/google/email-keys.pug', {
+        emailKeys: emailKeys,
+        pageTitle: 'Email Keys',
+        path: '/workshop/admin/google/auth/scope-error',
+        role: req.payload.role
+    });
+})
 
 // The router is exported.
 module.exports = router;

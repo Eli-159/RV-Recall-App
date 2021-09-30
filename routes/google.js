@@ -10,11 +10,7 @@ const sendEmail = require('../google/send-email.js');
 // Catches all requests that have no further url.
 router.get('/', (req, res, next) => {
     // Redirects to the google actions page.
-    res.render('workshop/admin/google/actions', {
-        pageTitle: 'Google Home - MYRV',
-        path: '/workshop/admin/google/auth/success',
-        role: req.payload.role
-    })
+    res.redirect('/workshop/admin/google/actions');
 });
 
 // Catches all requests for the actions page.

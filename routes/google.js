@@ -92,7 +92,7 @@ router.get('/email-keys', (req, res, next) => {
     res.render('workshop/admin/google/email-keys.pug', {
         emailKeys: emailKeys,
         pageTitle: 'Email Keys',
-        path: '/workshop/admin/google/auth/scope-error',
+        path: '/workshop/admin/google/email-keys',
         role: req.payload.role
     });
 })

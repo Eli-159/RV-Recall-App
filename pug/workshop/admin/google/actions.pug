@@ -1,0 +1,15 @@
+extends ../../../templates/google-layout
+
+block css
+    link(rel="stylesheet", href="/css/google-layout.css")
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/actions.css")
+    link(rel="stylesheet", href="/css/header.css")
+
+block content
+    p Use the links below to navigate to the functions you wish to use.
+    br
+    ul.body-nav-list
+        li.body-nav-list-item
+            a(href="/workshop/admin/google/auth/url") Google Authentication
+                p.body-nav-desc Authenticate the website with Google.

@@ -5,6 +5,26 @@ const gmail = require('../google/gmail.js');
 const googleAuth = require('../google/auth.js');
 const sendEmail = require('../google/send-email.js');
 
+// Catches all requests that have no further url.
+router.get('/', (req, res, next) => {
+    // Redirects to the google actions page.
+    res.render('workshop/admin/google/actions', {
+        pageTitle: 'Google Home - MYRV',
+        path: '/workshop/admin/google/auth/success',
+        role: req.payload.role
+    })
+});
+
+// Catches all requests for the actions page.
+router.get('/actions', (req, res, next) => {
+    // Renders the pug page.
+    res.render('workshop/admin/google/actions', {
+        pageTitle: 'Google Actions - MYRV',
+        path: '/workshop/admin/google/actions',
+        role: req.payload.role
+    })
+});
+
 // Catches all requests for the authentication url.
 router.get('/auth/url', (req, res, next) => {
     // Gets the authentication url from google.

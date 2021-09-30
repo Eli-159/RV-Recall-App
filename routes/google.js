@@ -1,6 +1,7 @@
 // Inports the required libraries and other files.
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 const emailKeys = require('../google/email-data-desc.json');
 const gmail = require('../google/gmail.js');
 const googleAuth = require('../google/auth.js');
@@ -95,7 +96,36 @@ router.get('/email-keys', (req, res, next) => {
         path: '/workshop/admin/google/email-keys',
         role: req.payload.role
     });
-})
+});
+
+router.get('/sending-failed-emails', (req, res, next) => {
+    // Reads the failed-emails.json file.
+    fs.readFile('./google/failed-emails.json', (err, data) => {
+        const numEmails = (err ? -1 : JSON.parse(data).length);
+        if (numEmails == 0) {
+            res.redirect('/workshop/admin/google/send-failed-emails');
+        } else {
+            res.render('workshop/admin/google/send-failed-emails', {
+                numEmails: numEmails,
+                error: (err ? true : false),
+                pageTitle: 'Sending Emails...',
+                path: '/workshop/admin/google/sending-failed-emails',
+                role: req.payload.role
+            });
+        }
+    });
+});
+
+router.get('/send-failed-emails', (req, res, next) => {
+    sendEmail.sendFailedEmails().then(emailData => {
+        res.render('workshop/admin/google/sent-emails.pug', {
+            emails: emailData,
+            pageTitle: 'Emails Sent',
+            path: '/workshop/admin/google/sending-failed-emails',
+            role: req.payload.role
+        });
+    })
+});
 
 // The router is exported.
 module.exports = router;

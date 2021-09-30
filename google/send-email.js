@@ -127,21 +127,34 @@ module.exports.sendFailedEmails = () => {
                 if (err) return reject(err);
                 // Parses the email data.
                 const failedEmails = JSON.parse(data);
-                // Declares a variable to contain the email promises.
-                const sendingEmails = [];
-                // Loops over the emails.
-                for (email in failedEmails) {
-                    // Loads the current email data into a variable.
-                    const currEmail = failedEmails[email];
-                    // Calls the sendAutoEmail function with the email data.
-                    sendingEmails.push(module.exports.sendAutoEmail(currEmail.url, currEmail.vin, currEmail.numFails));
+                // Saves the number of emails to be sent.
+                const originalEmailCount = failedEmails.length;
+                // Declares a function to send each email.
+                const sendEmail = () => {
+                    // TEsts if there are any emails left.
+                    if (failedEmails.length > 0) {
+                        // Removes the first element of the array and stores it in a variable.
+                        const currEmail = failedEmails.shift();
+                        // Calls the function to send the email, recalling this function when it is finished.
+                        module.exports.sendAutoEmail(currEmail.url, currEmail.vin, currEmail.numFails).then(sendEmail).catch(sendEmail);
+                    } else {
+                        // If no emails remain, the failed emails json file is read.
+                        fs.readFile('./google/failed-emails.json', (err, remainingEmailData) => {
+                            // The promise is resolved if there is an error reading the file.
+                            if (err) return resolve({original: originalEmailCount, failed: '?', sent: '?'});
+                            // The read file is passed an the number of properties it has read into a variable.
+                            const remainingEmailCount = JSON.parse(remainingEmailData).length;
+                            // The promise is resolved with that data.
+                            resolve({
+                                original: originalEmailCount,
+                                failed: remainingEmailCount,
+                                sent: originalEmailCount-remainingEmailCount
+                            });
+                        });
+                    }
                 }
-                // Waits for all of the promises to resolve.
-                Promise.all(sendingEmails).then(resolve).catch(err => {
-                    // Logs the error and resolves the promise.
-                    console.log(err);
-                    resolve();
-                });
+                // The previously declared function is called for the first time.
+                sendEmail();
             });
         });
     });

@@ -1,0 +1,10 @@
+extends ../../../templates/google-layout
+
+block content
+    h2 Emails Sent
+    br
+    p #{emails.sent} out of #{emails.original} emails were successfully sent. #{emails.failed} #{emails.failed == 1 ? 'email' : 'emails'} failed again.
+    if emails.failed > 0
+        p Do you want to 
+            a(href="/workshop/admin/google/sending-failed-emails") retry
+            | ?

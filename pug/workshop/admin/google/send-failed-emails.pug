@@ -1,0 +1,16 @@
+extends ../../../templates/google-layout
+
+block js
+    script(src="/js/send-failed-emails.js") 
+
+block content
+    h2 Sending Emails...
+    br
+    if !error
+        p We are attempting to send #{numEmails} #{numEmails == 1 ? 'email' : 'emails'}. Please wait.
+        br
+        p We are expecting this to take approximately 
+            span(id="timeRemaining") #{numEmails*3}
+            |  seconds.
+    else
+        p We are attempting to send the emails. Please wait.

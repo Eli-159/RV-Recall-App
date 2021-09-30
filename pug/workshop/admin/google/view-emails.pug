@@ -1,0 +1,14 @@
+extends ../../../templates/google-layout
+
+block content
+    h2 Automatic Emails:
+    table(class="table")
+        tr
+            th Trigger Url
+            th Active
+            th Draft Subject
+        each email in autoEmailData
+            tr
+                td #{email.url}
+                td #{email.active}
+                td #{email.draft}

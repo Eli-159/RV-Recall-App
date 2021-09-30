@@ -85,12 +85,80 @@ router.get('/auth/scope-error', (req, res, next) => {
     });
 });
 
+// Catches all requests for the list of email keys.
 router.get('/email-keys', (req, res, next) => {
+    // Renders the email keys page.
     res.render('workshop/admin/google/email-keys.pug', {
         emailKeys: emailKeys,
         pageTitle: 'Email Keys',
         path: '/workshop/admin/google/email-keys',
         role: req.payload.role
+    });
+});
+
+// Catches all requests for the list of auto emails.
+router.get('/view-auto-emails', (req, res, next) => {
+    // Reads the data map file.
+    fs.readFile('./google/email-data-map.json', (err, content) => {
+        // Tests for an error.
+        if (err) {
+            // Logs the error.
+            console.log(err);
+            // Renders an error page.
+            res.render('errors/full-page-error.pug', {
+                includeRedirect: true,
+                errorHeading: 'Unexpected Error',
+                errorBody: 'Sorry, an unexpected error occurred while trying to read the email map. Please try again.',
+                redirectTime: '30',
+                redirectAddress: '/workshop/admin/google/actions',
+                redirectPageName: 'Google Actions Page',
+                pageTitle: 'Error',
+                path: '/workshop/admin/google/view-auto-emails',
+                role: req.payload.role
+            });
+        } else {
+            // Passes the JSON content.
+            const mappedEmails = JSON.parse(content);
+            // Gets a list of all gmail drafts.
+            gmail.listDrafts().then(drafts => {
+                // Declares a variable to hold all of the draft data.
+                const autoEmailData = [];
+                // Loops over the mapped emails.
+                for (email in mappedEmails) {
+                    // Gets the draft object for the current email.
+                    const draft = drafts.find(draft => draft.draftId == mappedEmails[email].draftId);
+                    // Pushes an object with the wanted data to the autoEmailData array.
+                    autoEmailData.push({
+                        url: mappedEmails[email].triggerUrl,
+                        active: mappedEmails[email].active.toString().toUpperCase(),
+                        draft: (draft ? draft.subject : 'Not Linked')
+                    });
+                }
+                // Renders the view-emails page.
+                res.render('workshop/admin/google/view-emails', {
+                    autoEmailData: autoEmailData,
+                    pageTitle: 'Automatic Emails',
+                    path: '/workshop/admin/google/view-auto-emails',
+                    role: req.payload.role
+                });
+                
+            }).catch(error => {
+                // Logs the error.
+                console.log(error);
+                // Renders an error page.
+                res.render('errors/full-page-error.pug', {
+                    includeRedirect: true,
+                    errorHeading: 'Unexpected Error',
+                    errorBody: 'Sorry, an unexpected error occurred while fetching the draft data from google. Please try again.',
+                    redirectTime: '30',
+                    redirectAddress: '/workshop/admin/google/actions',
+                    redirectPageName: 'Google Actions Page',
+                    pageTitle: 'Error',
+                    path: '/workshop/admin/google/view-auto-emailss',
+                    role: req.payload.role
+                });
+            });
+        }
     });
 });
 

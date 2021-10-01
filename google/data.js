@@ -1,6 +1,32 @@
 const fs = require('fs');
 const dao = require ('../data/dao.js');
 
+// Declares a function to get the email data map.
+module.exports.getEmailDataMapById = id => {
+    // Returns a promise.
+    return new Promise((resolve, reject) => {
+        // Reads the email data map file.
+        fs.readFile('./google/email-data-map.json', (err, content) => {
+            // Checks if there was an error.
+            if (err) {
+                // Rejects the promise, passing through the error.
+                reject(err);
+            } else {
+                // Passes the file and finds the map matching the given id.
+                const map = JSON.parse(content).find(currMap => currMap.id == id);
+                // Tests if the map searched for exists.
+                if (map) {
+                    // Resolves the promise, passing through the passed data map.
+                    resolve(map);
+                } else {
+                    // Rejects the promise.
+                    reject('No map with that id.');
+                }
+            }
+        });
+    })
+}
+
 // Declares a function to sort the vehicle data for the email.
 module.exports.sortVehicleDataForEmail = (vehicleData) => {
     // Declares an object that contains the vehicle data required for the email.

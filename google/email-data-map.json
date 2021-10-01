@@ -1,7 +1,8 @@
 [
     {
-        "triggerUrl": "/owner-registration/submit-details",
-        "active": true,
+        "id": 123,
+        "triggerUrl": "/recall-registration/submit-details",
+        "active": false,
         "address": "ownerEmail",
         "draftId": "r6740561521309039917",
         "replaceValues": {
@@ -12,6 +13,7 @@
         }
     },
     {
+        "id": 321,
         "triggerUrl": "/owner-registration/submit-details",
         "active": true,
         "address": "ownerEmail",

@@ -4,6 +4,7 @@ const router = express.Router();
 const fs = require('fs');
 const emailKeys = require('../google/email-data-desc.json');
 const gmail = require('../google/gmail.js');
+const googleData = require('../google/data.js');
 const googleAuth = require('../google/auth.js');
 const sendEmail = require('../google/send-email.js');
 
@@ -154,12 +155,46 @@ router.get('/view-auto-emails', (req, res, next) => {
                     redirectAddress: '/workshop/admin/google/actions',
                     redirectPageName: 'Google Actions Page',
                     pageTitle: 'Error',
-                    path: '/workshop/admin/google/view-auto-emailss',
+                    path: '/workshop/admin/google/view-auto-emails',
                     role: req.payload.role
                 });
             });
         }
     });
+});
+
+router.get('/edit-auto-email', (req, res, next) => {
+    const emailId = req.query.id;
+    Promise.all([
+        gmail.listDrafts(),
+        googleData.getEmailDataMapById(emailId)
+    ]).then(data => {
+        res.render('workshop/admin/google/edit-email-map.pug', {
+            email: {
+                keys: emailKeys,
+                drafts: data[0],
+                map: data[1]
+            },
+            pageTitle: 'Edit Auto Email',
+            path: '/workshop/admin/google/edit-auto-email',
+            role: req.payload.role
+        });
+    }).catch(err => {
+        // Logs the error.
+        console.log(err);
+        // Renders an error page.
+        res.render('errors/full-page-error.pug', {
+            includeRedirect: true,
+            errorHeading: 'Unexpected Error',
+            errorBody: 'Sorry, an unexpected error occurred while loading the email data. Please try again.',
+            redirectTime: '30',
+            redirectAddress: '/workshop/admin/google/actions',
+            redirectPageName: 'Google Actions Page',
+            pageTitle: 'Error',
+            path: '/workshop/admin/google/view-auto-emails',
+            role: req.payload.role
+        });
+    })
 });
 
 // Catches all requests for the initial page while the server sends the emails.

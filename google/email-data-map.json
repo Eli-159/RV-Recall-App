@@ -10,5 +10,17 @@
             "buildNo": "vehicleBuildNo",
             "modelDesc": "vehicleModelDesc"
         }
+    },
+    {
+        "triggerUrl": "/owner-registration/submit-details",
+        "active": true,
+        "address": "ownerEmail",
+        "draftId": "r6740561521309039917",
+        "replaceValues": {
+            "owner": "ownerName",
+            "vin": "vehicleVin",
+            "buildNo": "vehicleBuildNo",
+            "modelDesc": "vehicleBuildNo"
+        }
     }
 ]

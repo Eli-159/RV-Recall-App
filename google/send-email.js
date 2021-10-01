@@ -13,16 +13,10 @@ module.exports.getEmailDataMap = (url) => {
             if (err) return reject(err);
             // Passes the returned json.
             const dataMap = JSON.parse(value);
-            // Searches for an email tied to the given url.
-            const emailData = dataMap.find(email => email.triggerUrl == url);
-            // Tests if the found email exists, and if so, is set to not active.
-            if (emailData && emailData.active == false) {
-                // Resolves the promise, passing undefined, the same value as if no record was found.
-                resolve(undefined);
-            } else {
-                // Returns the record, or undefined if none were found.
-                resolve(emailData);
-            }
+            // Filters the array for all emails tied to the given url and that are active.
+            const emailData = dataMap.filter(email => email.triggerUrl == url && email.active);
+            // Resolves the promise, passing through the filtered array.
+            resolve(emailData);
         });
     });
 };
@@ -85,22 +79,32 @@ module.exports.sendAutoEmail = (url, vin, numFails) => {
             module.exports.getEmailDataMap(url),
             dataFuncs.getEmailDataObject(vin)
         ]).then(data => {
-            // Tests if there was an email map enabled for the given url and if the workshop email is required and present.
-            if (data[0] && (data[0].address != "workshopEmail" || data[1].workshopFound)) {
-                // Loads the data map, with the substituted values, into a variable.
-                const emailDataMap = module.exports.matchMapWithVals(data[0], data[1]);
-                // Sends the template email with the map data.
-                gmail.sendTemplateEmail(emailDataMap.draftId, emailDataMap.address, emailDataMap.replaceValues).then(resolve).catch(err => {
-                    // Logs the error.
-                    console.log(err);
-                    // Calls the function to write the error to the json file.
-                    module.exports.handleFailedEmail(url, vin, numFails).then(resolve).catch(error => {
-                        // Logs the error and resolves the promise.
-                        console.log(error);
-                        resolve();
-                    });
-                });
+            // Declares variables to hold the email data and promises respectively.
+            const emailDataObject = data[1];
+            const promises = [];
+            // Loops over the email maps.
+            for (email in data[0]) {
+                // Gets the current email map.
+                const currEmail = data[0][email];
+                // Tests if there was an email map enabled for the given url and if the workshop email is required and present.
+                if (currEmail && (currEmail.address != "workshopEmail" || emailDataObject.workshopFound)) {
+                    // Loads the data map, with the substituted values, into a variable.
+                    const emailDataMap = module.exports.matchMapWithVals(currEmail, emailDataObject);
+                    // Sends the template email with the map data and pushes the returned promise to the previously declared array.
+                    promises.push(gmail.sendTemplateEmail(emailDataMap.draftId, emailDataMap.address, emailDataMap.replaceValues));
+                }
             }
+            // Waits for all of the promises to resolve.
+            Promise.all(promises).then(resolve).catch(err => {
+                // Logs the error.
+                console.log(err);
+                // Calls the function to write the error to the json file.
+                module.exports.handleFailedEmail(url, vin, numFails).then(resolve).catch(error => {
+                    // Logs the error and resolves the promise.
+                    console.log(error);
+                    resolve();
+                });
+            });
         }).catch(err => {
             // Logs the error.
             console.log(err);

@@ -59,7 +59,7 @@ router.get('/auth/code', (req, res, next) => {
 // Catches all requests for the success page.
 router.get('/auth/success', (req, res, next) => {
     // Renders the success page.
-    res.render('workshop/admin/google/auth-success', {
+    res.render('workshop/admin/google/auth/auth-success', {
         pageTitle: 'Authentication Success',
         path: '/workshop/admin/google/auth/success',
         role: req.payload.role
@@ -69,7 +69,7 @@ router.get('/auth/success', (req, res, next) => {
 // Catches all requests for the error page.
 router.get('/auth/error', (req, res, next) => {
     // Renders the error page.
-    res.render('workshop/admin/google/auth-error', {
+    res.render('workshop/admin/google/auth/auth-error', {
         pageTitle: 'Authentication Error',
         path: '/workshop/admin/google/auth/error',
         role: req.payload.role
@@ -79,7 +79,7 @@ router.get('/auth/error', (req, res, next) => {
 // Catches all requests for the scope error.
 router.get('/auth/scope-error', (req, res, next) => {
     // Renders the scope error page.
-    res.render('workshop/admin/google/scope-error', {
+    res.render('workshop/admin/google/auth/scope-error', {
         pageTitle: 'Authentication Success',
         path: '/workshop/admin/google/auth/scope-error',
         role: req.payload.role
@@ -169,7 +169,7 @@ router.get('/edit-auto-email', (req, res, next) => {
         gmail.listDrafts(),
         googleData.getEmailDataMapById(emailId)
     ]).then(data => {
-        res.render('workshop/admin/google/edit-email-map.pug', {
+        res.render('workshop/admin/google/edit-email-map/edit-email-map.pug', {
             email: {
                 keys: emailKeys,
                 drafts: data[0],
@@ -209,7 +209,7 @@ router.get('/sending-failed-emails', (req, res, next) => {
             res.redirect('/workshop/admin/google/send-failed-emails');
         } else {
             // Renders the send-failed-emails page.
-            res.render('workshop/admin/google/send-failed-emails', {
+            res.render('workshop/admin/google/failed-emails/send-failed-emails', {
                 numEmails: numEmails,
                 error: (err ? true : false),
                 pageTitle: 'Sending Emails...',
@@ -225,7 +225,7 @@ router.get('/send-failed-emails', (req, res, next) => {
     // Sends the emails.
     sendEmail.sendFailedEmails().then(emailData => {
         // Renders the send-emails page.
-        res.render('workshop/admin/google/sent-emails.pug', {
+        res.render('workshop/admin/google/failed-emails/sent-emails.pug', {
             emails: emailData,
             pageTitle: 'Emails Sent',
             path: '/workshop/admin/google/sending-failed-emails',

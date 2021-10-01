@@ -169,7 +169,7 @@ router.get('/edit-auto-email', (req, res, next) => {
         gmail.listDrafts(),
         googleData.getEmailDataMapById(emailId)
     ]).then(data => {
-        res.render('workshop/admin/google/edit-email-map/edit-email-map.pug', {
+        res.render('workshop/admin/google/edit-email-map/first-load.pug', {
             email: {
                 keys: emailKeys,
                 drafts: data[0],

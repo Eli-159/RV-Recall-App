@@ -198,7 +198,7 @@ router.get('/edit-auto-email', (req, res, next) => {
 });
 
 // Catches all requests for the initial page while the server sends the emails.
-router.get('/sending-failed-emails', (req, res, next) => {
+router.get('/send-failed-emails', (req, res, next) => {
     // Reads the failed-emails.json file.
     fs.readFile('./google/failed-emails.json', (err, data) => {
         // Loads the number of emails into a variable.
@@ -221,7 +221,7 @@ router.get('/sending-failed-emails', (req, res, next) => {
 });
 
 // Catches all requests to send the failed emails.
-router.get('/send-failed-emails', (req, res, next) => {
+router.get('/send-failed-emails/start-send', (req, res, next) => {
     // Sends the emails.
     sendEmail.sendFailedEmails().then(emailData => {
         // Renders the send-emails page.

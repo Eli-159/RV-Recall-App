@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Redirects the user to the url that will initiate the sending of emails.
-    document.location.href = '/workshop/admin/google/send-failed-emails';
+    document.location.href = '/workshop/admin/google/send-failed-emails/start-send';
 
     // Loads the element containing the the text time into a variable.
     const timeElement = document.getElementById('timeRemaining');

@@ -38,29 +38,33 @@
     br
     br
     label(for) Replace Values
-    table
+    table(id="replaceValsTable")
         - let iterations = 1;
         each key in Object.keys(email.map.replaceValues)
             tr
                 td
                     div(class="textInput")
-                        input(type="text", id="repKey"+iterations, name="repKey"+iterations, placeholder="Replacement Key", value=key)
+                        input(type="text", class="repKey", name="repKey"+iterations, placeholder="Replacement Key", value=key)
                 td
                     div(class="textInput")
-                        select(id="repVal"+iterations, name="repVal"+iterations, class="validate dropdown")
+                        select(name="repVal"+iterations, class="validate dropdown repVal")
                             option(value="", selected, disabled, hidden) Replacement Value
                             each opt in email.keys
                                 option(value=opt.key, selected=opt.key == email.map.replaceValues[key]) #{opt.name}
+                td
+                    p(class="trash") &#128465;
             - iterations++;
         tr
             td
                 div(class="textInput")
-                    input(type="text", id="repKey"+iterations, name="repKey"+iterations, placeholder="Replacement Key", value=key)
+                    input(type="text", class="repKey", name="repKey"+iterations, placeholder="Replacement Key", value=key)
             td
                 div(class="textInput")
-                    select(id="repVal"+iterations, name="repVal"+iterations, class="validate dropdown", placeholder="Replacement Value")
+                    select(name="repVal"+iterations, class="validate dropdown repVal", placeholder="Replacement Value")
                         option(value="", selected, disabled, hidden) Replacement Value
                         each opt in email.keys
                             option(value=opt.key, selected=opt.key == email.map.replaceValues[key]) #{opt.name}
+            td
+                p(class="trash") &#128465;
     br
     input(type="button", value="Update", id="emailSubmitBtn", class="submitBtn")

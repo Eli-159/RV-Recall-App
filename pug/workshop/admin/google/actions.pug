@@ -1,0 +1,27 @@
+extends ../../../templates/google-layout
+
+block css
+    link(rel="stylesheet", href="/css/google-layout.css")
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/actions.css")
+    link(rel="stylesheet", href="/css/header.css")
+
+block content
+    p Use the links below to navigate to the functions you wish to use.
+    br
+    ul.body-nav-list
+        li.body-nav-list-item
+            a(href="/workshop/admin/google/auth/url") Google Authentication
+                p.body-nav-desc Authenticate the website with Google.
+        li.body-nav-list-item
+            a(href="/workshop/admin/google/email-keys") Email Keys
+                p.body-nav-desc A list of all of the data available for automatic emails.
+        li.body-nav-list-item
+            a(href="/workshop/admin/google/view-auto-emails") View Auto Emails
+                p.body-nav-desc A list of all automatic emails.
+        li.body-nav-list-item
+            a(href="/workshop/admin/google/create-auto-email") Create Auto Email
+                p.body-nav-desc Creates a data map for an automatic email.
+        li.body-nav-list-item
+            a(href="/workshop/admin/google/send-failed-emails") Send Failed Emails
+                p.body-nav-desc Attempts to resend all of the failed emails.

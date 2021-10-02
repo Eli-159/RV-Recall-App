@@ -279,3 +279,12 @@ select.dropdown[data-chosen=""] {
   margin-right: 0px !important;
   margin-left: 265px !important;
 }
+
+.trash {
+  color: #9b9b9b;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0px;
+  margin: 0px;
+  width: min-content;
+}

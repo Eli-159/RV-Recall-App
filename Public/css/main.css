@@ -66,6 +66,28 @@ a.large-spaced-link {
   outline: none;
 }
 
+a.aBtn {
+  margin: 10px 5px;
+  padding: 0.5rem;
+  border: #f7f7f7 solid 0.2rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f7f7f7;
+  background-color: #2f3c60;
+  font-size: 14pt;
+  cursor: pointer;
+  transition: 0.5s;
+  display: inline-block;
+  font-style: normal;
+  text-decoration: none;
+}
+
+a.aBtn:hover {
+  color: #2f3c60;
+  background-color: #f7f7f7;
+}
+
 .inlineP {
   display: inline !important;
 }

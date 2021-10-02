@@ -1,0 +1,16 @@
+extends ../../../../templates/google-layout
+
+block js
+    script(src="/js/redirect.js")
+    script(src="/js/start-redirect.js")
+
+block content
+    h2 Authentication Successful
+    p You have successfully authenticated the server with your google account.
+    br
+    br
+    p In 
+        span(id="redirectTime") 30
+        |  seconds you will be redirected to the 
+        a(href="/workshop/admin/", id="redirectAddress") Google Dashboard
+        |  page.

@@ -1,0 +1,16 @@
+extends ../../../../templates/google-layout
+
+block js
+    script(src="/js/redirect.js")
+    script(src="/js/start-redirect.js")
+
+block content
+    h2 All Scopes Required
+    p Please authenticate the server for all scopes requested.
+    br
+    br
+    p In 
+        span(id="redirectTime") 30
+        |  seconds you will be redirected to the 
+        a(href="/workshop/admin/google/auth/url", id="redirectAddress") Google Authentication
+        |  page.

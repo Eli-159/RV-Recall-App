@@ -4,6 +4,7 @@ const router = express.Router();
 const dao = require ('../data/dao.js');
 const auth = require('../models/authenticate.js');
 const emailRoutes = require('./email.js');
+const sendEmail = require('../google/send-email.js');
 
 // Catches all get requests to the owner details form.
 router.get('/', (req, res, next) => {
@@ -160,6 +161,8 @@ router.post('/submit-details', auth.authenticateToken, emailRoutes, (req, res, n
             .then(data => {
                 // Renders the success message page.
                 res.render('owner-details/success-message');
+                // Calls the auto email function.
+                sendEmail.sendAutoEmail(req.originalUrl, req.payload.vin);
             })
             .catch(err => {
                 // Returns a status of 500 with an unexpected error message.

@@ -1,0 +1,16 @@
+extends ../../../templates/google-layout
+
+block content
+    h2 Data Keys
+    table(class="table")
+        tr
+            th Name
+            th Key
+            th Type
+            th Description
+        each item in emailKeys
+            tr
+                td #{item.name}
+                td #{item.key}
+                td #{item.type}
+                td #{item.desc}

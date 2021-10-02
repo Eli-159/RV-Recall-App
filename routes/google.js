@@ -211,17 +211,23 @@ router.post('/edit-auto-email/submit', (req, res, next) => {
     // Loads the body and email id into variables.
     const body = req.body;
     const emailId = parseInt(req.payload.emailId);
-    console.log(emailId);
+    // Filters the keys of the replace keys out of the body keys.
     const replaceKeys = Object.keys(body).filter(key => key.includes('repKey'));
+    // Declares a variable to hold the new replace value pairs.
     const replaceValues = {};
+    // Loops over the replaceKeys variable.
     for (key in replaceKeys) {
+        // Loads the replace key, number, and value into variables.
         const repKey = body[replaceKeys[key]];
         const repNum = replaceKeys[key].replace('repKey', '');
         const repVal = body['repVal'+repNum];
+        // Tests that the repKey and repVal variables both have contents and the contents aren't empty strings.
         if (repKey && repKey != '' && repVal && repVal != '') {
+            // Adds the replace value pair to the replaceValues object.
             replaceValues[repKey] = repVal;
         }
     }
+    // Updates the email data map json file with the values from the body and previously declared variables.
     googleData.writeEmailDataMap({
         id: emailId,
         triggerUrl: body.url,
@@ -230,11 +236,14 @@ router.post('/edit-auto-email/submit', (req, res, next) => {
         draftId: body.draft,
         replaceValues: replaceValues
     }).then(idFound => {
+        // Renders the success page.
         res.render('workshop/admin/google/edit-email-map/success-message', {
             updated: idFound
         });
     }).catch(err => {
+        // Logs the error.
         console.log(err);
+        // Sets the reponse status to 500 and renders an error page.
         res.status(500);
         res.render('errors/general-redirect-error', {
             errorHeading: 'Error',

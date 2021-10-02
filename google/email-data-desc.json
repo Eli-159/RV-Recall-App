@@ -114,12 +114,6 @@
         "desc": "The city that the associated workshop is in."
     },
     {
-        "key": "workshopCode",
-        "name": "Workshop Code",
-        "type": "String",
-        "desc": "The database code of the associated workshop."
-    },
-    {
         "key": "workshopName",
         "name": "Workshop Name",
         "type": "String",

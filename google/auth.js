@@ -65,15 +65,16 @@ module.exports.createTokenFromCode = (code) => {
             // Gets a new OAuth token.
             oAuth2Client.getToken({code, redirect_uri}, (err, fetchedToken) => {
                 // Rejects the error if one occurs.
-                if (err) reject(err);
-                // Sets the oAuth credentials to those fetched.
-                oAuth2Client.setCredentials(fetchedToken);
-                // Store the token to disk for later program executions
-                fs.writeFile(TOKEN_PATH, JSON.stringify(fetchedToken), (err) => {
-                    if (err) return console.error(err);
-                });
-                // Resolves the promise, parsing the OAuth2 client.
-                resolve(oAuth2Client);
+                if (err) return reject(err);
+                // Tests if the refresh token was given, so that an old file with a refresh token will not be overided.
+                if (fetchedToken.refresh_token) {
+                    // Store the token to disk for later program executions
+                    fs.writeFile(TOKEN_PATH, JSON.stringify(fetchedToken), (err) => {
+                        if (err) return console.error(err);
+                    });
+                }
+                // Resolves the promise, parsing through whether or not a refresh token was given.
+                resolve(fetchedToken.refresh_token ? true : false);
             });
         });
     });

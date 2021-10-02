@@ -174,28 +174,24 @@ module.exports.sortWorkshopDataForEmail = (vehicleData) => {
         if (chosenWorkshop == 'sydney') {
             // Loads the appropriate data into the processedWorkshopData variable.
             processedWorkshopData.workshopLocation = 'Sydney';
-            processedWorkshopData.workshopCode = 'EN01';
             processedWorkshopData.workshopName = 'Elite NSW';
             processedWorkshopData.workshopEmail = 'nsw@elite.com.au'
         // Tests if the selected workshop was Melbourne.
         } else if (chosenWorkshop == 'melbourne') {
             // Loads the appropriate data into the processedWorkshopData variable.
             processedWorkshopData.workshopLocation = 'Melbourne';
-            processedWorkshopData.workshopCode = 'EV01';
             processedWorkshopData.workshopName = 'Elite Vic';
             processedWorkshopData.workshopEmail = 'vic@elite.com.au'
         // Tests if the selected workshop was the Gold Coast.
         } else if (chosenWorkshop == 'gold-coast') {
             // Loads the appropriate data into the processedWorkshopData variable.
             processedWorkshopData.workshopLocation = 'Gold Coast';
-            processedWorkshopData.workshopCode = 'EQ01';
             processedWorkshopData.workshopName = 'Elite Qld';
             processedWorkshopData.workshopEmail = 'qld@elite.com.au'
         // Tests if there was no workshop that was accessible for the owner.
         } else if (chosenWorkshop == 'other') {
             // Loads the appropriate data into the processedWorkshopData variable.
             processedWorkshopData.workshopLocation = 'Other';
-            processedWorkshopData.workshopCode = 'MYRV';
             processedWorkshopData.workshopName = 'Other';
             processedWorkshopData.workshopEmail = 'recalls@my-rv.com.au'
         } else {

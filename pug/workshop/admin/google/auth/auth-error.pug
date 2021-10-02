@@ -5,12 +5,27 @@ block js
     script(src="/js/start-redirect.js")
 
 block content
-    h2 Authentication Fail
-    p The authentication failed for an unkown reason.
+    if reason == 'scope'
+        h2 All Scopes Required
+        p Please authenticate the server for all scopes requested.
+    else if reason == 'refresh'
+        h2 Refresh Token Required
+        p The authentication request did not return a refresh token.
+            | This may mean that no authentication is required, however if it is, this issue can be rectified by going to the 
+            a(href="https://myaccount.google.com/permissions", target="blank") Google Account Permisions
+            |  page and removing permisions for "MyRV Email".
+            | Please ensure that this is done on the MYRV email account that is being used with this website. 
+            | Once this is done, return to the 
+            a(href="/workshop/admin/google/auth/url") Google Authentication
+            |  page on this server and reauthenticate.
+    else
+        h2 Authentication Fail
+        p The authentication failed for an unkown reason.
     br
     br
-    p In 
-        span(id="redirectTime") 30
-        |  seconds you will be redirected to the 
-        a(href="/workshop/admin/google/auth/url", id="redirectAddress") Google Authentication
-        |  page.
+    if reason != "refresh"
+        p In 
+            span(id="redirectTime") 30
+            |  seconds you will be redirected to the 
+            a(href="/workshop/admin/google/auth/url", id="redirectAddress") Google Authentication
+            |  page.

@@ -41,7 +41,6 @@ module.exports.writeEmailDataMap = (newMap) => {
                 // Passes the file and searches for a map matching the given id.
                 const maps = JSON.parse(content)
                 const mapIndex = maps.findIndex(currMap => currMap.id == newMap.id);
-                console.log(mapIndex)
                 // Declares a variable to hold whether the id was found.
                 let idFound;
                 // Tests that there was an id provided and that there was a map found with the id.

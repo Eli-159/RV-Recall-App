@@ -165,6 +165,44 @@ router.get('/view-auto-emails', (req, res, next) => {
     });
 });
 
+router.get('/create-auto-email', (req, res, next) => {
+    // Loads the payload into a variable.
+    const payload = req.payload;
+    // Waits for a list of all gmail drafts to be fetched.
+    gmail.listDrafts().then(drafts => {
+        // Issues a new jwt without a email data map id.
+        res.cookie('jwt', auth.generateToken({
+            user: payload.user,
+            role: payload.role
+        }), { httpOnly: true});
+        res.render('workshop/admin/google/edit-email-map/first-load.pug', {
+            email: {
+                keys: emailKeys,
+                drafts: drafts,
+                map: {}
+            },
+            pageTitle: 'Create Auto Email',
+            path: '/workshop/admin/google/create-auto-email',
+            role: req.payload.role
+        });
+    }).catch(err => {
+        // Logs the error.
+        console.log(err);
+        // Renders an error page.
+        res.render('errors/full-page-error.pug', {
+            includeRedirect: true,
+            errorHeading: 'Unexpected Error',
+            errorBody: 'Sorry, an unexpected error occurred while loading the email data. Please try again.',
+            redirectTime: '30',
+            redirectAddress: '/workshop/admin/google/actions',
+            redirectPageName: 'Google Actions Page',
+            pageTitle: 'Error',
+            path: '/workshop/admin/google/view-auto-emails',
+            role: req.payload.role
+        });
+    })
+});
+
 router.get('/edit-auto-email', (req, res, next) => {
     // Loads the email id and payload into variables.
     const emailId = req.query.id;

@@ -32,7 +32,8 @@ div(class="form-section", id="editEmailForm")
         label(for="addressInput", id="addressInputLabel") Email Address
         div(class="textInput")
             select(id="addressInput", name="email", class="validate dropdown", required)
-                option(value="ownerEmail", selected) Owner Email
+                option(value="", selected, disabled, hidden)
+                option(value="ownerEmail", selected=email.map.address == "ownerEmail") Owner Email
                 option(value="workshopEmail", selected=email.map.address == "workshopEmail") Workshop Email
                 option(value="info@my-rv.com.au", selected=email.map.address == "info@my-rv.com.au") MY-RV (Info)
                 option(value="recalls@my-rv.com.au", selected=email.map.address == "recalls@my-rv.com.au") MY-RV (Recalls)
@@ -42,20 +43,21 @@ div(class="form-section", id="editEmailForm")
         label(for) Replace Values
         table(id="replaceValsTable")
             - let iterations = 1;
-            each key in Object.keys(email.map.replaceValues)
-                tr
-                    td
-                        div(class="textInput")
-                            input(type="text", class="repKey", name="repKey"+iterations, placeholder="Replacement Key", value=key)
-                    td
-                        div(class="textInput")
-                            select(name="repVal"+iterations, class="dropdown repVal")
-                                option(value="", selected, disabled, hidden) Replacement Value
-                                each opt in email.keys
-                                    option(value=opt.key, selected=opt.key == email.map.replaceValues[key]) #{opt.name}
-                    td
-                        p(class="trash") &#128465;
-                - iterations++;
+            if email.map.replaceValues
+                each key in Object.keys(email.map.replaceValues)
+                    tr
+                        td
+                            div(class="textInput")
+                                input(type="text", class="repKey", name="repKey"+iterations, placeholder="Replacement Key", value=key)
+                        td
+                            div(class="textInput")
+                                select(name="repVal"+iterations, class="dropdown repVal")
+                                    option(value="", selected, disabled, hidden) Replacement Value
+                                    each opt in email.keys
+                                        option(value=opt.key, selected=opt.key == email.map.replaceValues[key]) #{opt.name}
+                        td
+                            p(class="trash") &#128465;
+                    - iterations++;
             tr
                 td
                     div(class="textInput")
@@ -65,8 +67,8 @@ div(class="form-section", id="editEmailForm")
                         select(name="repVal"+iterations, class="dropdown repVal", placeholder="Replacement Value")
                             option(value="", selected, disabled, hidden) Replacement Value
                             each opt in email.keys
-                                option(value=opt.key, selected=opt.key == email.map.replaceValues[key]) #{opt.name}
+                                option(value=opt.key) #{opt.name}
                 td
                     p(class="trash") &#128465;
         br
-        input(type="button", value="Update", id="emailSubmitBtn", class="submitBtn")
+        input(type="button", value="Submit", id="emailSubmitBtn", class="submitBtn")

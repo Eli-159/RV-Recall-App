@@ -7,8 +7,11 @@ block content
             th Trigger Url
             th Active
             th Draft Subject
+            th Link
         each email in autoEmailData
             tr
                 td #{email.url}
                 td #{email.active}
                 td #{email.draft}
+                td
+                    a(href="/workshop/admin/google/edit-auto-email?id="+email.id) Edit

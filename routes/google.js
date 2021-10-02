@@ -133,7 +133,8 @@ router.get('/view-auto-emails', (req, res, next) => {
                     autoEmailData.push({
                         url: mappedEmails[email].triggerUrl,
                         active: mappedEmails[email].active.toString().toUpperCase(),
-                        draft: (draft ? draft.subject : 'Not Linked')
+                        draft: (draft ? draft.subject : 'Not Linked'),
+                        id: mappedEmails[email].id
                     });
                 }
                 // Renders the view-emails page.

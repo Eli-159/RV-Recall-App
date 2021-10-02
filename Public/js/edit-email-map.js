@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
         repVals[i].addEventListener('input', testAndAddNewRow);
         repTrash[i].addEventListener('click', trashRow);
     }
+    // Adds the event listener to validate the owner details form.
+    addValidationEventListeners();
+    // Adds the event listener to submit the email data.
+    document.getElementById('emailSubmitBtn').addEventListener('click', () => {
+        // Posts the email data and loads the success message.
+        postFormData('/workshop/admin/google/edit-auto-email/submit', 'editEmailForm');
+    });
 });
 
 // Declares a function to add a new row to the table if all existing ones have an input.

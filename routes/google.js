@@ -2,11 +2,12 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const emailKeys = require('../google/email-data-desc.json');
+const auth = require('../models/authenticate.js');
 const gmail = require('../google/gmail.js');
 const googleData = require('../google/data.js');
 const googleAuth = require('../google/auth.js');
 const sendEmail = require('../google/send-email.js');
+const emailKeys = require('../google/email-data-desc.json');
 
 // Catches all requests that have no further url.
 router.get('/', (req, res, next) => {
@@ -164,11 +165,20 @@ router.get('/view-auto-emails', (req, res, next) => {
 });
 
 router.get('/edit-auto-email', (req, res, next) => {
+    // Loads the email id and payload into variables.
     const emailId = req.query.id;
+    const payload = req.payload;
+    // Waits for a list of all gmail drafts and the data map of the email to be fetched.
     Promise.all([
         gmail.listDrafts(),
         googleData.getEmailDataMapById(emailId)
     ]).then(data => {
+        // Issues a new jwt with the email data map id.
+        res.cookie('jwt', auth.generateToken({
+            user: payload.user,
+            role: payload.role,
+            emailId: emailId
+        }), { httpOnly: true});
         res.render('workshop/admin/google/edit-email-map/first-load.pug', {
             email: {
                 keys: emailKeys,
@@ -195,6 +205,46 @@ router.get('/edit-auto-email', (req, res, next) => {
             role: req.payload.role
         });
     })
+});
+
+router.post('/edit-auto-email/submit', (req, res, next) => {
+    // Loads the body and email id into variables.
+    const body = req.body;
+    const emailId = parseInt(req.payload.emailId);
+    console.log(emailId);
+    const replaceKeys = Object.keys(body).filter(key => key.includes('repKey'));
+    const replaceValues = {};
+    for (key in replaceKeys) {
+        const repKey = body[replaceKeys[key]];
+        const repNum = replaceKeys[key].replace('repKey', '');
+        const repVal = body['repVal'+repNum];
+        if (repKey && repKey != '' && repVal && repVal != '') {
+            replaceValues[repKey] = repVal;
+        }
+    }
+    googleData.writeEmailDataMap({
+        id: emailId,
+        triggerUrl: body.url,
+        active: body.active,
+        address: body.email,
+        draftId: body.draft,
+        replaceValues: replaceValues
+    }).then(idFound => {
+        res.render('workshop/admin/google/edit-email-map/success-message', {
+            updated: idFound
+        });
+    }).catch(err => {
+        console.log(err);
+        res.status(500);
+        res.render('errors/general-redirect-error', {
+            errorHeading: 'Error',
+            errorBody: 'An unexpected error occured while trying to save the data. Please try again.',
+            includeRedirect: true,
+            redirectTime: '15',
+            redirectAddress: '/workshop/admin/google/view-auto-emails',
+            redirectPageName: 'View Auto Emails'
+        })
+    });
 });
 
 // Catches all requests for the initial page while the server sends the emails.

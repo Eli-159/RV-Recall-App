@@ -1,70 +1,72 @@
-.form
+div(class="form-section", id="editEmailForm")
     h2 Edit Email Map
-    label(for="urlInput", id="urlInputLabel") Trigger Event
-    div(class="textInput")
-        select(id="urlInput", name="url", class="validate dropdown")
-            option(value="", selected, disabled, hidden) 
-            option(value="/owner-registration/submit-details", selected=email.map.triggerUrl == "/owner-registration/submit-details") Owner Registration
-            option(value="/recall-registration/submit-details", selected=email.map.triggerUrl == "/recall-registration/submit-details") Recall Registration
-            option(value="/workshop/recall/submit-owner-details", selected=email.map.triggerUrl == "/workshop/recall/submit-owner-details") Updated Owner Details (Recall Form)
-            option(value="/workshop/elite/update-owner-details/submit-owner-details", selected=email.map.triggerUrl == "/workshop/elite/update-owner-details/submit-owner-details") Updated Owner Details (Elite Form)
-            option(value="/workshop/contact/submit-contact-details#booking", selected=email.map.triggerUrl == "/workshop/contact/submit-contact-details#booking") Contact Form - Booking Made
-            option(value="/workshop/contact/submit-contact-details#notOwner", selected=email.map.triggerUrl == "/workshop/contact/submit-contact-details#notOwner") Contact Form - Not Owner 
-    span(class="errorMessage", id="urlInputError")
     br
-    label(for="draftInput", id="draftInputLabel") Gmail Draft
-    div(class="textInput")
-        select(id="draftInput", name="draft", class="validate dropdown")
-            option(value="", selected, disabled, hidden) 
-            each draft in email.drafts
-                option(value=draft.draftId, selected=email.map.draftId == draft.draftId) #{draft.subject}
-    span(class="errorMessage", id="draftInputError")
-    br
-    label(for="activeInput", id="activeInputLabel") Active
-    div(class="textInput")
-        select(id="activeInput", name="active", class="validate dropdown")
-            option(value="true", selected) True
-            option(value="false", selected=email.map.active == false) False
-    span(class="errorMessage", id="activeInputError")
-    br
-    label(for="addressInput", id="addressInputLabel") Email Address
-    div(class="textInput")
-        select(id="addressInput", name="active", class="validate dropdown")
-            option(value="ownerEmail", selected) Owner Email
-            option(value="workshopEmail", selected=email.map.address == "workshopEmail") Workshop Email
-            option(value="info@my-rv.com.au", selected=email.map.address == "info@my-rv.com.au") MY-RV (Info)
-            option(value="recalls@my-rv.com.au", selected=email.map.address == "recalls@my-rv.com.au") MY-RV (Recalls)
-    span(class="errorMessage", id="addressInputError")
-    br
-    br
-    label(for) Replace Values
-    table(id="replaceValsTable")
-        - let iterations = 1;
-        each key in Object.keys(email.map.replaceValues)
+    .form
+        label(for="urlInput", id="urlInputLabel") Trigger Event
+        div(class="textInput")
+            select(id="urlInput", name="url", class="validate dropdown", pattern=".+", required)
+                option(value="", selected, disabled, hidden) 
+                option(value="/owner-registration/submit-details", selected=email.map.triggerUrl == "/owner-registration/submit-details") Owner Registration
+                option(value="/recall-registration/submit-details", selected=email.map.triggerUrl == "/recall-registration/submit-details") Recall Registration
+                option(value="/workshop/recall/submit-owner-details", selected=email.map.triggerUrl == "/workshop/recall/submit-owner-details") Updated Owner Details (Recall Form)
+                option(value="/workshop/elite/update-owner-details/submit-owner-details", selected=email.map.triggerUrl == "/workshop/elite/update-owner-details/submit-owner-details") Updated Owner Details (Elite Form)
+                option(value="/workshop/contact/submit-contact-details#booking", selected=email.map.triggerUrl == "/workshop/contact/submit-contact-details#booking") Contact Form - Booking Made
+                option(value="/workshop/contact/submit-contact-details#notOwner", selected=email.map.triggerUrl == "/workshop/contact/submit-contact-details#notOwner") Contact Form - Not Owner 
+        span(class="errorMessage", id="urlInputError")
+        br
+        label(for="draftInput", id="draftInputLabel") Gmail Draft
+        div(class="textInput")
+            select(id="draftInput", name="draft", class="validate dropdown", pattern=".+", required)
+                option(value="", selected, disabled, hidden) 
+                each draft in email.drafts
+                    option(value=draft.draftId, selected=email.map.draftId == draft.draftId) #{draft.subject}
+        span(class="errorMessage", id="draftInputError")
+        br
+        label(for="activeInput", id="activeInputLabel") Active
+        div(class="textInput")
+            select(id="activeInput", name="active", class="validate dropdown", required)
+                option(value="true", selected) True
+                option(value="false", selected=email.map.active == false) False
+        span(class="errorMessage", id="activeInputError")
+        br
+        label(for="addressInput", id="addressInputLabel") Email Address
+        div(class="textInput")
+            select(id="addressInput", name="email", class="validate dropdown", required)
+                option(value="ownerEmail", selected) Owner Email
+                option(value="workshopEmail", selected=email.map.address == "workshopEmail") Workshop Email
+                option(value="info@my-rv.com.au", selected=email.map.address == "info@my-rv.com.au") MY-RV (Info)
+                option(value="recalls@my-rv.com.au", selected=email.map.address == "recalls@my-rv.com.au") MY-RV (Recalls)
+        span(class="errorMessage", id="addressInputError")
+        br
+        br
+        label(for) Replace Values
+        table(id="replaceValsTable")
+            - let iterations = 1;
+            each key in Object.keys(email.map.replaceValues)
+                tr
+                    td
+                        div(class="textInput")
+                            input(type="text", class="repKey", name="repKey"+iterations, placeholder="Replacement Key", value=key)
+                    td
+                        div(class="textInput")
+                            select(name="repVal"+iterations, class="dropdown repVal")
+                                option(value="", selected, disabled, hidden) Replacement Value
+                                each opt in email.keys
+                                    option(value=opt.key, selected=opt.key == email.map.replaceValues[key]) #{opt.name}
+                    td
+                        p(class="trash") &#128465;
+                - iterations++;
             tr
                 td
                     div(class="textInput")
-                        input(type="text", class="repKey", name="repKey"+iterations, placeholder="Replacement Key", value=key)
+                        input(type="text", class="repKey", name="repKey"+iterations, placeholder="Replacement Key")
                 td
                     div(class="textInput")
-                        select(name="repVal"+iterations, class="validate dropdown repVal")
+                        select(name="repVal"+iterations, class="dropdown repVal", placeholder="Replacement Value")
                             option(value="", selected, disabled, hidden) Replacement Value
                             each opt in email.keys
                                 option(value=opt.key, selected=opt.key == email.map.replaceValues[key]) #{opt.name}
                 td
                     p(class="trash") &#128465;
-            - iterations++;
-        tr
-            td
-                div(class="textInput")
-                    input(type="text", class="repKey", name="repKey"+iterations, placeholder="Replacement Key", value=key)
-            td
-                div(class="textInput")
-                    select(name="repVal"+iterations, class="validate dropdown repVal", placeholder="Replacement Value")
-                        option(value="", selected, disabled, hidden) Replacement Value
-                        each opt in email.keys
-                            option(value=opt.key, selected=opt.key == email.map.replaceValues[key]) #{opt.name}
-            td
-                p(class="trash") &#128465;
-    br
-    input(type="button", value="Update", id="emailSubmitBtn", class="submitBtn")
+        br
+        input(type="button", value="Update", id="emailSubmitBtn", class="submitBtn")

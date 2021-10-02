@@ -24,7 +24,50 @@ module.exports.getEmailDataMapById = id => {
                 }
             }
         });
-    })
+    });
+}
+
+// Declares a function to update the email data map.
+module.exports.writeEmailDataMap = (newMap) => {
+    // Returns a promise.
+    return new Promise((resolve, reject) => {
+        // Reads the email data map file.
+        fs.readFile('./google/email-data-map.json', (err, content) => {
+            // Checks if there was an error.
+            if (err) {
+                // Rejects the promise, passing through the error.
+                reject(err);
+            } else {
+                // Passes the file and searches for a map matching the given id.
+                const maps = JSON.parse(content)
+                const mapIndex = maps.findIndex(currMap => currMap.id == newMap.id);
+                console.log(mapIndex)
+                // Declares a variable to hold whether the id was found.
+                let idFound;
+                // Tests that there was an id provided and that there was a map found with the id.
+                if (newMap.id && mapIndex >= 0) {
+                    // Changes the existing map to the new one and sets idFound to true.
+                    maps[mapIndex] = newMap;
+                    idFound = true;
+                } else {
+                    // Gives the new map an id, pushes it to the array and sets idFound to false.
+                    newMap.id = Date.now();
+                    maps.push(newMap);
+                    idFound = false;
+                }
+                fs.writeFile('./google/email-data-map.json', JSON.stringify(maps), error => {
+                    // Checks if there was an error.
+                    if (error) {
+                        // Rejects the promise, passing through the error.
+                        reject(error);
+                    } else {
+                        // Resolves the promise, passing through whether or not the id was found.
+                        resolve(idFound);
+                    }
+                });
+            }
+        });
+    });
 }
 
 // Declares a function to sort the vehicle data for the email.

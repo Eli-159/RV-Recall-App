@@ -69,6 +69,44 @@ module.exports.writeEmailDataMap = (newMap) => {
     });
 }
 
+// Declares a function to delete the email data map.
+module.exports.deleteEmailDataMapById = id => {
+    // Returns a promise.
+    return new Promise((resolve, reject) => {
+        // Reads the email data map file.
+        fs.readFile('./google/email-data-map.json', (err, content) => {
+            // Checks if there was an error.
+            if (err) {
+                // Rejects the promise, passing through the error.
+                reject(err);
+            } else {
+                // Passes the file and searches for a map matching the given id.
+                const maps = JSON.parse(content)
+                const mapIndex = maps.findIndex(currMap => currMap.id == id);
+                // Tests that there was a map found with the id.
+                if (mapIndex >= 0) {
+                    // Deletes the map.
+                    maps.splice(mapIndex, 1);
+                    // Writes the array to the json file.
+                    fs.writeFile('./google/email-data-map.json', JSON.stringify(maps), error => {
+                        // Checks if there was an error.
+                        if (error) {
+                            // Rejects the promise, passing through the error.
+                            reject(error);
+                        } else {
+                            // Resolves the promise.
+                            resolve();
+                        }
+                    });
+                } else {
+                    // Rejects the promise.
+                    reject('No map with that id');
+                }
+            }
+        });
+    });
+}
+
 // Declares a function to sort the vehicle data for the email.
 module.exports.sortVehicleDataForEmail = (vehicleData) => {
     // Declares an object that contains the vehicle data required for the email.

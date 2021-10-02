@@ -1,8 +1,10 @@
 div(id="successMessage")
-    if updated
+    if created
+        h1 The Email was Successfully Created
+    else if updated
         h1 The Email was Successfully Updated
     else
-        h1 The Email was Successfully Created 
+        h1 The Email was Successfully Deleted
     h3 You may now wish to return to the 
             a(href="/workshop/admin/google/actions") Google Actions Page
             |  or the 

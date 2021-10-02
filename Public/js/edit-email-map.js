@@ -19,6 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Posts the email data and loads the success message.
         postFormData('/workshop/admin/google/edit-auto-email/submit', 'editEmailForm');
     });
+    // Adds the event listener to delete the email data.
+    document.getElementById('emailDeleteBtn').addEventListener('click', () => {
+        // Posts the email data and loads the success message.
+        postFormData('/workshop/admin/google/edit-auto-email/delete', null, null, null, false);
+    });
 });
 
 // Declares a function to add a new row to the table if all existing ones have an input.

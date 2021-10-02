@@ -72,3 +72,6 @@ div(class="form-section", id="editEmailForm")
                     p(class="trash") &#128465;
         br
         input(type="button", value="Submit", id="emailSubmitBtn", class="submitBtn")
+        if deleteOpt
+            p.inlineP &nbsp; or &nbsp;
+            input(type="button", value="Delete", id="emailDeleteBtn", class="submitBtn")

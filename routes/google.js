@@ -181,6 +181,7 @@ router.get('/create-auto-email', (req, res, next) => {
                 drafts: drafts,
                 map: {}
             },
+            deleteOpt: false,
             pageTitle: 'Create Auto Email',
             path: '/workshop/admin/google/create-auto-email',
             role: req.payload.role
@@ -224,6 +225,7 @@ router.get('/edit-auto-email', (req, res, next) => {
                 drafts: data[0],
                 map: data[1]
             },
+            deleteOpt: true,
             pageTitle: 'Edit Auto Email',
             path: '/workshop/admin/google/edit-auto-email',
             role: req.payload.role
@@ -277,6 +279,7 @@ router.post('/edit-auto-email/submit', (req, res, next) => {
     }).then(idFound => {
         // Renders the success page.
         res.render('workshop/admin/google/edit-email-map/success-message', {
+            created: !idFound,
             updated: idFound
         });
     }).catch(err => {
@@ -291,9 +294,34 @@ router.post('/edit-auto-email/submit', (req, res, next) => {
             redirectTime: '15',
             redirectAddress: '/workshop/admin/google/view-auto-emails',
             redirectPageName: 'View Auto Emails'
-        })
+        });
     });
 });
+
+router.post('/edit-auto-email/delete', (req, res, next) => {
+    // Loads the email id into a variable.
+    const emailId = req.payload.emailId;
+    // Deletes the map.
+    googleData.deleteEmailDataMapById(emailId).then(() => {
+        res.render('workshop/admin/google/edit-email-map/success-message', {
+            created: false,
+            updated: false
+        });
+    }).catch(err => {
+        // Logs the error.
+        console.log(err);
+        // Sets the reponse status to 500 and renders an error page.
+        res.status(500);
+        res.render('errors/general-redirect-error', {
+            errorHeading: 'Error',
+            errorBody: 'An unexpected error occured while trying to delete the email map. Please try again.',
+            includeRedirect: true,
+            redirectTime: '15',
+            redirectAddress: '/workshop/admin/google/view-auto-emails',
+            redirectPageName: 'View Auto Emails'
+        });
+    });
+})
 
 // Catches all requests for the initial page while the server sends the emails.
 router.get('/send-failed-emails', (req, res, next) => {

@@ -7,6 +7,7 @@ block css
     link(rel="stylesheet", href="/css/header.css")
 
 block content
+    br
     .boxInfo
         h3 Google Account/Email Health
         table
@@ -22,8 +23,9 @@ block content
             tr
                 th Failed Emails:
                 td #{healthData.failedEmails}
-    p Use the links below to navigate to the functions you wish to use.
     br
+    br
+    p Use the links below to navigate to the functions you wish to use.
     ul.body-nav-list
         li.body-nav-list-item
             a(href="/workshop/admin/google/auth/url") Google Authentication

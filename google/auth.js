@@ -59,7 +59,7 @@ module.exports.createTokenFromCode = (code) => {
             const credentials = JSON.parse(content);
             const client_secret = credentials.web.client_secret;
             const client_id = credentials.web.client_id;
-            const redirect_uri = credentials.web.redirect_uris[0];
+            const redirect_uri = credentials.web.redirect_uris.find(uri => uri.includes(process.env.DOMAIN));
             // Declares a new instance of the google OAuth2 client.
             const oAuth2Client = new google.auth.OAuth2(client_id, client_secret);
             // Gets a new OAuth token.

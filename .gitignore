@@ -9,4 +9,7 @@ testing/
 Public/resources
 myrv-serviceaccount-credentials.json
 *.csv
-token.json
+google/token.json
+google/email-data-map.json
+google/oauth-credentials.json
+google/failed-emails.json

@@ -41,7 +41,7 @@ router.get('/auth/url', (req, res, next) => {
 router.get('/auth/code', (req, res, next) => {
     // Loads the requested and given scopes into variables, sorting and stringifying them for comparison.
     const requestedScopes = JSON.stringify(googleAuth.scopes.sort());
-    const givenScopes = JSON.stringify(req.query.scope.includes(' ') ? req.query.scope.split(' ').sort() : [req.query.scope]);
+    const givenScopes = JSON.stringify(req.query.scope ? (req.query.scope.includes(' ') ? req.query.scope.split(' ').sort() : [req.query.scope]) : []);
     // Loads the access code into a variable.
     const givenCode = req.query.code;
     // Tests if the requested scopes are all granted by the user.

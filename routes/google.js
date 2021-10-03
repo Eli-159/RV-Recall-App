@@ -17,12 +17,15 @@ router.get('/', (req, res, next) => {
 
 // Catches all requests for the actions page.
 router.get('/actions', (req, res, next) => {
-    // Renders the pug page.
-    res.render('workshop/admin/google/actions', {
-        pageTitle: 'Google Actions - MYRV',
-        path: '/workshop/admin/google/actions',
-        role: req.payload.role
-    })
+    gmail.getHealthUpdate().then(healthData => {
+        // Renders the pug page.
+        res.render('workshop/admin/google/actions', {
+            healthData: healthData,
+            pageTitle: 'Google Actions - MYRV',
+            path: '/workshop/admin/google/actions',
+            role: req.payload.role
+        });
+    });
 });
 
 // Catches all requests for the authentication url.
@@ -272,7 +275,7 @@ router.post('/edit-auto-email/submit', (req, res, next) => {
     googleData.writeEmailDataMap({
         id: emailId,
         triggerUrl: body.url,
-        active: body.active,
+        active: (body.active == 'true'),
         address: body.email,
         draftId: body.draft,
         replaceValues: replaceValues

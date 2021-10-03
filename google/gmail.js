@@ -167,3 +167,57 @@ module.exports.sendTemplateEmail = (draftId, address, replaceValues) => {
         }).catch(err => reject(err));
     });
 };
+
+// Exports a function to get a general update on gmail api health.
+module.exports.getHealthUpdate = () => {
+    // Returns a promise.
+    return new Promise((finalResolve) => {
+        Promise.all([
+            new Promise((resolve) => {
+                // Gets the user profile.
+                module.exports.getUserProfile().then(data => {
+                    // Resolves the promise, passing throgh the data.
+                    resolve(data);
+                }).catch(err => {
+                    // Logs the error and resolve the promise, passing through nothing.
+                    console.log(err);
+                    resolve();
+                });
+            }),
+            new Promise((resolve) => {
+                // Reads the email data map file.
+                fs.readFile('./google/email-data-map.json', (err, data) => {
+                    // Tests for an error.
+                    if (err) {
+                        // Resolves the promise, passing through that the number of failed emails is unknown.
+                        resolve('Unknown');
+                    } else {
+                        // Resolves the promise, passing through the number of automated emails.
+                        resolve(JSON.parse(data).filter(email => email.active).length);
+                    }
+                });
+            }),
+            new Promise((resolve) => {
+                // Reads the failed emails file.
+                fs.readFile('./google/failed-emails.json', (err, data) => {
+                    // Tests for an error.
+                    if (err) {
+                        // Resolves the promise, passing through that the number of failed emails is unknown.
+                        resolve('Unknown');
+                    } else {
+                        // Resolves the promise, passing through the number of failed emails.
+                        resolve(JSON.parse(data).length);
+                    }
+                });
+            })
+        ]).then(healthData => {
+            // Resolves the overall promise, passing through an object with the data fetched.
+            finalResolve({
+                auth: (healthData[0] ? 'Ok' : 'Expired'),
+                account: (healthData[0] ? healthData[0].emailAddress : 'Unknown'),
+                numEmails: healthData[1],
+                failedEmails: healthData[2]
+            });
+        })
+    });
+}

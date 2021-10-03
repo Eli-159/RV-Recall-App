@@ -2,6 +2,25 @@ const google = require('googleapis').google;
 const fs = require('fs');
 const googleAuth = require('./auth.js');
 
+// Exports a function to get the authenticated user's profile.
+module.exports.getUserProfile = () => {
+    // Returns a promise.
+    return new Promise((resolve, reject) => {
+        // Loads the auth token.
+        googleAuth.loadToken().then(token => {
+            // Declares an instance of the gmail api.
+            const gmail = google.gmail({version: 'v1', auth: token});
+            // Gets the profile.
+            gmail.users.getProfile({
+                userId: 'me'
+            }).then(res => {
+                // Resolves the promise, passing through the profile data.
+                resolve(res.data);
+            }).catch(err => reject(err));
+        }).catch(err => reject(err));
+    });
+};
+
 // Exports a function to list the user's draft emails.
 module.exports.listDrafts = () => {
     // Returns a promise.

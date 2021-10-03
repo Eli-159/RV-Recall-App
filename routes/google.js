@@ -47,16 +47,24 @@ router.get('/auth/code', (req, res, next) => {
     // Tests if the requested scopes are all granted by the user.
     if (requestedScopes == givenScopes) {
         // Generates an access token.
-        googleAuth.createTokenFromCode(givenCode).then(() => {
-            // Redirects the user to the success page.
-            res.redirect('/workshop/admin/google/auth/success');
+        googleAuth.createTokenFromCode(givenCode).then(refreshToken => {
+            // Tests if a refresh token was given.
+            if (refreshToken) {
+                // Redirects the user to the success page.
+                res.redirect('/workshop/admin/google/auth/success');
+            } else {
+                // Redirects the user to the refresh token error page.
+                res.redirect('/workshop/admin/google/auth/error?reason=refresh-token');
+            }
         }).catch(err => {
-            // Redirects the user to the error page.
-            res.redirect('/workshop/admin/google/auth/error');
+            // Logs the error.
+            console.log(err);
+            // Redirects the user to the unknown error page.
+            res.redirect('/workshop/admin/google/auth/error?reason=unknown');
         });
     } else {
         // Redirects the user to the scope error page, asking them to authenticate for all scopes.
-        res.redirect('/workshop/admin/google/auth/scope-error');
+        res.redirect('/workshop/admin/google/auth/error?reason=scope');
     }
 });
 
@@ -72,20 +80,13 @@ router.get('/auth/success', (req, res, next) => {
 
 // Catches all requests for the error page.
 router.get('/auth/error', (req, res, next) => {
+    // Gets the reason for the error.
+    const errReason = req.query.reason;
     // Renders the error page.
     res.render('workshop/admin/google/auth/auth-error', {
+        reason: errReason,
         pageTitle: 'Authentication Error',
         path: '/workshop/admin/google/auth/error',
-        role: req.payload.role
-    });
-});
-
-// Catches all requests for the scope error.
-router.get('/auth/scope-error', (req, res, next) => {
-    // Renders the scope error page.
-    res.render('workshop/admin/google/auth/scope-error', {
-        pageTitle: 'Authentication Success',
-        path: '/workshop/admin/google/auth/scope-error',
         role: req.payload.role
     });
 });

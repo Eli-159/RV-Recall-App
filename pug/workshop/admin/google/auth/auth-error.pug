@@ -8,7 +8,7 @@ block content
     if reason == 'scope'
         h2 All Scopes Required
         p Please authenticate the server for all scopes requested.
-    else if reason == 'refresh'
+    else if reason == 'refresh-token'
         h2 Refresh Token Required
         p The authentication request did not return a refresh token.
             | This may mean that no authentication is required, however if it is, this issue can be rectified by going to the 

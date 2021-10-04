@@ -41,7 +41,7 @@ module.exports.getAuthUrl = () => {
                 response_type: 'code',
                 client_id: credentials.web.client_id,
                 scope: SCOPES,
-                redirect_uri: credentials.web.redirect_uris[0]
+                redirect_uri: credentials.web.redirect_uris.find(uri => uri.includes(process.env.DOMAIN))
             }));
         });
     });

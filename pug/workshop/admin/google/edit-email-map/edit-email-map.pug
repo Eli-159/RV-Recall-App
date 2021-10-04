@@ -26,7 +26,7 @@ div(class="form-section", id="editEmailForm")
         div(class="textInput")
             select(id="activeInput", name="active", class="validate dropdown", required)
                 option(value="true", selected) True
-                option(value="false", selected=email.map.active.toString() == 'false') False
+                option(value="false", selected=email.map.active == false) False
         span(class="errorMessage", id="activeInputError")
         br
         label(for="addressInput", id="addressInputLabel") Send To

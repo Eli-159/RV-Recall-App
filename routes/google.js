@@ -336,7 +336,7 @@ router.get('/send-failed-emails', (req, res, next) => {
         // Tests if there are no failed emails.
         if (numEmails == 0) {
             // Redirects the user directly to the send-failed-emails page, as there should be none to send.
-            res.redirect('/workshop/admin/google/send-failed-emails');
+            res.redirect('/workshop/admin/google/send-failed-emails/start-send');
         } else {
             // Renders the send-failed-emails page.
             res.render('workshop/admin/google/failed-emails/send-failed-emails', {

@@ -204,7 +204,7 @@ module.exports.sortWorkshopDataForEmail = (vehicleData) => {
         // Tests if a workshop was found.
         if (processedWorkshopData.workshopFound === true) {
             // Updates the feedback notes to have any feedback amended after the semicolon.
-            processedWorkshopData.feedbackNotes = JSON.stringify(recallFeedback.split(';'));
+            processedWorkshopData.feedbackNotes = JSON.stringify(recallFeedback.split(';').splice(0, 1));
         }
     }
     return processedWorkshopData;

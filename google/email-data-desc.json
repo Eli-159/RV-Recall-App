@@ -124,5 +124,11 @@
         "name": "Workshop Email",
         "type": "String",
         "desc": "The email address of the associated workshop."
+    },
+    {
+        "key": "feedbackNotes",
+        "name": "Feedback Notes",
+        "type": "String",
+        "desc": "The feedback provided on the most recent positive contact record. Only exists if a workshop has been found."
     }
 ]

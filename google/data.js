@@ -145,7 +145,10 @@ module.exports.sortOwnerDataForEmail = (vehicleData) => {
 // Declares a function to sort and add the workshop data for the email.
 module.exports.sortWorkshopDataForEmail = (vehicleData) => {
     // Declares an object to contaiin the sorted workshop data.
-    const processedWorkshopData = {};
+    const processedWorkshopData = {
+        workshopFound: false,
+        feedbackNotes: ''
+    };
     // Declares variables to hold the most recent date, and the index of the record containing them.
     let recentDate = 0;
     let recentIndex = 0;
@@ -198,9 +201,11 @@ module.exports.sortWorkshopDataForEmail = (vehicleData) => {
             // If none of the expected options were in chosenWorkshop, the workshopFound property is set to false.
             processedWorkshopData.workshopFound = false;
         }
-    } else {
-        // If no owner registration contact record was found, the workshopFound property is set to false.
-        processedWorkshopData.workshopFound = false;
+        // Tests if a workshop was found.
+        if (processedWorkshopData.workshopFound === true) {
+            // Updates the feedback notes to have any feedback amended after the semicolon.
+            processedWorkshopData.feedbackNotes = recallFeedback.split(';').splice(0, 1).join(';');
+        }
     }
     return processedWorkshopData;
 };

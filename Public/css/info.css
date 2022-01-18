@@ -68,3 +68,13 @@
 .popup .close:hover {
   color: #232d47;
 }
+
+.floatingBox {
+  @media only screen and (max-width: 674px) {
+    
+  }
+
+  @media only screen and (min-width: 675px) {
+    
+  }
+}

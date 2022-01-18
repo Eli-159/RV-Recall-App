@@ -39,3 +39,19 @@ block content
             li.body-nav-list-item
                 a(href="/workshop/admin/google/actions") Google Actions
                     p.body-nav-desc Control Google API related processes.
+    if role == 'admin'
+        div(class="floatingBox boxInfo")
+        h3 Google Account/Email Health
+        table
+            tr
+                th Authentication:
+                td #{healthData.auth}
+            tr
+                th Account:
+                td #{healthData.account}
+            tr
+                th Active Auto Emails:
+                td #{healthData.numEmails}
+            tr
+                th Failed Emails:
+                td #{healthData.failedEmails}

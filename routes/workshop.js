@@ -1,6 +1,7 @@
 // Inports the required libraries and other files.
 const express = require('express');
 const router = express.Router();
+const gmail = require('../google/gmail.js');
 
 // Inports the other files containing routes accessed through this file.
 const eliteRoutes = require('./elite.js')
@@ -16,13 +17,26 @@ router.get('/', (req, res, next) => {
 
 // Catches all requests for the actions page
 router.get('/actions', (req, res, next) => {
-    // Renders and returns the actions page.
-    res.render('workshop/actions', {
-        pageTitle: 'Admin Actions - MyRV',
-        role: req.payload.role,
-        path: '/workshop/actions',
-        role: req.payload.role
-    });
+    // Decalres a promise.
+    new Promise((resolve, reject) => {
+        // Tests if the role is admin.
+        if (req.payload.role == 'admin') {
+            // Gets the gmail health update and returns the data.
+            gmail.getHealthUpdate().then(data => resolve(data))
+        } else {
+            // Resolves the promise, returning an empty object.
+            resolve({});
+        }
+    }).then(emailHealthData => {
+        // Renders and returns the actions page.
+        res.render('workshop/actions', {
+            emailHealthData,
+            pageTitle: 'Admin Actions - MyRV',
+            role: req.payload.role,
+            path: '/workshop/actions',
+            role: req.payload.role
+        });
+    })
 });
 
 // Catches all requests going through the recall route and points them to the recall routes file.

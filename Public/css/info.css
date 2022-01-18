@@ -70,16 +70,21 @@
 }
 
 
-@media only screen and (max-width: 674px) {
+@media only screen and (min-width: 800px) {
   .floatingBox {
-    width: min-content;
-    background-color: green;
+      width: auto;
+      max-width: 400px;
+      position: fixed;
+      top: 180px;
+      right: calc(45vw - 338px);
   }
 }
 
-@media only screen and (min-width: 675px) {
+@media only screen and (max-width: 799px) {
   .floatingBox {
-    width: min-content;
-    background-color: green;
+      width: auto;
+      display: block;
+      position: static;
+      margin: 50px;
   }
 }

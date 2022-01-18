@@ -58,7 +58,7 @@ div(class="form-section", id="detailsForm")
                 option(value="WA", selected=(emailLink ? (data.owners[0].regoState == 'WA') : false)) Western Australia 
         span(class="errorMessage", id="regoStateInputError")
         div(class="textInput")
-            input(type="date", id="regoDtInput", name="regoDt", class="validate", min="2000-01-01", max=todayDate, placeholder="Date of Registration", value=(emailLink ? data.owners[0].regoDt.substring(0,10) : ''))
+            input(type="date", id="regoDtInput", name="regoDt", class="validate", min="2000-01-01", max=todayDate, placeholder="Date of Registration", value=(emailLink && data.owners[0].regoDt ? data.owners[0].regoDt.substring(0,10) : ''))
         span(class="errorMessage", id="regoDtInputError")
         br
         if recallSection

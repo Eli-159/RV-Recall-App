@@ -161,8 +161,10 @@ router.post('/submit-details', auth.authenticateToken, emailRoutes, (req, res, n
             .then(data => {
                 // Renders the success message page.
                 res.render('owner-details/success-message');
+                // Gets the trigger url for the auto email function.
+                const triggerUrl = (req.headers.referer.includes('/recall-registration') ? '/recall-registration/submit-details' : '/owner-registration/submit-details');
                 // Calls the auto email function.
-                sendEmail.sendAutoEmail(req.originalUrl, req.payload.vin);
+                sendEmail.sendAutoEmail(triggerUrl, req.payload.vin);
             })
             .catch(err => {
                 // Returns a status of 500 with an unexpected error message.

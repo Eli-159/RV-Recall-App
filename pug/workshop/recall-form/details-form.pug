@@ -58,7 +58,7 @@ div(class="form-section", id="detailsForm")
                 option(value="WA", selected= data.owner.regoState == "WA") Western Australia 
         span(class="errorMessage", id="regoStateInputError")
         div(class="textInput")
-            input(type="date", id="regoDtInput", name="regoDt", class="validate", min="2000-01-01", max=todayDate, placeholder="Date of Registration", value= (data.owner.regoDt==null?null:data.owner.regoDt.substr(0,10)))
+            input(type="date", id="regoDtInput", name="regoDt", class="validate", min="2000-01-01", max=todayDate, placeholder="Date of Registration", value= (data.owner.regoDt==null?null:data.owner.regoDt.substring(0,10)))
         span(class="errorMessage", id="regoDtInputError")
         br
         input(type="button", value="Submit", id="detailsSubmitBtn", class="submitBtn")

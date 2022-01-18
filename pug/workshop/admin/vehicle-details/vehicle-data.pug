@@ -95,7 +95,7 @@ div(class="form-section", id="vehicleData")
                 td Date 
                 if hasOwner 
                     if data.owners[0].regoDt != null 
-                        td #{data.owners[0].regoDt.substr(0,10)}
+                        td #{data.owners[0].regoDt.substring(0,10)}
                     else 
                         td
                 else
@@ -126,7 +126,7 @@ div(class="form-section", id="vehicleData")
                                 span.feedback  #{recallContact.recallFeedbacks[0].feedback}
                         else 
                             td &nbsp;
-                        td #{recallContact.createdAt.substr(0,16)}
+                        td #{recallContact.createdAt.substring(0,16)}
                             if role == 'admin'
                                 br
                                 | &nbsp;by&nbsp;#{recallContact.createdBy}

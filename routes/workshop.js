@@ -30,7 +30,7 @@ router.get('/actions', (req, res, next) => {
     }).then(emailHealthData => {
         // Renders and returns the actions page.
         res.render('workshop/actions', {
-            emailHealthData,
+            healthData: emailHealthData,
             pageTitle: 'Admin Actions - MyRV',
             role: req.payload.role,
             path: '/workshop/actions',

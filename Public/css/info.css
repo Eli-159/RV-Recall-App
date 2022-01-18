@@ -69,12 +69,15 @@
   color: #232d47;
 }
 
-.floatingBox {
-  @media only screen and (max-width: 674px) {
-    
-  }
 
-  @media only screen and (min-width: 675px) {
-    
+@media only screen and (max-width: 674px) {
+  .floatingBox {
+    width: min-content;
+  }
+}
+
+@media only screen and (min-width: 675px) {
+  .floatingBox {
+    width: min-content;
   }
 }

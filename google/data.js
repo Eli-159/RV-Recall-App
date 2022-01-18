@@ -193,7 +193,7 @@ module.exports.sortWorkshopDataForEmail = (vehicleData) => {
             // Loads the appropriate data into the processedWorkshopData variable.
             processedWorkshopData.workshopLocation = 'Other';
             processedWorkshopData.workshopName = 'Other';
-            processedWorkshopData.workshopEmail = 'recall@my-rv.com.au';
+            processedWorkshopData.workshopEmail = 'recalls@my-rv.com.au';
         } else {
             // If none of the expected options were in chosenWorkshop, the workshopFound property is set to false.
             processedWorkshopData.workshopFound = false;

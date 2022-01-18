@@ -175,25 +175,29 @@ module.exports.sortWorkshopDataForEmail = (vehicleData) => {
             // Loads the appropriate data into the processedWorkshopData variable.
             processedWorkshopData.workshopLocation = 'Sydney';
             processedWorkshopData.workshopName = 'Elite NSW';
-            processedWorkshopData.workshopEmail = 'servicensw@eliterv.com.au'
+            // processedWorkshopData.workshopEmail = 'servicensw@eliterv.com.au';
+            processedWorkshopData.workshopEmail = 'eli.gearing+sydney@gmail.com';
         // Tests if the selected workshop was Melbourne.
         } else if (chosenWorkshop == 'melbourne') {
             // Loads the appropriate data into the processedWorkshopData variable.
             processedWorkshopData.workshopLocation = 'Melbourne';
             processedWorkshopData.workshopName = 'Elite Vic';
-            processedWorkshopData.workshopEmail = 'servicevic@eliterv.com.au'
+            // processedWorkshopData.workshopEmail = 'servicevic@eliterv.com.au';
+            processedWorkshopData.workshopEmail = 'eli.gearing+melbourne@gmail.com';
         // Tests if the selected workshop was the Gold Coast.
         } else if (chosenWorkshop == 'gold-coast') {
             // Loads the appropriate data into the processedWorkshopData variable.
             processedWorkshopData.workshopLocation = 'Gold Coast';
             processedWorkshopData.workshopName = 'Elite Qld';
-            processedWorkshopData.workshopEmail = 'service@eliterv.com.au'
+            // processedWorkshopData.workshopEmail = 'service@eliterv.com.au';
+            processedWorkshopData.workshopEmail = 'eli.gearing+gold-coast@gmail.com';
         // Tests if there was no workshop that was accessible for the owner.
         } else if (chosenWorkshop == 'other') {
             // Loads the appropriate data into the processedWorkshopData variable.
             processedWorkshopData.workshopLocation = 'Other';
             processedWorkshopData.workshopName = 'Other';
-            processedWorkshopData.workshopEmail = 'recall@my-rv.com.au'
+            // processedWorkshopData.workshopEmail = 'recall@my-rv.com.au';
+            processedWorkshopData.workshopEmail = 'eli.gearing+other@gmail.com';
         } else {
             // If none of the expected options were in chosenWorkshop, the workshopFound property is set to false.
             processedWorkshopData.workshopFound = false;

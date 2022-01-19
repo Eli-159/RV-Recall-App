@@ -1,7 +1,7 @@
 .floatingBox
     div(class=["boxInfo", (healthData.auth=='Expired' || healthData.failedEmails>0 ? 'redAlert' : '')])
         h3
-            a Google Account/Email Health
+            a(href="/workshop/admin/google/actions") Google Account/Email Health
         table
             tr
                 th Authentication:

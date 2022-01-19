@@ -7,25 +7,9 @@ block css
     link(rel="stylesheet", href="/css/header.css")
 
 block content
-    br
-    .boxInfo
-        h3 Google Account/Email Health
-        table
-            tr
-                th Authentication:
-                td #{healthData.auth}
-            tr
-                th Account:
-                td #{healthData.account}
-            tr
-                th Active Auto Emails:
-                td #{healthData.numEmails}
-            tr
-                th Failed Emails:
-                td #{healthData.failedEmails}
-    br
-    br
+    include ../templates/google-health
     p Use the links below to navigate to the functions you wish to use.
+    br
     ul.body-nav-list
         li.body-nav-list-item
             a(href="/workshop/admin/google/auth/url") Google Authentication

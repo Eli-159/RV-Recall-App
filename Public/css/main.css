@@ -53,6 +53,13 @@ a.large-spaced-link {
   margin: 2px;
 }
 
+h3 > a {
+  text-decoration: underline;
+  display: inline;
+  cursor: pointer;
+  font-style: normal;
+}
+
 .form input[type="button"].aButton,
 .form input[type="button"].aButton:hover {
   border: none !important;
@@ -103,4 +110,8 @@ a.aBtn:hover {
 .center {
   margin: auto !important;
   text-align: center;
+}
+
+.redAlert {
+  background-color: #cc0000;
 }

@@ -3,7 +3,7 @@ div(class="form-section", id="editEmailForm")
     br
     .form
         label(for="urlInput", id="urlInputLabel") Trigger Event
-        a(href="#triggerInfo", class="infoIcon")
+            a(href="#triggerInfo", class="infoIcon") &#9432;
         div(class="textInput")
             select(id="urlInput", name="url", class="validate dropdown", pattern=".+", required)
                 option(value="", selected, disabled, hidden) 
@@ -16,7 +16,7 @@ div(class="form-section", id="editEmailForm")
         span(class="errorMessage", id="urlInputError")
         br
         label(for="draftInput", id="draftInputLabel") Gmail Draft
-        a(href="#draftInfo", class="infoIcon")
+            a(href="#draftInfo", class="infoIcon") &#9432;
         div(class="textInput")
             select(id="draftInput", name="draft", class="validate dropdown", pattern=".+", required)
                 option(value="", selected, disabled, hidden) 
@@ -25,7 +25,7 @@ div(class="form-section", id="editEmailForm")
         span(class="errorMessage", id="draftInputError")
         br
         label(for="activeInput", id="activeInputLabel") Active
-        a(href="#activeInfo", class="infoIcon")
+            a(href="#activeInfo", class="infoIcon") &#9432;
         div(class="textInput")
             select(id="activeInput", name="active", class="validate dropdown", required)
                 option(value="true", selected) True
@@ -33,7 +33,7 @@ div(class="form-section", id="editEmailForm")
         span(class="errorMessage", id="activeInputError")
         br
         label(for="addressInput", id="addressInputLabel") Send To
-        a(href="#sendToInfo", class="infoIcon")
+            a(href="#sendToInfo", class="infoIcon") &#9432;
         div(class="textInput")
             select(id="addressInput", name="email", class="validate dropdown", required)
                 option(value="", selected, disabled, hidden)
@@ -45,7 +45,7 @@ div(class="form-section", id="editEmailForm")
         br
         br
         label(for) Replace Values
-        a(href="#replaceInfo", class="infoIcon")
+            a(href="#replaceInfo", class="infoIcon") &#9432;
         table(id="replaceValsTable")
             - let iterations = 1;
             if email.map.replaceValues

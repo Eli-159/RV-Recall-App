@@ -102,7 +102,7 @@ module.exports.replaceMessageData = (message, address, replaceValues) => {
     // Loops over the keys pulled from the replaceValues object.
     for (key in replaceKeys) {
         // Creates a regular expression replace key, using the replace key and adding optional charaters inbetween to handle new lines.
-        const replaceKey = new RegExp(('{{'+replaceKeys[key]+'}}').split('').join('=?\\n?\\r?\\n?'),'g');
+        const replaceKey = new RegExp(('(({{)|(%7B%7B))'+replaceKeys[key]+'((}})|(%7D%7D))').split('').join('=?\\n?\\r?\\n?'),'g');
         // Replaces any instance of the replace key with the replace value passed in through the replaceValues object.
         stringMessage = stringMessage.replace(replaceKey, replaceValues[replaceKeys[key]]);
     }

@@ -3,6 +3,7 @@ div(class="form-section", id="editEmailForm")
     br
     .form
         label(for="urlInput", id="urlInputLabel") Trigger Event
+        a(href="#triggerInfo", class="infoIcon")
         div(class="textInput")
             select(id="urlInput", name="url", class="validate dropdown", pattern=".+", required)
                 option(value="", selected, disabled, hidden) 
@@ -15,6 +16,7 @@ div(class="form-section", id="editEmailForm")
         span(class="errorMessage", id="urlInputError")
         br
         label(for="draftInput", id="draftInputLabel") Gmail Draft
+        a(href="#draftInfo", class="infoIcon")
         div(class="textInput")
             select(id="draftInput", name="draft", class="validate dropdown", pattern=".+", required)
                 option(value="", selected, disabled, hidden) 
@@ -23,6 +25,7 @@ div(class="form-section", id="editEmailForm")
         span(class="errorMessage", id="draftInputError")
         br
         label(for="activeInput", id="activeInputLabel") Active
+        a(href="#activeInfo", class="infoIcon")
         div(class="textInput")
             select(id="activeInput", name="active", class="validate dropdown", required)
                 option(value="true", selected) True
@@ -30,6 +33,7 @@ div(class="form-section", id="editEmailForm")
         span(class="errorMessage", id="activeInputError")
         br
         label(for="addressInput", id="addressInputLabel") Send To
+        a(href="#sendToInfo", class="infoIcon")
         div(class="textInput")
             select(id="addressInput", name="email", class="validate dropdown", required)
                 option(value="", selected, disabled, hidden)
@@ -41,6 +45,7 @@ div(class="form-section", id="editEmailForm")
         br
         br
         label(for) Replace Values
+        a(href="#replaceInfo", class="infoIcon")
         table(id="replaceValsTable")
             - let iterations = 1;
             if email.map.replaceValues
@@ -75,3 +80,112 @@ div(class="form-section", id="editEmailForm")
         if deleteOpt
             p.inlineP &nbsp; or &nbsp;
             input(type="button", value="Delete", id="emailDeleteBtn", class="submitBtn")
+div(id="triggerInfo", class="popup-overlay")
+    div(class="popup info")
+        p Trigger Events are caused by the following submissions:
+        a(class="close", href="#") &times;
+        ol
+            li 
+                strong Owner Registration
+                |  events are triggered when the owner submits an owner registration form (the one linked to on the home page).
+            li 
+                strong Recall Registration
+                |  events are triggered when the owner submits a recall registration form (the one emailed out).
+            li 
+                strong Updated Owner Details (Recall Form) 
+                |  events are triggered when a workshop submits the Owner Details form attached to the Recall Form.
+                |  This is not triggered if the skip link is used, however it is triggered if they click submit but change nothing.
+            li 
+                strong Updated Owner Details (Elite Form)
+                |  events are triggered when Elite submits the Update Owner Details form linked to in the menu.
+                |  This is not dependant on any change being made, and it doesn't confirm whether or not the owner is the same or different
+                |  to the previously listed one.
+            li 
+                strong Contact Form - Booking Made
+                |  events are triggered when a workshop submits a contact form with the 'Recall Booking' tag.
+            li 
+                strong Contact Form - Not Owner
+                |  events are triggered when a workshop submits a contact form with the 'No Longer Owner' tag.
+div(id="draftInfo", class="popup-overlay")
+    div(class="popup info")
+        p The draft dropdown will list all of the drafts in the currently authenticated google account.
+        a(class="close", href="#") &times;
+        br
+        p These are used as templates to send the email. Each draft should be structured as follows:
+        ol
+            li
+                strong From
+                |  should be set to the address to send from.
+                |  While only one account can be authenticated, you can choose to send from an an authenticated alias or other address.
+            li
+                strong To
+                |  should be left blank. The email will be sent to the email address chosen on this page.
+            li
+                strong Cc/Bcc
+                |  should be left blank. The email will be sent to the email address chosen on this page.
+            li The
+                strong Subject
+                |  of the email should be set to whatever you want it to be set to.
+                |  Don't add any dynamic content to this section, as while it may work, it may mess with setting on the email.
+                |  If you want to make it clear that this email is a template, not a draft that should be sent,
+                |  you can include the text "TEMPLATE:" at the beginning of the subject, and it will be removed before sending.
+            li The
+                strong Body
+                |  of the email should be formatted and written as you want it to send.
+                |  To include dynamic content, include a Replace Key, with double curly brackets on either side, eg. {{test}}.
+                |  These can be included in a url, they also will be replaced, even if gmail reformats the link to replace the curly brackets.
+
+div(id="activeInfo", class="popup-overlay")
+    div(class="popup info")
+        p The active property simply turn the email on and off.
+        a(class="close", href="#") &times;
+        p There are two settings for active: 
+        ol
+            li
+                strong True
+                |  indicates that the email is active, meaning that emails will be sent as expected.
+            li
+                strong False
+                |  indicates that the email is not active, meaning that nothing will be done when a trigger occurs.
+                |  The purpose of inactive emails is simply that the settings are stored so they can just be turned on later.
+div(id="sendToInfo", class="popup-overlay")
+    div(class="popup info")
+        p The "Send To" options will send to the following email addresses:
+        a(class="close", href="#") &times;
+        ol
+            li The 
+                strong Owner Email
+                |  is the address of the current owner.
+                |  If the owner email address has just been updated, this will be sent to the new address, not the old.
+            li The 
+                strong Workshop Email
+                |  is the address associated with the workshop that has been chosen on the Recall Registration form.
+                i  Please Note: When using this email, it relies on a recent Recall Contact record, that has been marked as Recall Registration,
+                    |  created by the owner, and has an associated Recall Feedback record containing reference to the workshop location indicated.
+                |  This means that there will not always be a Workshop Email, and when there isn't, no email will be sent.
+                |  It will not be marked as failed, it will just do nothing, even if it is supposed to sent a courtesy copy to MY-RV.
+            li The 
+                strong MY-RV (Info)
+                |  option will send the email to info@my-rv.com.au.
+            li The 
+                strong MY-RV (Recalls)
+                |  option will send the email to recalls@my-rv.com.au
+div(id="replaceInfo", class="popup-overlay")
+    div(class="popup info")
+        p 
+            strong Replacement Keys
+            |  are the placeholder text in the email between the sets of curly brackets.
+            |  For example, if the email had {{test}}, the Replacement Key would be "test".
+        br
+        p
+            strong Replacement Values
+            |  are the dynamic values that should replace the Replacement Keys (and curly brackets) before the email is sent.
+            |  A list of what these values are is below:
+        a(class="close", href="#") &times;
+        ol
+            each replace in email.keys
+                -
+                    let currDesc = replace.desc[0].toLowerCase() + replace.desc.substring(1);
+                li 
+                    strong #{replace.name}
+                    |  #{currDesc}

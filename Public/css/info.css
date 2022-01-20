@@ -69,6 +69,18 @@
   color: #232d47;
 }
 
+.infoIcon {
+  text-decoration: none;
+  font-style: normal;
+  color: #ffffff;
+  font-size: 16px;
+  display: inline;
+  margin-left: 15px;
+}
+
+.infoIcon:hover {
+  color: #ffcc00;
+}
 
 @media only screen and (min-width: 800px) {
   .floatingBox {

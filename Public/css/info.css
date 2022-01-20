@@ -10,7 +10,7 @@
   margin-bottom: 20px;
 }
 
-.info p, .info ul li {
+.info p {
   text-align: justify;
   margin: 10px 0px;
 }
@@ -20,6 +20,13 @@
 }
 
 .info ol li {
+  display: list-item;
+  padding: 4px 15px;
+  cursor: default;
+}
+
+.info ul li {
+  text-align: justify;
   display: list-item;
   padding: 4px 15px;
   cursor: default;

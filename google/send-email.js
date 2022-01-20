@@ -34,7 +34,7 @@ module.exports.matchMapWithVals = (dataMap, values) => {
         // Loads the current object key into a variable.
         const currKey = mapKeys[key];
         // Tests if there is a value for the current item.
-        if (values[mapWithVals.replaceValues[currKey]]) {
+        if (values[mapWithVals.replaceValues[currKey]] != undefined) {
             // Updates the value.
             mapWithVals.replaceValues[currKey] = values[mapWithVals.replaceValues[currKey]];
         }

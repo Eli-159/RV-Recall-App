@@ -50,7 +50,7 @@
 }
 
 .popup {
-  margin: 150px auto;
+  margin: 10% auto;
   padding: 20px;
   background: #ffffff;
   border-radius: 5px;
@@ -59,7 +59,8 @@
   position: relative;
   transition: all 5s ease-in-out;
   color: #232d47;
-  max-height: 60%;
+  height: max-content;
+  max-height: 70%;
   overflow: scroll;
 }
 

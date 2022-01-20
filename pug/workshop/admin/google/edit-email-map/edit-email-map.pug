@@ -110,7 +110,6 @@ div(id="draftInfo", class="popup-overlay")
     div(class="popup info")
         p Draft Formatting:
         a(class="close", href="#") &times;
-        br
         p The draft dropdown will list all of the drafts in the currently authenticated google account.
             |  These are used as templates to send the email. Each draft should be structured as follows:
         ul
@@ -189,4 +188,4 @@ div(id="replaceInfo", class="popup-overlay")
                     let currDesc = replace.desc[0].toLowerCase() + replace.desc.substring(1);
                 li 
                     strong #{replace.name}
-                    |  #{currDesc}
+                    |  is #{currDesc}

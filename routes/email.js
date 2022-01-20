@@ -39,77 +39,14 @@ router.use(['/owner-registration/:vin/:trackingNumber', '/recall-registration/:v
 });
 // Catches all requests that are passed in from the submit of the owner registration form.
 router.use('/submit-details', (req, res, next) => {
-    // Defines a function to create a recall contact record for a new owner being registered.
-    const createNewOwnerRecord = vehicleRecordId => {
-        // Adds the recall contact record to the database.
-        // dao.newRecallContact({
-        //     vehicleId: vehicleRecordId, 
-        //     action: 'owner registration', 
-        //     response: 'new owner', 
-        //     createdBy: 'owner', 
-        //     updatedBy: 'owner'
-        // });
-        // Proceeds to the next function for the request.
-        next();
-    };
-    // Defines a function to create a recall contact record for a current owner registering themselves.
-    const createPositiveRecord = vehicleRecordId => {
-        // Adds the recall contact record to the database.
-        // dao.newRecallContact({
-        //     vehicleId: vehicleRecordId, 
-        //     action: 'owner registration', 
-        //     response: 'positive', 
-        //     createdBy: 'owner', 
-        //     updatedBy: 'owner'
-        // });
-        // Proceeds to the next function for the request.
-        next();
-    };
     // Tests if the response status is 200, meaning it has a valid jwt.
     if (res.statusCode == 200) {
-        // If the response status is 200, the vehicleTrackingCookie and payload are loaded into variables.
-        const vehicleTrackingCookie = req.cookies.vehicleTrackingData;
-        const payload = req.payload;
         // Deletes the vehicle tracking cookie from the response, regardless of success.
         res.clearCookie('vehicleTrackingData', {path: '/'});
-        // Checks that the vehilceTrackingCookie exists.
-        if (vehicleTrackingCookie != undefined && vehicleTrackingCookie != null && vehicleTrackingCookie != '') {
-            // Passes the json held by the vehicleTrackingCookie and loads it into a variable.
-            const vehicleTrackingData = JSON.parse(vehicleTrackingCookie);
-            // Loads the vin and tracking number from the vehicle tracking data into variables.
-            const vin = vehicleTrackingData.vin;
-            const trackingNumber = vehicleTrackingData.trackingNumber;
-            // Tests that the vin and tracking number exist.
-            if (vin != undefined && vin != null && trackingNumber != undefined && trackingNumber != null) {
-                // If the vin and tracking number are ok, the vehicle id is extracted from the tracking number and loaded into a variable.
-                const vehicleId = parseInt(trackingNumber)/process.env.TRACKING_MULTIPLIER;
-                // Quiries the database for the vehicle data associated with the vin provided.
-                dao.getVehicleByVin(vin).then(data => {
-                    // Tests that the vehicle is known.
-                    if (data != null) {
-                        // Tests that the vehicle ids and vins from the payload, tracking data and database data all match.
-                        if (vehicleId == data.id && vehicleId == payload.id && vin == payload.vin) {
-                            // If the ids and vins match, a positive record is created, using the previously defined function.
-                            createPositiveRecord(vehicleId);
-                        } else {
-                            // If the ids and vins did not match, a new owner record is created, using the previously defined function.
-                            createNewOwnerRecord(payload.id);
-                        }
-                    } else {
-                        // If the vehicle data was null, a new owner record is created, using the previously defined function.
-                        createNewOwnerRecord(payload.id);
-                    }
-                });
-            } else {
-                // If the vin or trackingNumber was not known, a new owner record is created, using the previously defined function.
-                createNewOwnerRecord(payload.id);
-            }
-        } else {
-            // If the vehicleTrackingData cookie did not exist, a new owner record is created, using the previously defined function.
-            createNewOwnerRecord(payload.id);
-        }
+        // Proceeds to the next function.
+        next();
     } else {
-        // If the response status was not 200, the request is allowed to proceed to the next function without a record being created or the cookie deleted.
+        // If the response status was not 200, the request is allowed to proceed to the next function without the cookie deleted.
         next();
     }
 });

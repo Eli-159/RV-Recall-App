@@ -84,7 +84,7 @@ div(id="triggerInfo", class="popup-overlay")
     div(class="popup info")
         p Trigger Events are caused by the following submissions:
         a(class="close", href="#") &times;
-        ol
+        ul
             li 
                 strong Owner Registration
                 |  events are triggered when the owner submits an owner registration form (the one linked to on the home page).
@@ -108,11 +108,12 @@ div(id="triggerInfo", class="popup-overlay")
                 |  events are triggered when a workshop submits a contact form with the 'No Longer Owner' tag.
 div(id="draftInfo", class="popup-overlay")
     div(class="popup info")
-        p The draft dropdown will list all of the drafts in the currently authenticated google account.
+        p Draft Formatting:
         a(class="close", href="#") &times;
         br
-        p These are used as templates to send the email. Each draft should be structured as follows:
-        ol
+        p The draft dropdown will list all of the drafts in the currently authenticated google account.
+            |  These are used as templates to send the email. Each draft should be structured as follows:
+        ul
             li
                 strong From
                 |  should be set to the address to send from.
@@ -123,13 +124,13 @@ div(id="draftInfo", class="popup-overlay")
             li
                 strong Cc/Bcc
                 |  should be left blank. The email will be sent to the email address chosen on this page.
-            li The
+            li The 
                 strong Subject
                 |  of the email should be set to whatever you want it to be set to.
                 |  Don't add any dynamic content to this section, as while it may work, it may mess with setting on the email.
                 |  If you want to make it clear that this email is a template, not a draft that should be sent,
                 |  you can include the text "TEMPLATE:" at the beginning of the subject, and it will be removed before sending.
-            li The
+            li The 
                 strong Body
                 |  of the email should be formatted and written as you want it to send.
                 |  To include dynamic content, include a Replace Key, with double curly brackets on either side, eg. {{test}}.
@@ -137,10 +138,10 @@ div(id="draftInfo", class="popup-overlay")
 
 div(id="activeInfo", class="popup-overlay")
     div(class="popup info")
-        p The active property simply turn the email on and off.
+        p The active property turns the email on and off.
         a(class="close", href="#") &times;
         p There are two settings for active: 
-        ol
+        ul
             li
                 strong True
                 |  indicates that the email is active, meaning that emails will be sent as expected.
@@ -150,9 +151,9 @@ div(id="activeInfo", class="popup-overlay")
                 |  The purpose of inactive emails is simply that the settings are stored so they can just be turned on later.
 div(id="sendToInfo", class="popup-overlay")
     div(class="popup info")
-        p The "Send To" options will send to the following email addresses:
+        p Emails can be sent to the following email addresses:
         a(class="close", href="#") &times;
-        ol
+        ul
             li The 
                 strong Owner Email
                 |  is the address of the current owner.
@@ -172,17 +173,17 @@ div(id="sendToInfo", class="popup-overlay")
                 |  option will send the email to recalls@my-rv.com.au
 div(id="replaceInfo", class="popup-overlay")
     div(class="popup info")
+        p Replacement Options:
+        a(class="close", href="#") &times;
         p 
             strong Replacement Keys
             |  are the placeholder text in the email between the sets of curly brackets.
             |  For example, if the email had {{test}}, the Replacement Key would be "test".
-        br
         p
             strong Replacement Values
             |  are the dynamic values that should replace the Replacement Keys (and curly brackets) before the email is sent.
             |  A list of what these values are is below:
-        a(class="close", href="#") &times;
-        ol
+        ul
             each replace in email.keys
                 -
                     let currDesc = replace.desc[0].toLowerCase() + replace.desc.substring(1);

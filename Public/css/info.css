@@ -10,7 +10,7 @@
   margin-bottom: 20px;
 }
 
-.info p {
+.info p, .info ul li {
   text-align: justify;
   margin: 10px 0px;
 }
@@ -52,6 +52,8 @@
   position: relative;
   transition: all 5s ease-in-out;
   color: #232d47;
+  max-height: 60%;
+  overflow: scroll;
 }
 
 .popup .close {

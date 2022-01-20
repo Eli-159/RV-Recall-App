@@ -42,6 +42,12 @@
         "desc": "The varient code of the related vehicle."
     },
     {
+        "key": "vehicleTrackingNumber",
+        "name": "Vehicle Tracking Number",
+        "type": "Integer",
+        "desc": "The tracking number of the related vehicle for use in prefilled links."
+    },
+    {
         "key": "ownerName",
         "name": "Owner Name",
         "type": "String",

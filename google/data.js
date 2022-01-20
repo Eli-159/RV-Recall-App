@@ -117,7 +117,8 @@ module.exports.sortVehicleDataForEmail = (vehicleData) => {
         vehicleEngineNo: vehicleData.engineNo,
         vehicleModelDesc: vehicleData.modelDesc,
         vehicleAddSpec: vehicleData.addSpec,
-        vehicleVariantCode: vehicleData.variantCode
+        vehicleVariantCode: vehicleData.variantCode,
+        vehicleTrackingNumber: vehicleData.id*process.env.TRACKING_MULTIPLIER
     };
     // Returns the previously delcared object.
     return processedVehicleData;

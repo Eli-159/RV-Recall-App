@@ -1,5 +1,3 @@
-/* jshint indent: 2 */
-
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('vehicle', {
@@ -46,6 +44,11 @@ module.exports = function(sequelize, DataTypes) {
     updatedBy: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    isOnRav: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 0
     }
   }, {
     sequelize,

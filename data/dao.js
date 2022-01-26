@@ -1,5 +1,6 @@
 // To Generate Models:
-// node_modules/.bin/sequelize-auto -o "./data/models" -d myrv.db -h localhost -e sqlite
+// npm install sequelize-auto
+// ./node_modules/.bin/sequelize-auto -o "./data/models" -d myrv.db -h localhost -e sqlite
 
 const { response } = require('express');
 const Sequelize = require('sequelize');
@@ -222,6 +223,23 @@ function dao() {
         )
     }
 
+    var listChecklistItemByIpa = function (ipa) {
+        return models.checklistItem.findAll({
+            where: {
+                ipa: ipa,
+                isActive: 1
+            },
+            order: [['order', 'ASC']]
+        })
+        .then(data => {
+            if (data != null) {
+                return data.map((node) => node.get({ plain: true }))
+            } else {
+                return data
+            }
+        });
+    }
+
     return {
         newAccessLog,
         getOwner,
@@ -237,7 +255,8 @@ function dao() {
         updateVehicleRecallItem,
         getWorkshopByCode,
         reportVehicleRecallItemStatus,
-        loadVehicle
+        loadVehicle,
+        listChecklistItemByIpa
     }
 }
 

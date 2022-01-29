@@ -1,6 +1,6 @@
 "use strict";
 
-// USAGE: DBPATH='myrv.db' node 'data/migrations/db_v01'
+// USAGE: DBPATH='myrv.db' node 'data/migrations/db_v03'
 // To import data: sqlite3 myrv.db < data/migrations/_import-all.sql
 
 const sqlite3 = require("sqlite3");

@@ -1,6 +1,7 @@
 // To Generate Models:
 // npm install sequelize-auto
 // ./node_modules/.bin/sequelize-auto -o "./data/models" -d myrv.db -h localhost -e sqlite
+// NOTE: If only generating models for a single table beware overwriting init-models.js
 
 const { response } = require('express');
 const Sequelize = require('sequelize');
@@ -229,6 +230,7 @@ function dao() {
                 ipa: ipa,
                 isActive: 1
             },
+            attributes: {exclude: ['createdBy', 'updatedBy','createdAt', 'updatedAt']},
             order: [['order', 'ASC']]
         })
         .then(data => {

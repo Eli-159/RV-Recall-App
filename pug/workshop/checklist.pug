@@ -29,6 +29,9 @@ block content
                     tr
                         td(class="vehicleDataDescCell") Engine Number:
                         td(class="vechicleDataCell") #{vehicleData.engineNo}
+                    tr
+                        td(class="vehicleDataDescCell") Is on RAV:
+                        td(class=['vechicleDataCell', (vehicleData.isOnRav==0 ? 'emphasis' : '')]) #{(vehicleData.isOnRav==1 ? 'Yes' : '***No***')}
         
         hr.checklistPageSplit
 

@@ -245,7 +245,7 @@ router.get('/vehicle-checklist', (req, res, next) => {
     // Gets the vin from the query string.
     const vin = req.query.vin;
     // Defines a function to execute if an error occurs.
-    const failFunc = (err) => {
+    const failFunc = () => {
         // Renders the full page error pug page.
         res.render('errors/full-page-error', {
             errorHeading: 'Checklist Load Failed',
@@ -258,7 +258,6 @@ router.get('/vehicle-checklist', (req, res, next) => {
             path: '/workshop/elite/checklist',
             role: req.payload.role
         });
-        console.log(err);
     };
     // Gets the vehicle data using the stored vin.
     dao.getVehicleByVin(vin).then(vehicleData => {
@@ -270,16 +269,16 @@ router.get('/vehicle-checklist', (req, res, next) => {
                     res.render('workshop/checklist', {
                         vehicleData: vehicleData,
                         checklistItems: checklistData,
-                        pageTitle: 'MyRV Recall Form',
+                        pageTitle: 'Build Checklist - ' + vehicleData.ipa,
                         path: '/workshop/elite/checklist',
                         role: req.payload.role
                     });
                 } else {
-                    failFunc(checklistData);
+                    failFunc();
                 }
             }).catch(failFunc);
         } else {
-            failFunc(vehicleData);
+            failFunc();
         }
     }).catch(failFunc);
 });

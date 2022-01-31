@@ -16,7 +16,7 @@
 
 #checklistHeader {
     width: 100%;
-    max-width: 350px;
+    max-width: 330px;
     float: left;
     display: block;
     margin-top: 10px;
@@ -89,7 +89,7 @@ li.checklistItem.indent5 span.spacer {
 li.checklistItem.indent1 {
     display: block;
     margin-top: 15px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     break-inside: avoid;
     break-before: auto;

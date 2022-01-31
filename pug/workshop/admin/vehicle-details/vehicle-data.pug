@@ -1,6 +1,9 @@
 div(class="form-section", id="vehicleData")
     if success
         h2 Vehicle Properties
+        a(href="/workshop/elite/vehicle-checklist?vin="+data.vin, class="a") Complete Vehicle Checklist 
+        br
+        br
         table(class="table")
             tr
                 th Property

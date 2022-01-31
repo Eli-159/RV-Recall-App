@@ -241,4 +241,47 @@ router.post('/update-owner-details/submit-owner-details', (req, res, next) => {
     });
 });
 
+router.get('/vehicle-checklist', (req, res, next) => {
+    // Gets the vin from the query string.
+    const vin = req.query.vin;
+    // Defines a function to execute if an error occurs.
+    const failFunc = (err) => {
+        // Renders the full page error pug page.
+        res.render('errors/full-page-error', {
+            errorHeading: 'Checklist Load Failed',
+            errorBody: 'The creation of the checklist failed and it could not be loaded.',
+            includeRedirect: true,
+            redirectTime: 20,
+            redirectAddress: '/workshop/elite/get-vehicle-details/vehicle-details/' + vin,
+            redirectPageName: 'Vehicle Details',
+            pageTitle: 'Checklist Fail',
+            path: '/workshop/elite/checklist',
+            role: req.payload.role
+        });
+        console.log(err);
+    };
+    // Gets the vehicle data using the stored vin.
+    dao.getVehicleByVin(vin).then(vehicleData => {
+        if (vehicleData) {
+            // Gets the checklist data using the ipa from the vehicle data.
+            dao.listChecklistItemByIpa(vehicleData.ipa).then(checklistData => {
+                if (checklistData) {
+                    // Renders the checklist page with the data fetched.
+                    res.render('workshop/checklist', {
+                        vehicleData: vehicleData,
+                        checklistItems: checklistData,
+                        pageTitle: 'MyRV Recall Form',
+                        path: '/workshop/elite/checklist',
+                        role: req.payload.role
+                    });
+                } else {
+                    failFunc(checklistData);
+                }
+            }).catch(failFunc);
+        } else {
+            failFunc(vehicleData);
+        }
+    }).catch(failFunc);
+});
+
 module.exports = router;

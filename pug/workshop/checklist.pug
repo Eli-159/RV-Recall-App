@@ -1,0 +1,41 @@
+extends ../templates/admin-layout
+
+block css
+    link(rel="stylesheet", href="/css/workshop-layout.css")
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/header.css")
+    link(rel="stylesheet", href="/css/checklist.css")
+    link(rel="stylesheet", href="/css/checklist-print.css")
+
+block content
+    div(id="checklistArea")
+        div(id="checklistTop")
+            div(id="checklistHeader")
+                img(src="/images/black-logo.png", id="checklistHeaderImg")
+                if checklistItems[0].indent == 0
+                    h1(id="checklistHeaderText") #{checklistItems[0].description}
+
+            div(id="prefillData")
+                table(id="prefillDataTable")
+                    tr 
+                        td(class="vehicleDataDescCell") VIN:
+                        td(class="vechicleDataCell") #{vehicleData.vin}
+                    tr 
+                        td(class="vehicleDataDescCell") Build Number:
+                        td(class="vechicleDataCell") #{vehicleData.buildNo}
+                    tr 
+                        td(class="vehicleDataDescCell") Model:
+                        td(class="vechicleDataCell") #{vehicleData.modelDesc}
+                    tr
+                        td(class="vehicleDataDescCell") Engine Number:
+                        td(class="vechicleDataCell") #{vehicleData.engineNo}
+        
+        hr.checklistPageSplit
+
+        div(id="checklistItems")
+            ul(id="checklistItemList")
+                each item in checklistItems
+                    if item.indent > 0
+                        li(class=['checklistItem', ('indent'+item.indent)])
+                            span(class="spacer")
+                            | #{item.description}

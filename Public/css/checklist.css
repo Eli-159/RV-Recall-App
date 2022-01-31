@@ -1,0 +1,157 @@
+#checklistArea {
+    width: 100%;
+    max-width: 700px;
+    min-height: 980px;
+    margin: 25px auto;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 25px;
+    border-radius: 8px;
+}
+
+#checklistTop {
+    display: block;
+    overflow: auto;
+}
+
+#checklistHeader {
+    width: 100%;
+    max-width: 350px;
+    float: left;
+    display: block;
+    margin-top: 10px;
+}
+
+#checklistHeaderImg {
+    display: block;
+    width: 200px;
+}
+
+#checklistHeaderText {
+    margin-bottom: 0px;
+}
+
+#prefillData {
+    float: right;
+    width: fit-content;
+    max-width: 350px;
+    display: block;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#prefillDataTable {
+    border-collapse: separate;
+    border-spacing: 10px 5px;
+    max-width: 330px;
+}
+
+.vehicleDataDescCell {
+    font-weight: bold;
+}
+
+.vechicleDataCell {
+    max-width: 170px;
+}
+
+hr.checklistPageSplit {
+    display: block;
+    border: 2px solid #000000;
+    border-radius: 2px;
+    margin: 20px 0px;
+}
+
+#checklistItems {
+    display: block;
+    width: fit-content;
+}
+
+#checklistItemList {
+    list-style-type: "\2610";
+    list-style-position: inside;
+}
+
+li.checklistItem {
+    cursor: auto;
+}
+
+li.checklistItem.indent3 span.spacer,
+li.checklistItem.indent5 span.spacer {
+    padding: 0px 6px;
+}
+
+li.checklistItem.indent1 {
+    display: block;
+    margin-top: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    break-inside: avoid;
+    break-before: auto;
+}
+
+li.checklistItem.indent2 {
+    display: block;
+    font-style: italic;
+    margin-left: 5px;
+    font-size: 16px;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    break-inside: avoid;
+    break-before: avoid;
+}
+
+li.checklistItem.indent3 {
+    display: list-item;
+    margin-left: 20px;
+    margin-top: 2px;
+    font-size: 20px;
+    break-inside: avoid;
+    break-before: avoid;
+}
+
+li.checklistItem.indent4 {
+    display: block;
+    margin-left: 55px;
+    margin-bottom: 2px;
+    font-style: italic;
+    font-size: 14px;
+    break-inside: avoid;
+    break-before: avoid;
+}
+
+li.checklistItem.indent5 {
+    display: list-item;
+    margin-left: 40px;
+    font-size: 18px;
+    break-inside: avoid;
+    break-before: avoid;
+}
+
+li.checklistItem.indent6 {
+    display: block;
+    margin-left: 70px;
+    margin-bottom: 2px;
+    font-size: 14px;
+    font-style: italic;
+    break-inside: avoid;
+    break-before: avoid;
+}
+
+@media print {
+    body {
+        background-color: #ffffff;
+        color: #000000;
+    }
+
+    header {
+        display: none;
+    }
+
+    #checklistArea {
+        min-height: 500px;
+        padding: 0px;
+        border-radius: 0px;
+        margin: 0px;
+    }
+}

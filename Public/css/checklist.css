@@ -28,6 +28,7 @@
 }
 
 #checklistHeaderText {
+    font-size: 26px;
     margin-bottom: 0px;
 }
 
@@ -88,7 +89,7 @@ li.checklistItem.indent5 span.spacer {
 li.checklistItem.indent1 {
     display: block;
     margin-top: 15px;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     break-inside: avoid;
     break-before: auto;
@@ -98,7 +99,7 @@ li.checklistItem.indent2 {
     display: block;
     font-style: italic;
     margin-left: 5px;
-    font-size: 16px;
+    font-size: 14px;
     margin-top: 2px;
     margin-bottom: 4px;
     break-inside: avoid;
@@ -109,7 +110,7 @@ li.checklistItem.indent3 {
     display: list-item;
     margin-left: 20px;
     margin-top: 2px;
-    font-size: 20px;
+    font-size: 16px;
     break-inside: avoid;
     break-before: avoid;
 }
@@ -119,7 +120,7 @@ li.checklistItem.indent4 {
     margin-left: 55px;
     margin-bottom: 2px;
     font-style: italic;
-    font-size: 14px;
+    font-size: 12px;
     break-inside: avoid;
     break-before: avoid;
 }
@@ -127,7 +128,7 @@ li.checklistItem.indent4 {
 li.checklistItem.indent5 {
     display: list-item;
     margin-left: 40px;
-    font-size: 18px;
+    font-size: 16px;
     break-inside: avoid;
     break-before: avoid;
 }
@@ -136,7 +137,7 @@ li.checklistItem.indent6 {
     display: block;
     margin-left: 70px;
     margin-bottom: 2px;
-    font-size: 14px;
+    font-size: 12px;
     font-style: italic;
     break-inside: avoid;
     break-before: avoid;

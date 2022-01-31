@@ -120,7 +120,7 @@ li.checklistItem.indent4 {
     margin-left: 55px;
     margin-bottom: 2px;
     font-style: italic;
-    font-size: 12px;
+    font-size: 14px;
     break-inside: avoid;
     break-before: avoid;
 }
@@ -137,7 +137,7 @@ li.checklistItem.indent6 {
     display: block;
     margin-left: 70px;
     margin-bottom: 2px;
-    font-size: 12px;
+    font-size: 14px;
     font-style: italic;
     break-inside: avoid;
     break-before: avoid;

@@ -224,10 +224,11 @@ function dao() {
         )
     }
 
-    var listChecklistItemByIpa = function (ipa) {
+    var listChecklistItemByIpa = function (ipa, modelYear) {
         return models.checklistItem.findAll({
             where: {
                 ipa: ipa,
+                modelYear: modelYear,
                 isActive: 1
             },
             attributes: {exclude: ['createdBy', 'updatedBy','createdAt', 'updatedAt']},

@@ -263,7 +263,8 @@ router.get('/vehicle-checklist', (req, res, next) => {
     dao.getVehicleByVin(vin).then(vehicleData => {
         if (vehicleData) {
             // Gets the checklist data using the ipa from the vehicle data.
-            dao.listChecklistItemByIpa(vehicleData.ipa).then(checklistData => {
+            console.log(String(vehicleData.buildNo).substring(0, 1))
+            dao.listChecklistItemByIpa(vehicleData.ipa, String(vehicleData.buildNo).substring(0, 2)).then(checklistData => {
                 if (checklistData) {
                     // Renders the checklist page with the data fetched.
                     res.render('workshop/checklist', {

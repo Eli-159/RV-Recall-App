@@ -23,6 +23,7 @@ db.serialize(function() {
     db.run(`CREATE TABLE checklistItem (
         id INTEGER PRIMARY KEY,
         ipa TEXT,
+        modelYear INTEGER,
         description TEXT,
         indent INTEGER,
         "order" INTEGER,
@@ -35,3 +36,29 @@ db.serialize(function() {
 
 });
 db.close();
+
+// TO ROLL BACK:  DROP COLUMN 'isOnRav' & DROP TABLE checklistItem;
+// PRAGMA foreign_keys=off;
+// BEGIN TRANSACTION;
+// CREATE TABLE IF NOT EXISTS vehicle_temp(
+//     id INTEGER PRIMARY KEY,
+//     ipa TEXT,
+//     buildNo INTEGER,
+//     vin TEXT,
+//     engineNo TEXT,
+//     modelDesc TEXT,
+//     addSpec TEXT,
+//     variantCode TEXT,
+//     createdBy TEXT,
+//     updatedBy TEXT,
+//     createdAt DATE,
+//     updatedAt DATE);
+// CREATE UNIQUE INDEX idxVin ON vehicle (vin);
+// CREATE UNIQUE INDEX idxBuildNo ON vehicle (buildNo);
+// INSERT INTO vehicle_temp SELECT id, ipa, buildNo, vin, engineNo, modelDesc, addSpec, variantCode, createdBy, updatedBy, createdAt, updatedAt FROM vehicle;
+// DROP TABLE vehicle;
+// ALTER TABLE vehicle_temp RENAME TO vehicle;
+// COMMIT;
+// PRAGMA foreign_keys=on;
+// DROP TABLE checklistItem;
+// VACUUM;

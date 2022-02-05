@@ -12,8 +12,11 @@ block content
         div(id="checklistTop")
             div(id="checklistHeader")
                 img(src="/images/black-logo.png", id="checklistHeaderImg")
-                if checklistItems[0].indent == 0
-                    h1(id="checklistHeaderText") #{checklistItems[0].description}
+                if checklistItems.length>0
+                    if checklistItems[0].indent == 0
+                        h1(id="checklistHeaderText") #{checklistItems[0].description}
+                else
+                    h1(id="checklistHeaderText") No Checklist
 
             div(id="prefillData")
                 table(id="prefillDataTable")

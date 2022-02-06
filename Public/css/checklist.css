@@ -149,6 +149,15 @@ li.checklistItem.indent6 {
     break-before: avoid;
 }
 
+li.checklistItem.indent7 {
+    display: block;
+    font-style: italic;
+    font-size: 0;
+    break-inside: avoid;
+    break-before: avoid;
+    height: 8px;
+}
+
 #checklistHelpQRBox {
     float: right;
     break-inside: avoid;

@@ -32,6 +32,12 @@
     margin-bottom: 0px;
 }
 
+#checklistHelpLink {
+    color: #000000;
+    margin: 8px 0px;
+    display: block;
+}
+
 #prefillData {
     float: right;
     width: fit-content;
@@ -143,6 +149,15 @@ li.checklistItem.indent6 {
     break-before: avoid;
 }
 
+#checklistHelpLinkQR {
+    float: right;
+    position: relative;
+    bottom: 100px;
+    break-inside: avoid;
+    width: 100px;
+    height: 100px;
+}
+
 @media print {
     body {
         background-color: #ffffff;
@@ -158,5 +173,9 @@ li.checklistItem.indent6 {
         padding: 0px;
         border-radius: 0px;
         margin: 0px;
+    }
+
+    #checklistHelpLink {
+        display: none;
     }
 }

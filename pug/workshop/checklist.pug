@@ -7,11 +7,11 @@ block css
     link(rel="stylesheet", href="/css/checklist.css")
     link(rel="stylesheet", href="/css/checklist-print.css")
 
--
-    const helpLink = 'test.my-rv.com.au/workshop/elite/vehicle-checklist?vin=' + vehicleData.vin;
-    const qrHelpLink = 'api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(helpLink) + '&size=100x100';
-
 block content
+    -
+        const helpLink = 'test.my-rv.com.au/workshop/elite/vehicle-checklist?vin=' + vehicleData.vin;
+        const qrHelpLink = 'api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(helpLink) + '&size=100x100';
+        
     div(id="checklistArea")
         div(id="checklistTop")
             div(id="checklistHeader")

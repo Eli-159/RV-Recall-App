@@ -7,6 +7,10 @@ block css
     link(rel="stylesheet", href="/css/checklist.css")
     link(rel="stylesheet", href="/css/checklist-print.css")
 
+-
+    const helpLink = 'test.my-rv.com.au/workshop/elite/vehicle-checklist?vin=' + vehicleData.vin;
+    const qrHelpLink = 'api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(helpLink) + '&size=100x100';
+
 block content
     div(id="checklistArea")
         div(id="checklistTop")
@@ -15,6 +19,7 @@ block content
                 if checklistItems.length>0
                     if checklistItems[0].indent == 0
                         h1(id="checklistHeaderText") #{checklistItems[0].description}
+                        a(id="checklistHelpLink", target="_blank" href=helpLink) Checklist Help Sheet
                 else
                     h1(id="checklistHeaderText") No Checklist
 
@@ -45,3 +50,4 @@ block content
                         li(class=['checklistItem', ('indent'+item.indent)])
                             span(class="spacer")
                             | #{item.description}
+        img(id="checklistHelpLinkQR", href=qrHelpLink)

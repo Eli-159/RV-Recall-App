@@ -149,11 +149,20 @@ li.checklistItem.indent6 {
     break-before: avoid;
 }
 
-#checklistHelpLinkQR {
+#checklistHelpQRBox {
     float: right;
-    position: relative;
-    bottom: 100px;
     break-inside: avoid;
+    bottom: 100px;
+    margin: 10px 0px 10px 10px;
+}
+
+#checklistHelpQRDesc {
+    margin: 0;
+    font-size: 13px;
+    text-align: center;
+}
+
+#checklistHelpLinkQR {
     width: 100px;
     height: 100px;
 }

@@ -9,7 +9,8 @@ block css
 block content
     -
         const helpLink = '/workshop/elite/vehicle-checklist?vin=' + vehicleData.vin;
-        const qrHelpLink = 'https://api.qrserver.com/v1/create-qr-code/?data=test.my-rv.com.au' + encodeURIComponent(helpLink) + '&size=100x100&qzone=3';
+        const fullHelpLink = 'test.my-rv.com.au' + helpLink
+        const qrHelpLink = 'https://api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(fullHelpLink) + '&size=100x100&qzone=3';
 
     div(id="checklistArea")
         div(id="checklistTop")
@@ -42,6 +43,9 @@ block content
         
         hr.checklistPageSplit
 
+        div(id="checklistHelpQRBox")
+            p(id="checklistHelpQRDesc") For help, see:
+            img(id="checklistHelpLinkQR", src=qrHelpLink, alt=fullHelpLink)
         div(id="checklistItems")
             ul(id="checklistItemList")
                 each item in checklistItems
@@ -49,4 +53,3 @@ block content
                         li(class=['checklistItem', ('indent'+item.indent)])
                             span(class="spacer")
                             | #{item.description}
-        img(id="checklistHelpLinkQR", src=qrHelpLink)

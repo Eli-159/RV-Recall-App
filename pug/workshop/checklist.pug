@@ -8,8 +8,8 @@ block css
 
 block content
     -
-        const helpLink = 'test.my-rv.com.au/workshop/elite/vehicle-checklist?vin=' + vehicleData.vin;
-        const qrHelpLink = 'api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(helpLink) + '&size=100x100';
+        const helpLink = '/workshop/elite/vehicle-checklist?vin=' + vehicleData.vin;
+        const qrHelpLink = 'https://api.qrserver.com/v1/create-qr-code/?data=test.my-rv.com.au' + encodeURIComponent(helpLink) + '&size=100x100&qzone=3';
 
     div(id="checklistArea")
         div(id="checklistTop")

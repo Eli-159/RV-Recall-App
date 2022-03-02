@@ -216,7 +216,7 @@ function dao() {
 
     var loadVehicle = function(vehicle, user) {
         vehicle['user'] = user;
-        return sequelize.query("INSERT INTO vehicle (id, ipa, buildNo, vin, engineNo, modelDesc, addSpec, variantCode, createdBy, updatedBy, createdAt, updatedAt) VALUES (:id, :ipa, :buildNo, :vin, :engineNo, :modelDesc, :addSpec, :variantCode, :user, :user, datetime('now'), datetime('now'))",
+        return sequelize.query("INSERT INTO vehicle (id, ipa, buildNo, vin, engineNo, modelDesc, addSpec, variantCode, isOnRav, createdBy, updatedBy, createdAt, updatedAt) VALUES (:id, :ipa, :buildNo, :vin, :engineNo, :modelDesc, :addSpec, :variantCode, :isOnRav, :user, :user, datetime('now'), datetime('now'))",
             { replacements: vehicle,
               type: sequelize.QueryTypes.INSERT,
               raw: true

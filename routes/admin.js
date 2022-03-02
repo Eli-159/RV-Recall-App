@@ -100,7 +100,7 @@ router.post('/csv-upload/submit', (req, res, next) => {
           })
         }
 
-        const expectedLine = 'id,ipa,buildNo,vin,engineNo,modelDesc,addSpec,variantCode';
+        const expectedLine = 'id,ipa,buildNo,vin,engineNo,modelDesc,addSpec,variantCode,isOnRav';
         let results = [];
         try {
             let csvStream = fs.createReadStream('./data/vehicle_upload.csv')

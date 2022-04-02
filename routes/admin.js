@@ -20,20 +20,6 @@ router.use('/reports', reportsRoutes);
 // If the request url includes '/google', it is parsed off to the reports routes file.
 router.use('/google', googleRoutes);
 
-// If the 'get-owner-contact-details' page is requested, the necessary data is requested, reformatted and rendered in a pug file.
-router.get('/get-owner-contact-details', (req, res, next) => {
-    // Gets all of the current owners.
-    dao.listOwnerCurrent().then(owners => {
-        // The pug file is rendered with the processed owner details.
-        res.render('workshop/admin/owners-contact-details', {
-            pageTitle: 'All Owner Contact Details',
-            path: '/workshop/admin/get-owner-contact-details',
-            owners: owners,
-            role: req.payload.role
-        });
-    });
-});
-
 // If the request url is for the '/csv-upload' route, the initial page is rendered.
 router.get('/csv-upload', (req, res, next) => {
     res.render('workshop/admin/update-csv/csv-upload-form', {

@@ -163,22 +163,11 @@ router.post('/submit-owner-details', (req, res, next) => {
     const body = req.body;
     const payload = req.payload;
     // Defines a variable to hold a promise.
-    let successPromise;
-    // Tests if the owner is known.
-    if (payload.owner.name.toLowerCase() == body.name.toLowerCase() && payload.owner.id != undefined) {
-        // Updates the owner if the owner is known with the new data and assigns the returned promise to the 'successPromise' variable.
-        body.id = payload.owner.id;
-        body.updatedBy = payload.user;
-        successPromise = dao.updateOwner(body);
-    } else {
-        // Creates a new owner if the owner given is not known and assigns the returned promise to the 'successPromise' variable.
-        body.createdBy = payload.user;
-        body.updatedBy = body.createdBy;
-        body.vehicleId = payload.vehicleId;
-        successPromise = dao.newOwner(body);
-    }
-    // Waits for the promise assigned to the 'successPromise' variable to resolve.
-    successPromise.then(() => {
+    // Creates a new owner.
+    body.createdBy = payload.user;
+    body.updatedBy = body.createdBy;
+    body.vehicleId = payload.vehicleId;
+    dao.newOwner(body).then(() => {
         // If the 'successPromise' resolves without error, the success message page is rendered and returned.
         res.render('workshop/recall-form/success-message', {
             role: req.payload.role

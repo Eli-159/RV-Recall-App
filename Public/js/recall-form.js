@@ -62,6 +62,11 @@ const addRecallSubmitEventListener = () => {
 const addOwnerDetailsEventListeners = () => {
     // Adds the event listener to validate the owner details form.
     addValidationEventListeners();
+    let isDirty = false;
+    // Add change event listener to check for any change.
+    document.getElementById('detailsForm').addEventListener('change', () => {
+        isDirty = true;
+    });
     // Adds the event listener to clear the owner details form.
     document.getElementById('clearBtn').addEventListener('click', () => {
         // Loads all inputs and selects into a variable.
@@ -92,7 +97,12 @@ const addOwnerDetailsEventListeners = () => {
     });
     // Adds the event listener to submit the owner details data.
     document.getElementById('detailsSubmitBtn').addEventListener('click', () => {
-        // Posts the details form data and loads the success message.
-        postFormData('/workshop/recall/submit-owner-details', 'detailsForm');
+        if (isDirty) {
+            // Posts the details form data and loads the success message.
+            postFormData('/workshop/recall/submit-owner-details', 'detailsForm');
+        } else {
+            // Fetches and loads the success message.
+            postFormData('/workshop/recall/skip-details-submit', null, null, null, false);
+        }
     });
 };

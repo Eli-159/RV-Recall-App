@@ -99,8 +99,7 @@
   .floatingBox {
       width: auto;
       max-width: 400px;
-      position: fixed;
-      top: 180px;
+      float: right;
       right: calc(45vw - 338px);
       z-index: -1;
   }
@@ -113,4 +112,14 @@
       position: static;
       margin: 50px;
   }
+}
+
+.dataLabel {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.dataLabel + p {
+  margin: 0;
 }

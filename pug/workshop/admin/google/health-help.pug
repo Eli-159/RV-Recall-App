@@ -1,0 +1,45 @@
+extends ../../../templates/google-layout
+
+block css
+    link(rel="stylesheet", href="/css/google-layout.css")
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/actions.css")
+    link(rel="stylesheet", href="/css/header.css")
+    link(rel="stylesheet", href="/css/info.css")
+
+block content
+    include ../../../templates/google-health
+    h1 Google Health Help
+    p The box to the right of this text gives you a snapshot of the current google authentication. This is what it means.
+    h3 Current Required Actions
+            if (healthData.auth=='Expired' || healthData.failedEmails>0)
+        ul.bulletList
+            if (typeof healthData.failedEmails == 'number' && typeof healthData.numEmails == 'number')
+                if (healthData.auth != 'Ok')
+                    li
+                        a(href="/workshop/admin/google/auth/url") Authenticate an Email Account 
+                if (healthData.failedEmails > 0)
+                    li
+                        a(href="/workshop/admin/google/send-failed-emails") Send Failed Emails
+                if (healthData.numEmails < 1)
+                    li
+                        a(href="/workshop/admin/google/view-auto-emails") Activate an Automatic Email
+            else
+                li Contact IT. An Unexpected Error has Occurred
+    else
+        p You're all good!
+    br
+    br
+    h3 Health Box Explanation
+    strong.dataLabel Authentication: 
+    p Either 'Ok' or 'Expired'. Indicates whether or not an account is currently validated. 
+        | If it says 'Expired', action is required to fix it (see above if applicable).
+    strong.dataLabel Account: 
+    p Either an email address or 'Unknown'. Indicates the current email account that is linked with the website. 
+        | If it says 'Unknown', action is required to fix it (see above if applicable). 
+    strong.dataLabel Active Auto Emails: 
+    p Either a number or 'Unknown'. Indicates how many emails are currently turned on (will send on trigger). 
+        | If it says 'Unknown' or '0', action is required to fix it (see above if applicable).
+    strong.dataLabel Failed Emails: 
+    p Either a number or 'Unknown'. Indicates how many emails have failed to send. 
+        | If it does not say '0', action is required to fix it (see above if applicable).

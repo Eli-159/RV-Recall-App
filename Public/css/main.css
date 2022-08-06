@@ -115,3 +115,11 @@ a.aBtn:hover {
 .redAlert {
   background-color: #cc0000;
 }
+
+.bulletList {
+  list-style-type: disc;
+}
+
+.bulletList li {
+  display: list-item;
+}

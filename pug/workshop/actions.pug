@@ -11,6 +11,8 @@ block content
     p Use the links below to navigate to the functions you wish to use.
     br
     ul.body-nav-list
+        if role == 'admin'
+            include ../templates/google-health
         li.body-nav-list-item
             a(href="/workshop/contact") Contact Form
                 p.body-nav-desc Record an interaction with an owner regarding a vehicle recall
@@ -40,5 +42,3 @@ block content
             li.body-nav-list-item
                 a(href="/workshop/admin/google/actions") Google Actions
                     p.body-nav-desc Control Google API related processes.
-    if role == 'admin'
-        include ../templates/google-health

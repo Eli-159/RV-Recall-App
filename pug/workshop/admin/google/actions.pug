@@ -8,10 +8,10 @@ block css
     link(rel="stylesheet", href="/css/info.css")
 
 block content
-    include ../../../templates/google-health
     p Use the links below to navigate to the functions you wish to use.
     br
     ul.body-nav-list
+        include ../../../templates/google-health
         li.body-nav-list-item
             a(href="/workshop/admin/google/auth/url") Google Authentication
                 p.body-nav-desc Authenticate the website with Google.
@@ -27,3 +27,6 @@ block content
         li.body-nav-list-item
             a(href="/workshop/admin/google/send-failed-emails") Send Failed Emails
                 p.body-nav-desc Attempts to resend all of the failed emails.
+        li.body-nav-list-item
+            a(href="/workshop/admin/google/health-help") Google Health Help
+                p.body-nav-desc Explains the health page and required actions.

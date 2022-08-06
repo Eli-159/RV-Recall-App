@@ -364,5 +364,19 @@ router.get('/send-failed-emails/start-send', (req, res, next) => {
     })
 });
 
+// Catches all requests for the help page.
+router.get('/health-help', (req, res, next) => {
+    gmail.getHealthUpdate().then(healthData => {
+        // Renders the pug page.
+        res.render('workshop/admin/google/health-help', {
+            healthData: healthData,
+            pageTitle: 'Google Health Help - MYRV',
+            path: '/workshop/admin/google/help',
+            role: req.payload.role
+        });
+    });
+});
+
+
 // The router is exported.
 module.exports = router;

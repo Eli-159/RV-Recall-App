@@ -12,7 +12,7 @@ block content
     h1 Google Health Help
     p The box to the right of this text gives you a snapshot of the current google authentication. This is what it means.
     h3 Current Required Actions
-            if (healthData.auth=='Expired' || healthData.failedEmails>0)
+    if (healthData.auth=='Expired' || healthData.failedEmails>0)
         ul.bulletList
             if (typeof healthData.failedEmails == 'number' && typeof healthData.numEmails == 'number')
                 if (healthData.auth != 'Ok')

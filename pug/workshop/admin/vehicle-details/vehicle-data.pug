@@ -136,5 +136,9 @@ div(class="form-section", id="vehicleData")
                             if role == 'admin'
                                 br
                                 | &nbsp;by&nbsp;#{recallContact.createdBy}
+        if role == 'admin'
+            br
+            h2 Recall Registration
+            a(href="/workshop/admin/recall-registration?vin="+data.vin, class="a") Complete Recall Registration Form
     else
         h2 Sorry, That Vehicle Could Not Be Found.

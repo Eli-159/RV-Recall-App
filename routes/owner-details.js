@@ -67,7 +67,8 @@ router.use('/verifyDetails', (req, res, next) => {
                     res.render('owner-details/details-form', {
                         data: data,
                         todayDate: stringDate,
-                        recallSection: req.headers.referer.includes('/recall-registration')
+                        recallSection: req.headers.referer.includes('/recall-registration'),
+                        admin: false
                     });
                 } else {
                     // Renders the second page of the owner registration form (details form) with the model description as a full page load.
@@ -78,7 +79,8 @@ router.use('/verifyDetails', (req, res, next) => {
                         data: data,
                         todayDate: stringDate,
                         recallSection: (req.originalUrl.includes('/recall-registration') || (req.headers.referer && req.headers.referer.includes('/recall-registration'))),
-                        emailLink: (givenId != undefined)
+                        emailLink: (givenId != undefined),
+                        admin: false
                     });
                 }
                 // Changes the success value of the log object to true.

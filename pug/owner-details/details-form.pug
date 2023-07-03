@@ -1,7 +1,12 @@
 div(class="form-section", id="detailsForm")
     include ../templates/vehicle-heading
-    h2 Your Details
+    if admin
+        h2 Owner Details
+    else
+        h2 Your Details
     .form
+        if admin
+            input(type="hidden", name="vin", value=data.vin)
         label(for="nameInput", class="required-label inlineP", id="nameInputLabel") Name
         input(type="button", value="Clear All", id="clearBtn", class="aButton")
         div(class="textInput")
@@ -75,6 +80,7 @@ div(class="form-section", id="detailsForm")
                 textarea(name="notes", id="notesInput", placeholder="Notes/Comments" cols="60", rows="10")
             br
         input(type="button", value="Submit", id="detailsSubmitBtn", class="submitBtn")
-    br
-    p If you have any difficulty in completing this form please email us at 
-        a(href="mailto:info@my-rv.com.au") info@my-rv.com.au.
+    if !admin
+        br
+        p If you have any difficulty in completing this form please email us at 
+            a(href="mailto:info@my-rv.com.au") info@my-rv.com.au.

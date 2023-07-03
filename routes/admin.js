@@ -6,6 +6,7 @@ const csv = require('csv-parser');
 const stripBom = require('strip-bom-stream');
 
 const dao = require ('../data/dao.js');
+const ownerDetailsAdminRoutes = require('./recall-registration-admin.js');
 const reportsRoutes = require('./reports.js');
 const googleRoutes = require('./google.js')
 
@@ -13,6 +14,9 @@ const googleRoutes = require('./google.js')
 router.get('/', (req, res, next) => {
     res.redirect('/workshop/actions');
 });
+
+// If the request url includes '/owner-details', it is parsed off to the reports routes file.
+router.use('/recall-registration', ownerDetailsAdminRoutes);
 
 // If the request url includes '/reports', it is parsed off to the reports routes file.
 router.use('/reports', reportsRoutes);

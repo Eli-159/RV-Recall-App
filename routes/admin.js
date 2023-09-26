@@ -129,5 +129,47 @@ router.post('/csv-upload/submit', (req, res, next) => {
     });
 });
 
+router.get('/vehicle-checklist', (req, res, next) => {
+    // Gets the vin from the query string.
+    const vin = req.query.vin;
+    // Defines a function to execute if an error occurs.
+    const failFunc = () => {
+        // Renders the full page error pug page.
+        res.render('errors/full-page-error', {
+            errorHeading: 'Checklist Load Failed',
+            errorBody: 'The creation of the checklist failed and it could not be loaded.',
+            includeRedirect: true,
+            redirectTime: 20,
+            redirectAddress: '/workshop/elite/get-vehicle-details/vehicle-details/' + vin,
+            redirectPageName: 'Vehicle Details',
+            pageTitle: 'Checklist Fail',
+            path: '/workshop/elite/checklist',
+            role: req.payload.role
+        });
+    };
+    // Gets the vehicle data using the stored vin.
+    dao.getVehicleByVin(vin).then(vehicleData => {
+        if (vehicleData) {
+            // Gets the checklist data using the ipa from the vehicle data.
+            dao.listChecklistItemByIpa(vehicleData.ipa, String(vehicleData.buildNo).substring(0, 2)).then(checklistData => {
+                if (checklistData) {
+                    // Renders the checklist page with the data fetched.
+                    res.render('workshop/checklist', {
+                        vehicleData: vehicleData,
+                        checklistItems: checklistData,
+                        pageTitle: 'Build Checklist - ' + vehicleData.ipa,
+                        path: '/workshop/elite/checklist',
+                        role: req.payload.role
+                    });
+                } else {
+                    failFunc();
+                }
+            }).catch(failFunc);
+        } else {
+            failFunc();
+        }
+    }).catch(failFunc);
+});
+
 // The router is exported.
 module.exports = router;

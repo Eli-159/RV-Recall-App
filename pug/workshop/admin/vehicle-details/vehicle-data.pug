@@ -1,7 +1,8 @@
 div(class="form-section", id="vehicleData")
     if success
         h2 Vehicle Properties
-        a(href="/workshop/elite/vehicle-checklist?vin="+data.vin, class="a") Complete Vehicle Checklist 
+        if role == 'admin'
+            a(href="/workshop/admin/vehicle-checklist?vin="+data.vin, class="a") Complete Vehicle Checklist 
         br
         br
         table(class="table")

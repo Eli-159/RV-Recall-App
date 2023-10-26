@@ -5,21 +5,6 @@ const dao = require ('../data/dao.js');
 const auth = require('../models/authenticate.js');
 const sendEmail = require('../google/send-email.js');
 
-
-// If the 'get-owner-contact-details' page is requested, the necessary data is requested, reformatted and rendered in a pug file.
-router.get('/get-owner-contact-details', (req, res, next) => {
-    // Gets all of the current owners.
-    dao.listOwnerCurrent().then(owners => {
-        // The pug file is rendered with the processed owner details.
-        res.render('workshop/admin/owners-contact-details', {
-            pageTitle: 'All Owner Contact Details',
-            path: '/workshop/admin/get-owner-contact-details',
-            owners: owners,
-            role: req.payload.role
-        });
-    });
-});
-
 // If the 'get-vehicle-details' form is requested, it is rendered and sent.
 router.get('/get-vehicle-details', (req, res, next) => {
     res.render('workshop/admin/vehicle-details/first-load', {

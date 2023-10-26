@@ -26,10 +26,10 @@ block content
             li.body-nav-list-item
                 a(href="/workshop/elite/get-vehicle-details") Get Vehicle Details
                     p.body-nav-desc Lookup all data for a vehicle
+        if role == 'admin'
             li.body-nav-list-item
                 a(href="/workshop/elite/get-owner-contact-details") Get All Owner Contact Details
                     p.body-nav-desc View all owners and their contact details.
-        if role == 'admin'
             li.body-nav-list-item
                 a(href="/workshop/admin/reports") Find a Report
                     p.body-nav-desc Lists all available reports and provides the download link
